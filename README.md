@@ -2,4 +2,4 @@ ET_ARM
 =
 ARM PROGRAM FOR LCM (LCD Module) ET (Electronic Test)
 
-菊花厂6.5COF项目
+B社6.39寸Panel测试
