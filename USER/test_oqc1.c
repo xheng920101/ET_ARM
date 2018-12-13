@@ -24,7 +24,7 @@
 		  Delay_ms(ET_DLY_LOCK * 2700); 
 			break;
 		case (2): 
-		  LCD_PWM(0xFFF);
+		  LEDA_NORM();
 			FPGA_Info_Visible(INFO_RGBVAL);
 			ScanBackward();
 			FPGA_DisPattern(0, 127, 127, 127);	//gray127
@@ -39,7 +39,7 @@
 		  SPEC_LEDA_MAX	= SPEC_MAX_LEDA_DIM;
 			break;
 		case (4): 
-			LCD_PWM(0xFFF);
+			LEDA_NORM();
 			FPGA_DisPattern(0, 255, 255, 255);	//white
 			if (Pic_Load_Finish == SET || PIC_Load_BMP_ET((uint8_t *)"0.bmp") == ERROR)
 			{

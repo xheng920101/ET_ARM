@@ -378,7 +378,7 @@ FlagStatus I2C_Check_Ack(void)
 * Return: read result, 0 is success, 1 is fail
 * Call: external
 */
- FlagStatus I2C_Read_Byte(uint8_t Addr, uint8_t* Data)
+ FlagStatus I2C_Read_Byte(uint8_t Addr, uint8_t Data)
 {
 	uint8_t Try_Count = 0;
 	FlagStatus Ack;
@@ -410,7 +410,7 @@ FlagStatus I2C_Check_Ack(void)
 			continue;
 		}
 		
-		*Data = I2C_Read_Uak();
+		Data = I2C_Read_Uak();
 		
 		I2C_Stop();
 		Ack = RESET;
@@ -428,7 +428,7 @@ FlagStatus I2C_Check_Ack(void)
 * Return: read result, 0 is success, 1 is fail
 * Call: external
 */
- FlagStatus I2C_Read_Byte16(uint16_t Addr, uint8_t* Data)
+ FlagStatus I2C_Read_Byte16(uint16_t Addr, uint8_t Data)
 {
 	uint8_t Try_Count = 0;
 	FlagStatus Ack;
@@ -467,7 +467,7 @@ FlagStatus I2C_Check_Ack(void)
 			continue;
 		}
 		
-		*Data = I2C_Read_Uak();
+		Data = I2C_Read_Uak();
 		
 		I2C_Stop();
 		Ack = RESET;
@@ -610,28 +610,34 @@ FlagStatus I2C_Check_Ack(void)
 {
 	uint8_t Try_Count = 0;
 	FlagStatus Ack;
+	
 	while (Try_Count++ < 5)
 	{
 		I2C_Start();
+		
 		if (I2C_Write((I2C_ADDR) & 0xFE) == SET) //device addressing
 		{
 			I2C_Stop();
 			Ack = SET;
 			continue;
 		}
+		
 		if (I2C_Write(Addr) == SET) //write address
 		{
 			I2C_Stop();
 			Ack = SET;
 			continue;
 		}
+		
 		I2C_Start();
+
 		if (I2C_Write((I2C_ADDR)| 0x01) == SET) //device addressing
 		{
 			I2C_Stop();
 			Ack = SET;
 			continue;
 		}
+		
 		while (Data_Len > 1)
 		{
 			*Data = I2C_Read_Ack();
@@ -639,10 +645,12 @@ FlagStatus I2C_Check_Ack(void)
 			Data++;
 		}	
 		*Data = I2C_Read_Uak();
+
 		I2C_Stop();
 		Ack = RESET;
 		break;
 	}
+	
 	return Ack;
 }
 
