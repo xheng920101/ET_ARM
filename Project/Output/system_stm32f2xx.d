@@ -1,0 +1,16 @@
+.\output\system_stm32f2xx.o: ..\CMSIS\system_stm32f2xx.c
+.\output\system_stm32f2xx.o: ..\CMSIS\stm32f2xx.h
+.\output\system_stm32f2xx.o: ..\CMSIS\core_cm3.h
+.\output\system_stm32f2xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\system_stm32f2xx.o: ..\CMSIS\system_stm32f2xx.h
+.\output\system_stm32f2xx.o: ..\USER\stm32f2xx_conf.h 
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_adc.h
+.\output\system_stm32f2xx.o: ..\CMSIS\stm32f2xx.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_dma.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_flash.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_fsmc.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_gpio.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_rcc.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_sdio.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_tim.h
+.\output\system_stm32f2xx.o: ..\FWlib\inc\stm32f2xx_usart.h
