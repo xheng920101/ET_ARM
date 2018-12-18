@@ -246,7 +246,6 @@ static void TCH_SPI_Config(void){
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
 	GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
 }
-
 /*********************************************************************************
 * Function: TCH_SPI_UNConfig
 * Description: TCH SPI interface recovery to original settings
@@ -297,32 +296,26 @@ void TCH_SPI_UNConfig(void){
 * Return: none
 * Call: Internal
 */
-static void TCH_SPI_WriteByte(uint8_t* dataWrt, uint16_t len) 
-{    
-uint16_t i;  
-uint8_t bitPos;
-  for(i=0;i<len;i++)
- { 
-	 bitPos = 0x80;
-	 while (bitPos)
-	{
-		GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN); 
-		if (dataWrt[i] & bitPos)
-		{
-			GPIO_SetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
-		}
-		else
-		{
-			GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
-		}
-		GPIO_SetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);		
-		bitPos >>= 1;
-	}	 
+static void TCH_SPI_WriteByte(uint8_t* dataWrt, uint16_t len){
+	uint16_t i;
+	uint8_t bitPos;
+	for(i=0;i<len;i++){
+		bitPos = 0x80;
+		while (bitPos){
+			GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);
+			if (dataWrt[i] & bitPos){
+				GPIO_SetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
+			}
+			else{
+				GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
+			}
+			GPIO_SetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);
+			bitPos >>= 1;
+		}	 
     GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);    //SCK last low
     GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
-	Delay_us(1);
- }
-  	
+		Delay_us(1);
+	}
 }
 /*********************************************************************************
 * Function:  FLASH_SPI_ReadByte  mode0
@@ -333,45 +326,46 @@ uint8_t bitPos;
 * Call: Internal
 */
 
-static void TCH_SPI_ReadByte(uint8_t* dataRdbuf, uint16_t len)  // fall edge
-{
-  uint16_t i; 
-  uint8_t bitPos;
-  uint8_t dataRd = 0x00;	
-  for(i=0;i<len;i++)
-  { 
-   bitPos = 0x80;  	
-	 while (bitPos)
-	{	
-		Delay_ms(5);
-	  GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN); 	
-//			Delay_ms(10);
-	  if (GPIO_ReadInputDataBit(TCH_SPI_MISO_GPIO_PORT,TCH_SPI_MISO_PIN) == SET)
-	 {
-	   dataRd |= bitPos;	
-	  }	
-	 else
-	 {
-	  dataRd |= 0x00;
-	  }
-	 if(TEST_MODE ==TEST_MODE_RA)
-	 Delay_us(10);//RA delay
-	 	Delay_ms(1);
-	 GPIO_SetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);		
-	 bitPos >>= 1;
-	 if(TEST_MODE ==TEST_MODE_RA)
-	 Delay_us(10);//RA delay
-	} 
-	  Delay_ms(1);
-    GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);// SCK last low
+static void TCH_SPI_ReadByte(uint8_t* dataRdbuf, uint16_t len){//fall edge
+	uint16_t i;
+	uint8_t bitPos;
+	uint8_t dataRd = 0x00;
+	for(i=0;i<len;i++){
+		bitPos = 0x80;
+		while (bitPos){
+			Delay_ms(5);
+			GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);
+			if (GPIO_ReadInputDataBit(TCH_SPI_MISO_GPIO_PORT,TCH_SPI_MISO_PIN) == SET){
+				dataRd |= bitPos;
+			}
+			else{
+				dataRd |= 0x00;
+			}
+			if(TEST_MODE != TEST_MODE_RA){
+				Delay_us(10);
+			}//ET delay
+			else{
+				Delay_ms(1);
+			}//RA delay
+			GPIO_SetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);
+			bitPos >>= 1;
+			if(TEST_MODE != TEST_MODE_RA){
+				Delay_us(10);
+			}//ET delay
+			else{
+				Delay_ms(1);
+			}//RA delay
+		}
+		GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT, TCH_SPI_SCK_PIN);// SCK last low
     dataRdbuf[i]=dataRd;  
     dataRd=0x00;	
-	if(TEST_MODE ==TEST_MODE_RA)
-//	Delay_us(10);//RA delay
-  Delay_ms(1);//RA delay ywb
-	else
-    Delay_us(1);//ET delay
-  }	
+		if(TEST_MODE != TEST_MODE_RA){
+			Delay_us(10);
+		}//ET delay
+		else{
+			Delay_ms(1);
+		}//RA delay
+	}
 }
 
  /*********************************************************************************
