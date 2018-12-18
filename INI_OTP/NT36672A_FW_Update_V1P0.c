@@ -221,38 +221,31 @@ f_closedir(&filedir);
 * Return: none
 * Call: internal
 */
-static void TCH_SPI_Config(void)
-{
-GPIO_InitTypeDef GPIO_InitStructure;
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24 TP_RST
-GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
-GPIO_SetBits(TCH_RST_GPIO_PORT, TCH_RST_PIN);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN;
-GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
-GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT,TCH_SPI_CSN_PIN);	
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN;
-GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
-GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT,TCH_SPI_SCK_PIN);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN;
-GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
-GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);	
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode  =  GPIO_Mode_IN;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
-GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
+static void TCH_SPI_Config(void){
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24 TP_RST
+	GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_RST_GPIO_PORT, TCH_RST_PIN);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN;
+	GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT,TCH_SPI_CSN_PIN);	
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN;
+	GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT,TCH_SPI_SCK_PIN);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN;
+	GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);	
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Mode  =  GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
+	GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
 }
-
 
 /*********************************************************************************
 * Function: TCH_SPI_UNConfig
