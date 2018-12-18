@@ -1,53 +1,5 @@
 #include "include.h"
-/*********************************************************************************
- * Interface definition for all IC, not to change!
- */
-#define    TCH_SPI_CSN1_PIN                GPIO_Pin_9		//TEST22: TP_SDA --> SPI_CSN
-#define    TCH_SPI_CSN1_GPIO_PORT          GPIOB
 
-#define    TCH_SPI_SCK_PIN                 GPIO_Pin_8		//TEST23: TP_SCL --> SPI_SCK
-#define    TCH_SPI_SCK_GPIO_PORT           GPIOB
-
-#define    TCH_SPI_MISO_PIN                GPIO_Pin_6		//TEST19: POWER_I2C_SCL --> SPI_MISO
-#define    TCH_SPI_MISO_GPIO_PORT          GPIOB
-
-#define    TCH_SPI_MOSI_PIN                GPIO_Pin_5		// TEST18: POWER_I2C_SDA --> SPI_MOSI
-#define    TCH_SPI_MOSI_GPIO_PORT          GPIOB
-
-#define    TCH_SPI_CSN2_PIN                GPIO_Pin_7		//TEST20: TP_INT --> SPI_CSN
-#define    TCH_SPI_CSN2_GPIO_PORT          GPIOB
-
-#define    TCH_SPI_CSN3_PIN                GPIO_Pin_2		//TEST21: TP_SCL --> SPI_CSN
-#define    TCH_SPI_CSN3_GPIO_PORT          GPIOC
-
-#define    TCH_RST_PIN				       GPIO_Pin_3		//TEST24: TP_RST --> TP_RST
-#define    TCH_RST_GPIO_PORT		       GPIOC
-
-
-//YWB
-#define    TCH_SPI_CSN1_2_PIN                GPIO_Pin_4	
-#define    TCH_SPI_CSN1_2_GPIO_PORT          GPIOE
-
-#define    TCH_SPI_CSN2_2_PIN                GPIO_Pin_5		
-#define    TCH_SPI_CSN2_2_GPIO_PORT          GPIOE
-
-#define    TCH_SPI_CSN3_2_PIN                GPIO_Pin_6		
-#define    TCH_SPI_CSN3_2_GPIO_PORT          GPIOE
-
-#define    TCH_SPI_CSN1_3_PIN                GPIO_Pin_6	
-#define    TCH_SPI_CSN1_3_GPIO_PORT          GPIOF
-
-#define    TCH_SPI_CSN2_3_PIN                GPIO_Pin_7		
-#define    TCH_SPI_CSN2_3_GPIO_PORT          GPIOF
-
-#define    TCH_SPI_CSN3_3_PIN                GPIO_Pin_8		
-#define    TCH_SPI_CSN3_3_GPIO_PORT          GPIOF
-
-uint16_t    TCH_SPI_CSN_PIN=TCH_SPI_CSN1_PIN;
-GPIO_TypeDef * TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_GPIO_PORT;
-/* 
- * End of interface definition
-*********************************************************************************/
 /*********************************************************************************
 * NT36672A defination
  */
@@ -60,7 +12,6 @@ typedef enum {
 #define SPI_WRITE_MASK(a)	(a | 0x80)
 #define SPI_READ_MASK(a)	(a & 0x7F)
 #define BLD_CRC_EN(a)	    (a | 0x80)
-
 #define EVENT_BUF_ADDR           0x21C00
 #define EVENT_MAP_RESET_COMPLETE 0x21C60
 #define EVENT_MAP_FWINFO         0x21C78
@@ -212,136 +163,7 @@ f_closedir(&filedir);
  
 /*************************************************/
 
-
 /*********************************************************************************
-* Function: TCH_SPI_Config
-* Description: TCH SPI interface configure
-* Input: none
-* Output: none
-* Return: none
-* Call: internal
-*/
-static void TCH_SPI_Config(void)
-{
-GPIO_InitTypeDef GPIO_InitStructure;
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24 TP_RST
-GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
-GPIO_SetBits(TCH_RST_GPIO_PORT, TCH_RST_PIN);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN;
-GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
-GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT,TCH_SPI_CSN_PIN);	
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN;
-GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
-GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT,TCH_SPI_SCK_PIN);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN;
-GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
-GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);	
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode  =  GPIO_Mode_IN;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
-GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
-}
-
-
-/*********************************************************************************
-* Function: TCH_SPI_UNConfig
-* Description: TCH SPI interface recovery to original settings
-* Input: none
-* Output: none
-* Return: none
-* Call: internal
-*/
-void TCH_SPI_UNConfig(void)
-{
-GPIO_InitTypeDef GPIO_InitStructure;
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-
-
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_PIN;
-GPIO_Init(TCH_SPI_CSN1_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_PIN;
-GPIO_Init(TCH_SPI_CSN2_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_PIN;
-GPIO_Init(TCH_SPI_CSN3_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_2_PIN;
-GPIO_Init(TCH_SPI_CSN1_2_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_2_PIN;
-GPIO_Init(TCH_SPI_CSN2_2_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_2_PIN;
-GPIO_Init(TCH_SPI_CSN3_2_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_3_PIN;
-GPIO_Init(TCH_SPI_CSN1_3_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_3_PIN;
-GPIO_Init(TCH_SPI_CSN2_3_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_3_PIN;
-GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
-
-//	
-	GPIO_SetBits(TCH_SPI_CSN1_GPIO_PORT, TCH_SPI_CSN1_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_GPIO_PORT, TCH_SPI_CSN2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN3_GPIO_PORT, TCH_SPI_CSN3_PIN);
-	GPIO_SetBits(TCH_SPI_CSN1_2_GPIO_PORT, TCH_SPI_CSN1_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_2_GPIO_PORT, TCH_SPI_CSN2_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN3_2_GPIO_PORT, TCH_SPI_CSN3_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN1_3_GPIO_PORT, TCH_SPI_CSN1_3_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_3_GPIO_PORT, TCH_SPI_CSN2_3_PIN);
-	GPIO_SetBits(TCH_SPI_CSN3_3_GPIO_PORT, TCH_SPI_CSN3_3_PIN);
-	
-//GPIO_InitTypeDef GPIO_InitStructure;
-
-//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-//GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-//GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN; //TEST18: POWER_I2C_SDA
-//GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ; //TEST19: POWER_I2C_SCL
-//GPIO_Init(TCH_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);	
-
-//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-//GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-////	
-////GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN; //TEST22: TP_SDA
-////GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24: TP_RST
-//GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-//GPIO_InitStructure.GPIO_PuPd =  GPIO_PuPd_UP;	
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN; //TEST23: I_IOVCC
-//GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
-
-
-}
- /*********************************************************************************
 * Function: TCH_SPI Write length Byte mode 0
 * Description: IO simiulate SPI write,Send n(n<=256) byte
 * Input: none
@@ -349,7 +171,7 @@ GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
 * Return: none
 * Call: Internal
 */
-static void TCH_SPI_WriteByte(uint8_t* dataWrt, uint16_t len) 
+void TCH_SPI_WriteByte(uint8_t* dataWrt, uint16_t len) 
 {    
 uint16_t i;  
 uint8_t bitPos;
@@ -374,8 +196,8 @@ uint8_t bitPos;
     GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);
 	Delay_us(1);
  }
-  	
 }
+
 /*********************************************************************************
 * Function:  FLASH_SPI_ReadByte  mode0
 * Description: IO simiulate SPI read,read a byte
@@ -434,7 +256,7 @@ static void TCH_SPI_ReadByte(uint8_t* dataRdbuf, uint16_t len)  // fall edge
 * Return: none
 * Call: Internal
 */
-static void TCH_SPI_WordWrite(uint32_t addr, uint16_t length , uint8_t* write_data)
+void TCH_SPI_WordWrite(uint32_t addr, uint16_t length , uint8_t* write_data)
 { 
 uint8_t write_buf[4];
 write_buf[0] = 0xFF;  //set index/page/addr command 
@@ -1030,8 +852,7 @@ ErrorStatus ret =SUCCESS;
 #ifdef NO_FLASH_MODE
 uint8_t retry = 0;
 //uint8_t buf[1];
-	
-TCH_SPI_Config();//spi_config
+
 if(SD_FW_OPEN()==ERROR)// open fw file
 return ERROR;
 /* Parse Firmware header  Process */
@@ -1100,91 +921,6 @@ fail:
 //  }
 	}
 SD_FW_Close();
-TCH_SPI_UNConfig();
 #endif
 return ret;	
-}
-
-/*********************************************************************************
-* Function: RA Program_FW 
-* Description: RA FW Upgrate
-* Input: none
-* Output: none
-* Return: FW upgrate result
-* Call: external
-*/
-ErrorStatus RA_Program_FW(void)
-{
-uint8_t i=0;
-uint8_t k=0;
-ErrorStatus ret=SUCCESS;
-printf("\r\n Begin FW Program !\r\n");
-	TCH_SPI_UNConfig();
-	for (i=0;i<9;i++)
-	{
-    if (i==0)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_2_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_2_GPIO_PORT;
-		}
-		if (i==1)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_2_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_2_GPIO_PORT;
-		}
-		 if (i==2)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_2_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_2_GPIO_PORT;
-		}
-		if (i==3)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_3_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_3_GPIO_PORT;
-		}
-		if (i==4)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_3_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_3_GPIO_PORT;
-		}
-		if (i==5)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_3_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_3_GPIO_PORT;
-		}
-		 if (i==6)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_GPIO_PORT;
-		}
-		if (i==7)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_GPIO_PORT;
-		}
-		if (i==8)		
-		{
-			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_PIN;
-			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_GPIO_PORT;
-		}
-	  if(Program_FW())
-		{
-			k=0;
-			printf("\r\n FW Program success!, Panel NO =%d\n", i+1);
-		}
-	  else
-		 {
-			 printf("\r\n FW Program error!, Panel NO =%d\n", i+1);
-			 i--;
-			 k++;
-			 if (k==10)
-			 {
-				 ret=ERROR;
-				 break;
-			 }		   
-		 }
-		 Delay_ms(200);
-		 TCH_SPI_UNConfig();
-	}
-  return ret;
 }

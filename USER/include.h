@@ -359,6 +359,53 @@ extern char FWVersion[];
 ErrorStatus Program_FW(void);
 ErrorStatus RA_Program_FW(void);
 
+/*********************************************************************************
+ * Interface definition for all IC, not to change!
+ */
+#define	TCH_SPI_CSN1_PIN					GPIO_Pin_9		//TEST22: TP_SDA --> SPI_CSN
+#define	TCH_SPI_CSN1_GPIO_PORT		GPIOB
+
+#define	TCH_SPI_SCK_PIN						GPIO_Pin_8		//TEST23: TP_SCL --> SPI_SCK
+#define	TCH_SPI_SCK_GPIO_PORT			GPIOB
+
+#define	TCH_SPI_MISO_PIN					GPIO_Pin_6		//TEST19: POWER_I2C_SCL --> SPI_MISO
+#define	TCH_SPI_MISO_GPIO_PORT		GPIOB
+
+#define	TCH_SPI_MOSI_PIN					GPIO_Pin_5		// TEST18: POWER_I2C_SDA --> SPI_MOSI
+#define	TCH_SPI_MOSI_GPIO_PORT		GPIOB
+
+#define	TCH_SPI_CSN2_PIN					GPIO_Pin_7		//TEST20: TP_INT --> SPI_CSN
+#define	TCH_SPI_CSN2_GPIO_PORT		GPIOB
+
+#define	TCH_SPI_CSN3_PIN					GPIO_Pin_2		//TEST21: TP_SCL --> SPI_CSN
+#define	TCH_SPI_CSN3_GPIO_PORT		GPIOC
+
+#define	TCH_RST_PIN								GPIO_Pin_3		//TEST24: TP_RST --> TP_RST
+#define	TCH_RST_GPIO_PORT					GPIOC
+
+//YWB
+#define	TCH_SPI_CSN1_2_PIN				GPIO_Pin_4	
+#define	TCH_SPI_CSN1_2_GPIO_PORT	GPIOE
+
+#define	TCH_SPI_CSN2_2_PIN				GPIO_Pin_5		
+#define	TCH_SPI_CSN2_2_GPIO_PORT	GPIOE
+
+#define	TCH_SPI_CSN3_2_PIN				GPIO_Pin_6		
+#define	TCH_SPI_CSN3_2_GPIO_PORT	GPIOE
+
+#define	TCH_SPI_CSN1_3_PIN				GPIO_Pin_6	
+#define	TCH_SPI_CSN1_3_GPIO_PORT	GPIOF
+
+#define	TCH_SPI_CSN2_3_PIN				GPIO_Pin_7		
+#define	TCH_SPI_CSN2_3_GPIO_PORT	GPIOF
+
+#define	TCH_SPI_CSN3_3_PIN				GPIO_Pin_8		
+#define	TCH_SPI_CSN3_3_GPIO_PORT	GPIOF
+
+/* 
+ * End of interface definition
+*********************************************************************************/
+
 #endif
 
 #endif /* _INCLUDE_H */

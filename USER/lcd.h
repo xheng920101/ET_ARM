@@ -27,4 +27,47 @@ void LCM_Init(void);
 void LCM_Reset(void);
 void LCD_LitSquence(void);
 
+extern uint16_t				TCH_SPI_CSN1_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN1_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_SCK_PIN;
+extern GPIO_TypeDef *	TCH_SPI_SCK_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_MISO_PIN;
+extern GPIO_TypeDef *	TCH_SPI_MISO_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_MOSI_PIN;
+extern GPIO_TypeDef *	TCH_SPI_MOSI_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN2_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN2_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN3_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN3_GPIO_PORT;
+
+extern uint16_t				TCH_RST_PIN;
+extern GPIO_TypeDef *	TCH_RST_GPIO_PORT;
+
+//YWB
+extern uint16_t				TCH_SPI_CSN1_2_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN1_2_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN2_2_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN2_2_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN3_2_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN3_2_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN1_3_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN1_3_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN2_3_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN2_3_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN3_3_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN3_3_GPIO_PORT;
+
+extern uint16_t				TCH_SPI_CSN_PIN;
+extern GPIO_TypeDef *	TCH_SPI_CSN_GPIO_PORT;
+
 #endif /* __LCD_H */
