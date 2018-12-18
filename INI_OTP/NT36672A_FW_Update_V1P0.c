@@ -500,8 +500,7 @@ static void TCH_SPI_WordRead(uint32_t ahb_addr, uint16_t length, uint8_t* read_b
 * Return: none
 * Call: Internal
 */
-static void	WriteSram(uint8_t* fwCeil, uint32_t start_addr, uint32_t Len)
-{   
+static void	WriteSram(uint8_t* fwCeil, uint32_t start_addr, uint32_t Len){
 	TCH_SPI_WordWrite(start_addr,Len,fwCeil);
 }
 
@@ -512,20 +511,32 @@ static void	WriteSram(uint8_t* fwCeil, uint32_t start_addr, uint32_t Len)
 * Return: none
 * Call: Internal
 */
-static void nvt_set_page(uint32_t addr)
-{
-uint8_t buf[4] = {0};
-
-buf[0] = 0xFF;	//set index/page/addr command
-buf[1] = (addr >> 15) & 0xFF;
-buf[2] = (addr >> 7) & 0xFF;
-GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection 
-Delay_us(100);
-Delay_ms(1);
-TCH_SPI_WriteByte(buf,3); //write
-Delay_us(1);
-GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip diselection 
-Delay_ms(1);
+static void nvt_set_page(uint32_t addr){
+	uint8_t buf[4] = {0};
+	buf[0] = 0xFF;	//set index/page/addr command
+	buf[1] = (addr >> 15) & 0xFF;
+	buf[2] = (addr >> 7) & 0xFF;
+	GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	TCH_SPI_WriteByte(buf,3); //write
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip diselection
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
 }
 /*********************************************************************************
 *Description: Novatek ILM_DLM CRC check enable
