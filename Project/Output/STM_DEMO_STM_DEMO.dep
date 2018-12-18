@@ -168,15 +168,9 @@ I (..\FWlib\inc\stm32f2xx_rcc.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_sdio.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_tim.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_usart.h)(0x5C183383)
-<<<<<<< HEAD
 F (..\USER\include.h)(0x5C185418)()
 F (..\USER\main.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (..\USER\include.h)(0x5C185418)
-=======
-F (..\USER\include.h)(0x5C18357C)()
-F (..\USER\main.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -221,7 +215,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -237,11 +231,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\TaskPolling.C)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\taskpolling.o --omf_browse .\output\taskpolling.crf --depend .\output\taskpolling.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -286,7 +276,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -302,11 +292,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\stm32f2xx_it.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\stm32f2xx_it.o --omf_browse .\output\stm32f2xx_it.crf --depend .\output\stm32f2xx_it.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -351,7 +337,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -386,11 +372,7 @@ I (..\USER\usart.h)(0x5C183383)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x574E3E26)
 F (..\USER\board_conf.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\board_conf.o --omf_browse .\output\board_conf.crf --depend .\output\board_conf.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -435,7 +417,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -451,11 +433,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\usart.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\usart.o --omf_browse .\output\usart.crf --depend .\output\usart.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -500,7 +478,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -516,11 +494,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\timer.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\timer.o --omf_browse .\output\timer.crf --depend .\output\timer.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -565,7 +539,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -581,11 +555,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\admesy.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\admesy.o --omf_browse .\output\admesy.crf --depend .\output\admesy.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -630,7 +600,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -656,11 +626,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\limits.h)(0x574E3E26)
 F (..\USER\admesy_filter.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\admesy_filter.o --omf_browse .\output\admesy_filter.crf --depend .\output\admesy_filter.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -705,7 +671,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -729,11 +695,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\limits.h)(0x574E3E26)
 F (..\USER\adc.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\adc.o --omf_browse .\output\adc.crf --depend .\output\adc.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -778,7 +740,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -811,11 +773,7 @@ I (..\FWlib\inc\stm32f2xx_tim.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_usart.h)(0x5C183383)
 I (..\USER\sysTick.h)(0x5C183383)
 F (..\USER\power.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\power.o --omf_browse .\output\power.crf --depend .\output\power.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -860,7 +818,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -876,11 +834,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\digital_sensor.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\digital_sensor.o --omf_browse .\output\digital_sensor.crf --depend .\output\digital_sensor.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -925,7 +879,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -941,11 +895,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\eeprom.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\eeprom.o --omf_browse .\output\eeprom.crf --depend .\output\eeprom.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -990,7 +940,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1023,11 +973,7 @@ I (..\FWlib\inc\stm32f2xx_sdio.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_tim.h)(0x5C183383)
 I (..\FWlib\inc\stm32f2xx_usart.h)(0x5C183383)
 F (..\USER\key.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\key.o --omf_browse .\output\key.crf --depend .\output\key.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1072,7 +1018,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1088,11 +1034,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\ssd2828.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\ssd2828.o --omf_browse .\output\ssd2828.crf --depend .\output\ssd2828.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1137,7 +1079,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1153,11 +1095,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\fpga.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\fpga.o --omf_browse .\output\fpga.crf --depend .\output\fpga.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1202,7 +1140,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1217,13 +1155,8 @@ I (..\USER\test_ctp.h)(0x5C183383)
 I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
-<<<<<<< HEAD
 F (..\USER\lcd.c)(0x5C1853F0)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\lcd.o --omf_browse .\output\lcd.crf --depend .\output\lcd.d)
 I (..\USER\include.h)(0x5C185418)
-=======
-F (..\USER\lcd.c)(0x5C183792)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\lcd.o --omf_browse .\output\lcd.crf --depend .\output\lcd.d)
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1268,7 +1201,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1304,11 +1237,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x574E3E26)
 I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x574E3E26)
 I (..\FWlib\inc\misc.h)(0x5C183383)
 F (..\USER\bsp_bmp.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\bsp_bmp.o --omf_browse .\output\bsp_bmp.crf --depend .\output\bsp_bmp.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1353,7 +1282,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1369,11 +1298,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\lcd_test.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\lcd_test.o --omf_browse .\output\lcd_test.crf --depend .\output\lcd_test.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1418,7 +1343,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1434,11 +1359,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_debug.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_debug.o --omf_browse .\output\test_debug.crf --depend .\output\test_debug.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1483,7 +1404,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1499,11 +1420,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_demo.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_demo.o --omf_browse .\output\test_demo.crf --depend .\output\test_demo.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1548,7 +1465,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1564,11 +1481,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_od.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_od.o --omf_browse .\output\test_od.crf --depend .\output\test_od.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1613,7 +1526,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1629,11 +1542,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_et1.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_et1.o --omf_browse .\output\test_et1.crf --depend .\output\test_et1.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1678,7 +1587,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1694,11 +1603,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_et2.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_et2.o --omf_browse .\output\test_et2.crf --depend .\output\test_et2.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1743,7 +1648,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1759,11 +1664,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_et3.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_et3.o --omf_browse .\output\test_et3.crf --depend .\output\test_et3.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1808,7 +1709,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1824,11 +1725,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_otp.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_otp.o --omf_browse .\output\test_otp.crf --depend .\output\test_otp.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1873,7 +1770,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1889,11 +1786,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_ra.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_ra.o --omf_browse .\output\test_ra.crf --depend .\output\test_ra.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -1938,7 +1831,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -1954,11 +1847,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_esd.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_esd.o --omf_browse .\output\test_esd.crf --depend .\output\test_esd.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2003,7 +1892,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2019,11 +1908,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_ctp.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_ctp.o --omf_browse .\output\test_ctp.crf --depend .\output\test_ctp.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2068,7 +1953,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2084,11 +1969,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_oqc1.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_oqc1.o --omf_browse .\output\test_oqc1.crf --depend .\output\test_oqc1.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2133,7 +2014,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2149,11 +2030,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\USER\test_SDcard.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\test_sdcard.o --omf_browse .\output\test_sdcard.crf --depend .\output\test_sdcard.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2198,7 +2075,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2214,11 +2091,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\INI_OTP\Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\common_initialcode_6.5inch_cof_nt36682a_cmos_v4p0_20180704.o --omf_browse .\output\common_initialcode_6.5inch_cof_nt36682a_cmos_v4p0_20180704.crf --depend .\output\common_initialcode_6.5inch_cof_nt36682a_cmos_v4p0_20180704.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2263,7 +2136,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2279,11 +2152,7 @@ I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
 F (..\INI_OTP\Common_OTPCode_NT36672A_V3.c)(0x5C183383)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\common_otpcode_nt36672a_v3.o --omf_browse .\output\common_otpcode_nt36672a_v3.crf --depend .\output\common_otpcode_nt36672a_v3.d)
-<<<<<<< HEAD
 I (..\USER\include.h)(0x5C185418)
-=======
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2328,7 +2197,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
@@ -2343,13 +2212,8 @@ I (..\USER\test_ctp.h)(0x5C183383)
 I (..\USER\test_oqc1.h)(0x5C183383)
 I (..\USER\test_SDcard.h)(0x5C183383)
 I (..\USER\TaskPolling.h)(0x5C183383)
-<<<<<<< HEAD
 F (..\INI_OTP\NT36672A_FW_Update_V1P0.c)(0x5C1853AF)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\nt36672a_fw_update_v1p0.o --omf_browse .\output\nt36672a_fw_update_v1p0.crf --depend .\output\nt36672a_fw_update_v1p0.d)
 I (..\USER\include.h)(0x5C185418)
-=======
-F (..\INI_OTP\NT36672A_FW_Update_V1P0.c)(0x5C183791)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\nt36672a_fw_update_v1p0.o --omf_browse .\output\nt36672a_fw_update_v1p0.crf --depend .\output\nt36672a_fw_update_v1p0.d)
-I (..\USER\include.h)(0x5C18357C)
->>>>>>> parent of 0173120... first successful output
 I (..\FWlib\inc\misc.h)(0x5C183383)
 I (..\CMSIS\stm32f2xx.h)(0x5C183383)
 I (..\CMSIS\core_cm3.h)(0x5C183383)
@@ -2394,7 +2258,7 @@ I (..\USER\ff9/diskio.h)(0x5C183383)
 I (..\USER\bsp_bmp.h)(0x5C183383)
 I (..\USER\ssd2828.h)(0x5C183383)
 I (..\USER\fpga.h)(0x5C183383)
-I (..\USER\lcd.h)(0x5C18379F)
+I (..\USER\lcd.h)(0x5C184B81)
 I (..\USER\lcd_test.h)(0x5C183383)
 I (..\USER\test_debug.h)(0x5C183383)
 I (..\USER\test_et1.h)(0x5C183383)
