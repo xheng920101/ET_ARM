@@ -778,65 +778,59 @@ ErrorStatus nvt_bin_header_parser(const uint8_t *fwdata, uint16_t fwsize){
 * return: ErrorStatus  
 * Call: Internal
 */
-ErrorStatus Write_Partition(void)
-{
-uint32_t list = 0;
-
-uint32_t BIN_addr, SRAM_addr, size;
-uint16_t len = 0;
-int32_t count = 0;
-uint32_t i = 0;
-ErrorStatus ret =SUCCESS; 
-char name[12];
-  for (list = 0; list < partition; list++) 
- {   
-	/* initialize variable */
-	SRAM_addr = bin_map[list].SRAM_addr;
-	size = bin_map[list].size;
-	BIN_addr = bin_map[list].BIN_addr;
-	strcpy(name,bin_map[list].name);
-
-	/* Check data size */
-	if ((BIN_addr + size) > fileSize)
-	{
-	   printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",
-	   BIN_addr, BIN_addr + size);
-	   ret =ERROR;
-	   return ret;
+ErrorStatus Write_Partition(void){
+	uint32_t list = 0;
+	uint32_t BIN_addr, SRAM_addr, size;
+	uint16_t len = 0;
+	int32_t count = 0;
+	uint32_t i = 0;
+	ErrorStatus ret =SUCCESS; 
+	char name[12];
+	for (list = 0; list < partition; list++){
+		/* initialize variable */
+		SRAM_addr = bin_map[list].SRAM_addr;
+		size = bin_map[list].size;
+		BIN_addr = bin_map[list].BIN_addr;
+		strcpy(name,bin_map[list].name);
+		/* Check data size */
+		if ((BIN_addr + size) > fileSize){
+			printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",BIN_addr, BIN_addr + size);
+			ret =ERROR;
+			return ret;
+		}
+		/* ignore reserved partition (Reserved Partition size is zero) */
+		if (!size){
+			continue;
+		}
+		else{
+			size = size +1;// important
+		}
+		if(size % 1024){
+			count = (size / 1024) + 1;
+		}
+		else{
+			count = (size / 1024);
+		}
+		for (i = 0 ; i <count ; i++){
+			len = (size < 1024) ? size : 1024;
+			/*write data to SRAM */
+			if(f_lseek(&fwfile,BIN_addr)==FR_OK){
+				SD_FW_Read(FWContent,len);
+				WriteSram(FWContent,SRAM_addr,len);
+				SRAM_addr += 1024;
+				BIN_addr += 1024;
+				size -= 1024;
+			}
+			else{
+				printf("\r\n The file pointer  Not  point to the FW File  !\r\n");
+				ret=ERROR;
+			}
+		}
 	}
-
-	/* ignore reserved partition (Reserved Partition size is zero) */
-	if (!size)
-		continue;
-	else
-		size = size +1;// important
-	if (size % 1024)
-		count = (size / 1024) + 1;
-	else
-		count = (size / 1024);
-	for (i = 0 ; i <count ; i++)
-  {
-	 len = (size < 1024) ? size : 1024;
-	 /*write data to SRAM */
-	 if(f_lseek(&fwfile,BIN_addr)==FR_OK)
-    {			 
-	  SD_FW_Read(FWContent,len);
-	  WriteSram(FWContent,SRAM_addr,len);
-	  SRAM_addr += 1024;
-	  BIN_addr += 1024;
-	  size -= 1024;
-	}
-	 else
-	 {
-	  printf("\r\n The file pointer  Not  point to the FW File  !\r\n");
-	  ret=ERROR;
-	 }
-  }
- }
-return ret;
+	return ret;
 }
- void nvt_set_bld_crc(uint32_t DES_ADDR, uint32_t SRAM_ADDR,uint32_t LENGTH_ADDR,uint32_t size,
-                      uint32_t G_CHECKSUM_ADDR, uint32_t crc)
+
+ void nvt_set_bld_crc(uint32_t DES_ADDR, uint32_t SRAM_ADDR,uint32_t LENGTH_ADDR,uint32_t size,uint32_t G_CHECKSUM_ADDR, uint32_t crc)
 {
 /* write destination address */
 fwbuf[0] = (SRAM_ADDR) & 0xFF;
