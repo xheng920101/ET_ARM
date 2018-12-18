@@ -493,7 +493,7 @@ GPIO_SetBits(TCH_SPI_CSN3_3_GPIO_PORT, TCH_SPI_CSN3_3_PIN);
 * Return: FW upgrate result
 * Call: external
 */
-ErrorStatus RA_Program_FW(void)
+__weak ErrorStatus RA_Program_FW(void)
 {
 uint8_t i=0;
 uint8_t k=0;
