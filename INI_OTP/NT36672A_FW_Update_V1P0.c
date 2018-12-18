@@ -262,45 +262,30 @@ GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
 * Return: none
 * Call: internal
 */
-void TCH_SPI_UNConfig(void)
-{
-GPIO_InitTypeDef GPIO_InitStructure;
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-
-
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_PIN;
-GPIO_Init(TCH_SPI_CSN1_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_PIN;
-GPIO_Init(TCH_SPI_CSN2_GPIO_PORT, &GPIO_InitStructure);
-	
+void TCH_SPI_UNConfig(void){
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_PIN;
+	GPIO_Init(TCH_SPI_CSN1_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_PIN;
+	GPIO_Init(TCH_SPI_CSN2_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_PIN;
-GPIO_Init(TCH_SPI_CSN3_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_2_PIN;
-GPIO_Init(TCH_SPI_CSN1_2_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_2_PIN;
-GPIO_Init(TCH_SPI_CSN2_2_GPIO_PORT, &GPIO_InitStructure);
-	
+	GPIO_Init(TCH_SPI_CSN3_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_2_PIN;
+	GPIO_Init(TCH_SPI_CSN1_2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_2_PIN;
+	GPIO_Init(TCH_SPI_CSN2_2_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_2_PIN;
-GPIO_Init(TCH_SPI_CSN3_2_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_3_PIN;
-GPIO_Init(TCH_SPI_CSN1_3_GPIO_PORT, &GPIO_InitStructure);
-
-GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_3_PIN;
-GPIO_Init(TCH_SPI_CSN2_3_GPIO_PORT, &GPIO_InitStructure);
-	
+	GPIO_Init(TCH_SPI_CSN3_2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_3_PIN;
+	GPIO_Init(TCH_SPI_CSN1_3_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_3_PIN;
+	GPIO_Init(TCH_SPI_CSN2_3_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_3_PIN;
-GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
-
-//	
+	GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_SetBits(TCH_SPI_CSN1_GPIO_PORT, TCH_SPI_CSN1_PIN);
 	GPIO_SetBits(TCH_SPI_CSN2_GPIO_PORT, TCH_SPI_CSN2_PIN);
 	GPIO_SetBits(TCH_SPI_CSN3_GPIO_PORT, TCH_SPI_CSN3_PIN);
@@ -310,36 +295,6 @@ GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_SetBits(TCH_SPI_CSN1_3_GPIO_PORT, TCH_SPI_CSN1_3_PIN);
 	GPIO_SetBits(TCH_SPI_CSN2_3_GPIO_PORT, TCH_SPI_CSN2_3_PIN);
 	GPIO_SetBits(TCH_SPI_CSN3_3_GPIO_PORT, TCH_SPI_CSN3_3_PIN);
-	
-//GPIO_InitTypeDef GPIO_InitStructure;
-
-//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-//GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-//GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-//GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN; //TEST18: POWER_I2C_SDA
-//GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ; //TEST19: POWER_I2C_SCL
-//GPIO_Init(TCH_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);	
-
-//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-//GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-////	
-////GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN; //TEST22: TP_SDA
-////GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24: TP_RST
-//GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
-
-//GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-//GPIO_InitStructure.GPIO_PuPd =  GPIO_PuPd_UP;	
-
-//GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN; //TEST23: I_IOVCC
-//GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
-
-
 }
  /*********************************************************************************
 * Function: TCH_SPI Write length Byte mode 0
