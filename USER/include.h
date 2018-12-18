@@ -361,6 +361,7 @@ ErrorStatus RA_Program_FW(void);
 void TCH_SPI_Config(void);
 void TCH_SPI_UNConfig(void);
 
+<<<<<<< HEAD
 /*********************************************************************************
  * Interface definition for all IC, not to change!
  */
@@ -413,6 +414,8 @@ void TCH_SPI_UNConfig(void);
  * End of interface definition
 *********************************************************************************/
 
+=======
+>>>>>>> parent of 0173120... first successful output
 #endif
 
 #endif /* _INCLUDE_H */

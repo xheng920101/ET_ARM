@@ -1,8 +1,5 @@
 #include "include.h"
 
-uint16_t				TCH_SPI_CSN_PIN				=	TCH_SPI_CSN1_PIN;
-GPIO_TypeDef *	TCH_SPI_CSN_GPIO_PORT	=	TCH_SPI_CSN1_GPIO_PORT;
-
 uint16_t PWM_T_cnt = 0;
 uint16_t PWM_DUTY = 0;
 
@@ -393,6 +390,7 @@ void ARM_PWM_Control(void)
 }
 
 /*********************************************************************************
+<<<<<<< HEAD
 * Function: TCH_SPI_Config
 * Description: TCH SPI interface configure
 * Input: none
@@ -570,6 +568,8 @@ printf("\r\n Begin FW Program !\r\n");
 }
 
 /*********************************************************************************
+=======
+>>>>>>> parent of 0173120... first successful output
 * Function: LCM_Init
 * Description: Initial SSD2828 and DDIC to lit on LCM
 * Input: none
