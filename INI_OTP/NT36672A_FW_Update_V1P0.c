@@ -545,14 +545,13 @@ static void nvt_set_page(uint32_t addr){
 * Return: none
 * Call: Internal
 */
-static void  nvt_bld_crc_en(void)
-{
-uint8_t buf[1];
-//---read  BLD_ILM_DLM_CRC_EN_ADDR status cmds---
-TCH_SPI_WordRead( BLD_ILM_DLM_CRC_EN_ADDR,1,buf);
-buf[0]=BLD_CRC_EN(buf[0]);
-TCH_SPI_WordWrite( BLD_ILM_DLM_CRC_EN_ADDR,1,buf);
-Delay_ms(5);
+static void  nvt_bld_crc_en(void){
+	uint8_t buf[1];
+	//---read  BLD_ILM_DLM_CRC_EN_ADDR status cmds---
+	TCH_SPI_WordRead( BLD_ILM_DLM_CRC_EN_ADDR,1,buf);
+	buf[0]=BLD_CRC_EN(buf[0]);
+	TCH_SPI_WordWrite( BLD_ILM_DLM_CRC_EN_ADDR,1,buf);
+	Delay_ms(5);
 }
 /*********************************************************************************
 *Description: Novatek touchscreen set boot ready function.
@@ -561,13 +560,12 @@ Delay_ms(5);
 * Return: none
 * Call: Internal
 */
-static void nvt_boot_ready()
-{
-//---write BOOT_RDY status cmds---
-uint8_t buf[1];
-buf[0]=0x01;
-TCH_SPI_WordWrite(BOOT_RDY_ADDR,1,buf);
-Delay_ms(5);
+static void nvt_boot_ready(){
+	//---write BOOT_RDY status cmds---
+	uint8_t buf[1];
+	buf[0]=0x01;
+	TCH_SPI_WordWrite(BOOT_RDY_ADDR,1,buf);
+	Delay_ms(5);
 }
 
 /*********************************************************************************
@@ -577,11 +575,10 @@ Delay_ms(5);
 * Return: none
 * Call: Internal
 */
-static void nvt_bootloader_reset(void)
-{
-uint8_t buf[4];
-buf[0]=0x69;
-TCH_SPI_WordWrite(SWRST_N8_ADDR,1,buf);//NT36672A:0X3F0C6
+static void nvt_bootloader_reset(void){
+	uint8_t buf[4];
+	buf[0]=0x69;
+	TCH_SPI_WordWrite(SWRST_N8_ADDR,1,buf);//NT36672A:0X3F0C6
 }
 
 /*********************************************************************************
@@ -592,33 +589,27 @@ TCH_SPI_WordWrite(SWRST_N8_ADDR,1,buf);//NT36672A:0X3F0C6
 * Call: Internal
 */
 
-static ErrorStatus  nvt_check_fw_reset_state(RST_COMPLETE_STATE check_reset_state)
-{
-uint8_t buf[5] = {0};
-ErrorStatus  ret =SUCCESS;
-int32_t retry = 0;
-
- while (1)
- {
-Delay_ms(10);
-//---read reset state---
-TCH_SPI_WordRead(EVENT_MAP_RESET_COMPLETE,5,buf);
-printf("read from  rest_state__reg:0x%02X=0x%02X, 0x%02X, 0x%02X, 0x%02X, 0x%02X\n",EVENT_MAP_RESET_COMPLETE,buf[0], buf[1], buf[2], buf[3], buf[4]);
-   if ((buf[0] >= check_reset_state) && (buf[0] <= RESET_STATE_MAX))
-  {
-   ret = SUCCESS;
-   break;
-  }
-
- retry++;
- if(retry > 100)
- {
-  printf("error, retry=%d, rest_state__reg:0x%02X=0x%02X, 0x%02X, 0x%02X, 0x%02X, 0x%02X\n", retry,EVENT_MAP_RESET_COMPLETE,buf[0], buf[1], buf[2], buf[3], buf[4]);
-  ret =ERROR;
-  break;
-  }
- }
- return ret;
+static ErrorStatus  nvt_check_fw_reset_state(RST_COMPLETE_STATE check_reset_state){
+	uint8_t buf[5] = {0};
+	ErrorStatus  ret =SUCCESS;
+	int32_t retry = 0;
+	while (1){
+		Delay_ms(10);
+		//---read reset state---
+		TCH_SPI_WordRead(EVENT_MAP_RESET_COMPLETE,5,buf);
+		printf("read from  rest_state__reg:0x%02X=0x%02X, 0x%02X, 0x%02X, 0x%02X, 0x%02X\n",EVENT_MAP_RESET_COMPLETE,buf[0], buf[1], buf[2], buf[3], buf[4]);
+		if ((buf[0] >= check_reset_state) && (buf[0] <= RESET_STATE_MAX)){
+			ret = SUCCESS;
+			break;
+		}
+		retry++;
+		if(retry > 100){
+			printf("error, retry=%d, rest_state__reg:0x%02X=0x%02X, 0x%02X, 0x%02X, 0x%02X, 0x%02X\n", retry,EVENT_MAP_RESET_COMPLETE,buf[0], buf[1], buf[2], buf[3], buf[4]);
+			ret =ERROR;
+			break;
+		}
+	}
+	return ret;
 }
 
 /*********************************************************************************
@@ -629,21 +620,19 @@ printf("read from  rest_state__reg:0x%02X=0x%02X, 0x%02X, 0x%02X, 0x%02X, 0x%02X
 * return: uint32_t data 
 * Call: Internal
 */
-static uint32_t CheckSum(const uint8_t *data, uint16_t len)
-{
-uint32_t i = 0;
-uint32_t checksum = 0;
-
-for (i = 0 ; i < len+1 ; i++)
-checksum += data[i];
-checksum += len;
-checksum = ~checksum +1;
-return checksum;
+static uint32_t CheckSum(const uint8_t *data, uint16_t len){
+	uint32_t i = 0;
+	uint32_t checksum = 0;
+	for (i = 0 ; i < len+1 ; i++){
+		checksum += data[i];
+	}
+	checksum += len;
+	checksum = ~checksum +1;
+	return checksum;
 }
 
-static uint32_t byte_to_word(const uint8_t *data)
-{
- return data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
+static uint32_t byte_to_word(const uint8_t *data){
+	return data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
 }
 
 /*********************************************************************************
@@ -656,135 +645,128 @@ static uint32_t byte_to_word(const uint8_t *data)
 */
 static uint32_t partition = 0;
 static uint8_t ilm_dlm_num = 2;
-ErrorStatus nvt_bin_header_parser(const uint8_t *fwdata, uint16_t fwsize)
-{
-uint32_t list = 0;
-uint32_t pos = 0x00;
-uint32_t end = 0x00;
-uint8_t info_sec_num = 0;
-uint8_t ovly_sec_num = 0;
-uint8_t ovly_info = 0;
-/* Find the header size */
-			printf("\r\n header 0x28, 0x28=%d\n", fwdata[28]);
-end = fwdata[0] + (fwdata[1] << 8) + (fwdata[2] << 16) + (fwdata[3] << 24);
-pos = 0x30;	// info section start at 0x30 offset
-while (pos < end) 
-{
-	info_sec_num ++;
-	pos += 0x10;	/* each header info is 16 bytes */
-}
-
+ErrorStatus nvt_bin_header_parser(const uint8_t *fwdata, uint16_t fwsize){
+	uint32_t list = 0;
+	uint32_t pos = 0x00;
+	uint32_t end = 0x00;
+	uint8_t info_sec_num = 0;
+	uint8_t ovly_sec_num = 0;
+	uint8_t ovly_info = 0;
+	/* Find the header size */
+	printf("\r\n header 0x28, 0x28=%d\n", fwdata[28]);
+	end = fwdata[0] + (fwdata[1] << 8) + (fwdata[2] << 16) + (fwdata[3] << 24);
+	pos = 0x30;	// info section start at 0x30 offset
+	while (pos < end){
+		info_sec_num ++;
+		pos += 0x10;	/* each header info is 16 bytes */
+	}
 /*
  * Find the DLM OVLY section
  * [0:3] Overlay Section Number
  * [4]   Overlay Info
  */
-ovly_info = (fwdata[0x28] & 0x10) >> 4;
-ovly_sec_num = (ovly_info) ? (fwdata[0x28] & 0x0F) : 0;
-
+	ovly_info = (fwdata[0x28] & 0x10) >> 4;
+	ovly_sec_num = (ovly_info) ? (fwdata[0x28] & 0x0F) : 0;
 /*
  * calculate all partition number
  * ilm_dlm_num (ILM & DLM) + ovly_sec_num + info_sec_num
  */
-partition = ilm_dlm_num + ovly_sec_num + info_sec_num;
-printf("\r\n ovly_info = %d, ilm_dlm_num = %d, ovly_sec_num = %d, info_sec_num = %d, partition = %d\n",
-		ovly_info, ilm_dlm_num, ovly_sec_num, info_sec_num, partition);
-
+	partition = ilm_dlm_num + ovly_sec_num + info_sec_num;
+	printf("\r\n ovly_info = %d, ilm_dlm_num = %d, ovly_sec_num = %d, info_sec_num = %d, partition = %d\n",	ovly_info, ilm_dlm_num, ovly_sec_num, info_sec_num, partition);
 /* allocated memory for header info */
-bin_map = (struct nvt_ts_bin_map *)malloc((partition+1) * sizeof(struct nvt_ts_bin_map));
- if(bin_map == NULL) 
- {
- printf("malloc for bin_map failed!");
- return ERROR;
- }
-  else
-  printf("malloc for bin_map success!\n");
-  for(list = 0; list < partition; list++)
-  {
+	bin_map = (struct nvt_ts_bin_map *)malloc((partition+1) * sizeof(struct nvt_ts_bin_map));
+	if(bin_map == NULL){
+		printf("malloc for bin_map failed!");
+		return ERROR;
+	}
+	else{
+		printf("malloc for bin_map success!\n");
+	}
+  for(list = 0; list < partition; list++){
 	/*
 	 * [1] parsing ILM & DLM header info
 	 * BIN_addr : SRAM_addr : size (12-bytes)
 	 * crc located at 0x18 & 0x1C
 	 */
-	if (list < ilm_dlm_num) {
-		bin_map[list].BIN_addr = byte_to_word(&fwdata[0 + list*12]);
-		bin_map[list].SRAM_addr = byte_to_word(&fwdata[4 + list*12]);
-		bin_map[list].size = byte_to_word(&fwdata[8 + list*12]);
-		if (support_hw_crc)
-			bin_map[list].crc = byte_to_word(&fwdata[0x18 + list*4]);
-		else { //support_hw_crc
-			if ((bin_map[list].BIN_addr + bin_map[list].size) < fwsize)
-				bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
-			else {
-				printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",
-						bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
-				return ERROR;
+		if (list < ilm_dlm_num){
+			bin_map[list].BIN_addr = byte_to_word(&fwdata[0 + list*12]);
+			bin_map[list].SRAM_addr = byte_to_word(&fwdata[4 + list*12]);
+			bin_map[list].size = byte_to_word(&fwdata[8 + list*12]);
+			if (support_hw_crc){
+				bin_map[list].crc = byte_to_word(&fwdata[0x18 + list*4]);
 			}
-		} //support_hw_crc
-		if (list == 0)
-			printf(bin_map[list].name, "ILM");
-		else if (list == 1)
-			printf(bin_map[list].name, "DLM");
-	}
-
+			else{//support_hw_crc
+				if ((bin_map[list].BIN_addr + bin_map[list].size) < fwsize){
+					bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
+				}
+				else{
+					printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
+					return ERROR;
+				}
+			} //support_hw_crc
+			if (list == 0){
+				printf(bin_map[list].name, "ILM");
+			}
+			else if (list == 1){
+				printf(bin_map[list].name, "DLM");
+			}
+		}
 	/*
 	 * [2] parsing others header info
 	 * SRAM_addr : size : BIN_addr : crc (16-bytes)
 	 */
-	if ((list >= ilm_dlm_num) && (list < (ilm_dlm_num + info_sec_num))) 
-   {
+		if ((list >= ilm_dlm_num) && (list < (ilm_dlm_num + info_sec_num))){
 		/* others partition located at 0x30 offset */
-		pos = 0x30 + (0x10 * (list - ilm_dlm_num));
-
-		bin_map[list].SRAM_addr = byte_to_word(&fwdata[pos]);
-		bin_map[list].size = byte_to_word(&fwdata[pos+4]);
-		bin_map[list].BIN_addr = byte_to_word(&fwdata[pos+8]);
-		if (support_hw_crc)
-			bin_map[list].crc = byte_to_word(&fwdata[pos+12]);
-		else {
-			if ((bin_map[list].BIN_addr + bin_map[list].size) < fwsize)
-				bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
-			else { //ts->support_hw_crc
-				printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",
-						bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
-				return ERROR;
+			pos = 0x30 + (0x10 * (list - ilm_dlm_num));
+			bin_map[list].SRAM_addr = byte_to_word(&fwdata[pos]);
+			bin_map[list].size = byte_to_word(&fwdata[pos+4]);
+			bin_map[list].BIN_addr = byte_to_word(&fwdata[pos+8]);
+			if (support_hw_crc){
+				bin_map[list].crc = byte_to_word(&fwdata[pos+12]);
 			}
-		} //ts->support_hw_crc
-		/* detect header end to protect parser function */
-		if ((bin_map[list].BIN_addr == 0) && (bin_map[list].size != 0)) {
-			printf(bin_map[list].name, "Header");
-		} else {
-			printf(bin_map[list].name, "Info-%d", (list - ilm_dlm_num));
+			else{
+				if((bin_map[list].BIN_addr + bin_map[list].size) < fwsize){
+					bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
+				}
+				else{ //ts->support_hw_crc
+					printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
+					return ERROR;
+				}
+			} //ts->support_hw_crc
+			/* detect header end to protect parser function */
+			if ((bin_map[list].BIN_addr == 0) && (bin_map[list].size != 0)){
+				printf(bin_map[list].name, "Header");
+			}
+			else{
+				printf(bin_map[list].name, "Info-%d", (list - ilm_dlm_num));
+			}
 		}
-	}
 
 	/*
 	 * [3] parsing overlay section header info
 	 * SRAM_addr : size : BIN_addr : crc (16-bytes)
 	 */
-	if (list >= (ilm_dlm_num + info_sec_num)) 
-    {
+		if (list >= (ilm_dlm_num + info_sec_num)){
 		/* overlay info located at DLM (list = 1) start addr */
-		pos = bin_map[1].BIN_addr + (0x10 * (list- ilm_dlm_num - info_sec_num));
-
-		bin_map[list].SRAM_addr = byte_to_word(&fwdata[pos]);
-		bin_map[list].size = byte_to_word(&fwdata[pos+4]);
-		bin_map[list].BIN_addr = byte_to_word(&fwdata[pos+8]);
-		if (support_hw_crc)
-			bin_map[list].crc = byte_to_word(&fwdata[pos+12]);
-		else { //ts->support_hw_crc
-			if ((bin_map[list].BIN_addr + bin_map[list].size) < fileSize)
-				bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
-			else {
-				printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",
-						bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
-				return ERROR;
+			pos = bin_map[1].BIN_addr + (0x10 * (list- ilm_dlm_num - info_sec_num));
+			bin_map[list].SRAM_addr = byte_to_word(&fwdata[pos]);
+			bin_map[list].size = byte_to_word(&fwdata[pos+4]);
+			bin_map[list].BIN_addr = byte_to_word(&fwdata[pos+8]);
+			if (support_hw_crc){
+				bin_map[list].crc = byte_to_word(&fwdata[pos+12]);
 			}
-		} //ts->support_hw_crc
-		sprintf(bin_map[list].name, "Overlay-%d", (list- ilm_dlm_num - info_sec_num));
+			else{ //ts->support_hw_crc
+				if ((bin_map[list].BIN_addr + bin_map[list].size) < fileSize){
+					bin_map[list].crc = CheckSum(&fwdata[bin_map[list].BIN_addr], bin_map[list].size);
+				}
+				else{
+					printf("access range (0x%08X to 0x%08X) is larger than bin size!\n",bin_map[list].BIN_addr, bin_map[list].BIN_addr + bin_map[list].size);
+					return ERROR;
+				}
+			} //ts->support_hw_crc
+			sprintf(bin_map[list].name, "Overlay-%d", (list- ilm_dlm_num - info_sec_num));
+		}
 	}
-  }
-
 	return SUCCESS;
 }
 
