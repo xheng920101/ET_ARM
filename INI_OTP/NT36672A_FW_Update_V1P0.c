@@ -830,23 +830,22 @@ ErrorStatus Write_Partition(void){
 	return ret;
 }
 
- void nvt_set_bld_crc(uint32_t DES_ADDR, uint32_t SRAM_ADDR,uint32_t LENGTH_ADDR,uint32_t size,uint32_t G_CHECKSUM_ADDR, uint32_t crc)
-{
-/* write destination address */
-fwbuf[0] = (SRAM_ADDR) & 0xFF;
-fwbuf[1] = (SRAM_ADDR >> 8) & 0xFF;
-fwbuf[2] = (SRAM_ADDR >> 16) & 0xFF;
-TCH_SPI_WordWrite(DES_ADDR,3,fwbuf);
-/* write length */
-fwbuf[0] = (size) & 0xFF;
-fwbuf[1] = (size >> 8) & 0xFF;
-TCH_SPI_WordWrite(LENGTH_ADDR,2,fwbuf);
-/* write golden dlm checksum */
-fwbuf[0] = (crc) & 0xFF;
-fwbuf[1] = (crc >> 8) & 0xFF;
-fwbuf[2] = (crc >> 16) & 0xFF;
-fwbuf[3] = (crc >> 24) & 0xFF;
-TCH_SPI_WordWrite(G_CHECKSUM_ADDR,4,fwbuf);
+void nvt_set_bld_crc(uint32_t DES_ADDR, uint32_t SRAM_ADDR,uint32_t LENGTH_ADDR,uint32_t size,uint32_t G_CHECKSUM_ADDR, uint32_t crc){
+	/* write destination address */
+	fwbuf[0] = (SRAM_ADDR) & 0xFF;
+	fwbuf[1] = (SRAM_ADDR >> 8) & 0xFF;
+	fwbuf[2] = (SRAM_ADDR >> 16) & 0xFF;
+	TCH_SPI_WordWrite(DES_ADDR,3,fwbuf);
+	/* write length */
+	fwbuf[0] = (size) & 0xFF;
+	fwbuf[1] = (size >> 8) & 0xFF;
+	TCH_SPI_WordWrite(LENGTH_ADDR,2,fwbuf);
+	/* write golden dlm checksum */
+	fwbuf[0] = (crc) & 0xFF;
+	fwbuf[1] = (crc >> 8) & 0xFF;
+	fwbuf[2] = (crc >> 16) & 0xFF;
+	fwbuf[3] = (crc >> 24) & 0xFF;
+	TCH_SPI_WordWrite(G_CHECKSUM_ADDR,4,fwbuf);
 }
 
 /*********************************************************************************
@@ -858,102 +857,84 @@ This function will check hw crc result is pass or not.
 * return: ErrorStatus  
 * Call: Internal
 */
-ErrorStatus Check_HW_CRC(uint8_t is_ilm_dlm)
-{
-uint32_t list = 0;
-uint8_t retry = 0, crc_flag = 0;
-ErrorStatus ret = SUCCESS;
-
-if (is_ilm_dlm) 
-{
-/* polling for ilm & dlm crc check finish */
-  while (1) 
- {
-	TCH_SPI_WordRead(BLD_ILM_DLM_CRC_ADDR,2,fwbuf);
-	printf("\r\n Read ilm&&dlm crc flag  %04x is  %02x",BLD_ILM_DLM_CRC_ADDR,fwbuf[0]);// DMA_CRC_FLAG_ADDR//
-
-	/*
-	 * [0] ILM_CRC_FLAG: 0-ILM CRC pass, 1-ILM CRC error
-	 * [1] DLM_CRC_FLAG: 0-DLM CRC pass, 1-DLM CRC error
-	 * [2] CRC_DONE    : 0-CRC checking, 1-finish
-	 */
-	crc_flag = (fwbuf[0] & 0x07);
-	if (crc_flag == 0x04)
-	break;
-    Delay_ms(1);
-	retry++;
-	if (retry > 20) 
-	{
-	  TCH_SPI_WordRead(R_ILM_CHECKSUM_ADDR,8,fwbuf);
-	  printf("\r\n ilm dlm crc error 0x%02X\n", crc_flag);
-	  printf("\r\n ILM_BIN_CRC=0x%08X, ILM_HW_CRC=0x%08X\n",bin_map[0].crc, byte_to_word(&fwbuf[0]));
-	  printf("\r\n DLM_BIN_CRC=0x%08X, DLM_HW_CRC=0x%08X\n",bin_map[1].crc, byte_to_word(&fwbuf[4]));
-	  return ERROR;
-	}
-  }
- }
- else
- {
-	for (list = ilm_dlm_num; list < partition; list++) 
-   {
-	  /* ignore reserved partition (Reserved Partition size is zero) */
-	  if (!bin_map[list].size)
-	  	continue;
-      
-	  /* Detect Header (Header size - 4) */
-	  if ((bin_map[list].BIN_addr == 0) && (bin_map[list].size != 0))
-	  	bin_map[list].size = bin_map[list].size - 4;
-      
-	  /* write register bank */
-	  nvt_set_bld_crc(DMA_DES_ADDR, bin_map[list].SRAM_addr,DMA_LENGTH_ADDR, bin_map[list].size,DMA_CHECKSUM_ADDR, bin_map[list].crc);
-      
-	  /* bld dma crc enable */
-	  fwbuf[0] = 0x01;	//enable
-                  TCH_SPI_WordWrite(DMA_CRC_EN_ADDR,1,fwbuf);
-	  /* polling for dma crc check finish */
-	  while (1)
-	  {
-			     
-                        TCH_SPI_WordRead(DMA_CRC_FLAG_ADDR,1,fwbuf);
-							
-	  	/*
-	  	 * [0] DMA_CRC_FLAG: 0-DMA CRC pass, 1-DMA CRC error
-	  	 * [1] DMA_CRC_DONE: 0-CRC checking, 1-finish
-	  	 */
-	  	crc_flag = (fwbuf[0] & 0x03);
-	  
-	  	if (crc_flag == 0x02)
-	  		break;
-      
-	  	  Delay_ms(1);
-	  	retry++;
-	  	if (retry > 20) 
-	  {
-//			while(1)
-//			{
-	  	TCH_SPI_WordRead(R_DLM_CHECKSUM_ADDR,4,fwbuf);
-	  	printf("\r\n partition %d dma crc error 0x%02X\n", list-1, crc_flag);
-	  	printf("\r\n partition %d BIN_CRC=0x%08X, HW_CRC=0x%08X\n",list-1, bin_map[list].crc, byte_to_word(&fwbuf[0]));
-	  	ret=ERROR;
-//			}
-	  	break;
-      
-	  }
+ErrorStatus Check_HW_CRC(uint8_t is_ilm_dlm){
+	uint32_t list = 0;
+	uint8_t retry = 0, crc_flag = 0;
+	ErrorStatus ret = SUCCESS;
+	if (is_ilm_dlm){
+		/* polling for ilm & dlm crc check finish */
+		while (1){
+			TCH_SPI_WordRead(BLD_ILM_DLM_CRC_ADDR,2,fwbuf);
+			printf("\r\n Read ilm&&dlm crc flag  %04x is  %02x",BLD_ILM_DLM_CRC_ADDR,fwbuf[0]);// DMA_CRC_FLAG_ADDR//
+			/*
+			* [0] ILM_CRC_FLAG: 0-ILM CRC pass, 1-ILM CRC error
+			* [1] DLM_CRC_FLAG: 0-DLM CRC pass, 1-DLM CRC error
+			* [2] CRC_DONE    : 0-CRC checking, 1-finish
+			*/
+			crc_flag = (fwbuf[0] & 0x07);
+			if (crc_flag == 0x04){
+				break;
+			}
+			Delay_ms(1);
+			retry++;
+			if(retry>20){
+				TCH_SPI_WordRead(R_ILM_CHECKSUM_ADDR,8,fwbuf);
+				printf("\r\n ilm dlm crc error 0x%02X\n", crc_flag);
+				printf("\r\n ILM_BIN_CRC=0x%08X, ILM_HW_CRC=0x%08X\n",bin_map[0].crc, byte_to_word(&fwbuf[0]));
+				printf("\r\n DLM_BIN_CRC=0x%08X, DLM_HW_CRC=0x%08X\n",bin_map[1].crc, byte_to_word(&fwbuf[4]));
+				return ERROR;
+			}
 		}
-	 }
+	}
+	else{
+		for (list = ilm_dlm_num; list < partition; list++){
+			/* ignore reserved partition (Reserved Partition size is zero) */
+			if (!bin_map[list].size){
+				continue;
+			}
+			/* Detect Header (Header size - 4) */
+			if ((bin_map[list].BIN_addr == 0) && (bin_map[list].size != 0)){
+				bin_map[list].size = bin_map[list].size - 4;
+			}
+			/* write register bank */
+			nvt_set_bld_crc(DMA_DES_ADDR, bin_map[list].SRAM_addr,DMA_LENGTH_ADDR, bin_map[list].size,DMA_CHECKSUM_ADDR, bin_map[list].crc);
+			/* bld dma crc enable */
+			fwbuf[0] = 0x01;	//enable
+      TCH_SPI_WordWrite(DMA_CRC_EN_ADDR,1,fwbuf);
+			/* polling for dma crc check finish */
+			while(1){
+				TCH_SPI_WordRead(DMA_CRC_FLAG_ADDR,1,fwbuf);
+				/*
+				* [0] DMA_CRC_FLAG: 0-DMA CRC pass, 1-DMA CRC error
+				* [1] DMA_CRC_DONE: 0-CRC checking, 1-finish
+				*/
+				crc_flag = (fwbuf[0] & 0x03);
+				if (crc_flag == 0x02){
+					break;
+				}
+				Delay_ms(1);
+				retry++;
+				if (retry > 20){
+					TCH_SPI_WordRead(R_DLM_CHECKSUM_ADDR,4,fwbuf);
+					printf("\r\n partition %d dma crc error 0x%02X\n", list-1, crc_flag);
+					printf("\r\n partition %d BIN_CRC=0x%08X, HW_CRC=0x%08X\n",list-1, bin_map[list].crc, byte_to_word(&fwbuf[0]));
+					ret=ERROR;
+					break;
+				}
+			}
+		}
 
 /* [0] ILM */
 /* write register bank */
 //nvt_set_bld_crc(ILM_DES_ADDR, bin_map[0].SRAM_addr,ILM_LENGTH_ADDR, bin_map[0].size,G_ILM_CHECKSUM_ADDR, bin_map[0].crc);
-nvt_set_bld_crc(ILM_DES_ADDR, bin_map[0].SRAM_addr,ILM_LENGTH_ADDR, bin_map[0].size,ILM_CHECKSUM_ADDR, bin_map[0].crc);
+		nvt_set_bld_crc(ILM_DES_ADDR, bin_map[0].SRAM_addr,ILM_LENGTH_ADDR, bin_map[0].size,ILM_CHECKSUM_ADDR, bin_map[0].crc);
 
 /* [1] DLM */
 /* write register bank */
 //nvt_set_bld_crc(DLM_DES_ADDR, bin_map[1].SRAM_addr,DLM_LENGTH_ADDR, bin_map[1].size,G_DLM_CHECKSUM_ADDR, bin_map[1].crc);
-nvt_set_bld_crc(DLM_DES_ADDR, bin_map[1].SRAM_addr,DLM_LENGTH_ADDR, bin_map[1].size,DMA_CHECKSUM_ADDR, bin_map[1].crc);
-
- }
- return ret;
+		nvt_set_bld_crc(DLM_DES_ADDR, bin_map[1].SRAM_addr,DLM_LENGTH_ADDR, bin_map[1].size,DMA_CHECKSUM_ADDR, bin_map[1].crc);
+	}
+	return ret;
 }
 
 /*********************************************************************************
@@ -965,77 +946,61 @@ This function will compare file checksum and fw checksum.
 * return: ErrorStatus  
 * Call: Internal
 */
-ErrorStatus Check_CheckSum(void)
-{
-uint32_t fw_checksum = 0;
-uint32_t len = partition*4;
-uint32_t list = 0;
-ErrorStatus ret =SUCCESS;
-
-memset(fwbuf, 0, (len+1));
-
-/* read checksum */
-TCH_SPI_WordRead(R_ILM_CHECKSUM_ADDR, len+1 , fwbuf);
-
-/*
- * Compare each checksum from fw
- * ILM + DLM + Overlay + Info
- * ilm_dlm_num (ILM & DLM) + ovly_sec_num + info_sec_num
- */
-	for (list = 0; list < partition; list++)
- {	
-  fw_checksum = byte_to_word(&fwbuf[1+list*4]);
-/* ignore reserved partition (Reserved Partition size is zero) */
-  if(!bin_map[list].size)
-	continue;
-
-  if (bin_map[list].crc != fw_checksum) 
-  {
-	printf("[%d] BIN_checksum=0x%08X, FW_checksum=0x%08X\n",
-				list, bin_map[list].crc, fw_checksum);
-
-	printf("\r\n firmware checksum not match!!\n");
-	ret=ERROR;
-	break;
-   }
- }
+ErrorStatus Check_CheckSum(void){
+	uint32_t fw_checksum = 0;
+	uint32_t len = partition*4;
+	uint32_t list = 0;
+	ErrorStatus ret =SUCCESS;
+	memset(fwbuf, 0, (len+1));
+	/* read checksum */
+	TCH_SPI_WordRead(R_ILM_CHECKSUM_ADDR, len+1 , fwbuf);
+	/*
+	* Compare each checksum from fw
+	* ILM + DLM + Overlay + Info
+	* ilm_dlm_num (ILM & DLM) + ovly_sec_num + info_sec_num
+	*/
+	for (list = 0; list < partition; list++){
+		fw_checksum = byte_to_word(&fwbuf[1+list*4]);
+		/* ignore reserved partition (Reserved Partition size is zero) */
+		if(!bin_map[list].size){
+			continue;
+		}
+		if (bin_map[list].crc != fw_checksum){
+			printf("[%d] BIN_checksum=0x%08X, FW_checksum=0x%08X\n",list, bin_map[list].crc, fw_checksum);
+			printf("\r\n firmware checksum not match!!\n");
+			ret=ERROR;
+			break;
+		}
+	}
 	//---set xdata index to EVENT BUF ADDR---
 	nvt_set_page(EVENT_BUF_ADDR);
 	return ret;
 }
 
-ErrorStatus Program_FW(void)//Download_Firmware_HW_CRC(void)//Download_Firmware_HW_CRC
-{
-ErrorStatus ret =SUCCESS;
-#ifdef NO_FLASH_MODE
-uint8_t retry = 0;
-//uint8_t buf[1];
-	
-TCH_SPI_Config();//spi_config
-if(SD_FW_OPEN()==ERROR)// open fw file
-return ERROR;
-/* Parse Firmware header  Process */
-if(f_lseek(&fwfile,0x00)==FR_OK)
-SD_FW_Read(FWContent,256); //read FW header 256BYTE
-ret =nvt_bin_header_parser(FWContent,256);// parse bin file headre
-if (!ret) 
-{
- printf("\r\n parse bin file headre failed.");
-}
- while (1) 
- {
-  GPIO_SetBits(TEST24_GPIO_PORT, TEST24_PIN);// TP_RST
-  Delay_us(5);	//wait tRSTA2BRST after TP_RST
-  nvt_bootloader_reset();
-  /* Start Write Firmware Process */
-   ret = Write_Partition();// send fw to sram
-  if (!ret) 
-  {
-  	printf("\r\n Write_Firmware failed.");
-  	goto fail;
-  }
-  
-  /* clear fw reset status */
+ErrorStatus Program_FW(void){//Download_Firmware_HW_CRC(void)//Download_Firmware_HW_CRC
+	ErrorStatus ret =SUCCESS;
+	#ifdef NO_FLASH_MODE
+	uint8_t retry = 0;
+	TCH_SPI_Config();//spi_config
+	if(SD_FW_OPEN()==ERROR)// open fw file
+		return ERROR;
+	/* Parse Firmware header  Process */
+	if(f_lseek(&fwfile,0x00)==FR_OK)
+		SD_FW_Read(FWContent,256); //read FW header 256BYTE
+	ret =nvt_bin_header_parser(FWContent,256);// parse bin file headre
+	if (!ret)
+		printf("\r\n parse bin file headre failed.");
+	while (1){
+		GPIO_SetBits(TEST24_GPIO_PORT, TEST24_PIN);// TP_RST
+		Delay_us(5);	//wait tRSTA2BRST after TP_RST
+		nvt_bootloader_reset();
+		/* Start Write Firmware Process */
+		ret = Write_Partition();// send fw to sram
+		if (!ret){
+			printf("\r\n Write_Firmware failed.");
+			goto fail;
+		}
+    /* clear fw reset status */
 //	buf[0]=0xAA;
 //	while(1){
   TCH_SPI_WordWrite(EVENT_MAP_RESET_COMPLETE,1, 0x00);
