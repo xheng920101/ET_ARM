@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Output\STM_DEMO.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Output\STM_DEMO.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 09:30:41 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 09:50:39 2018
 <BR><P>
 <H3>Maximum Stack Usage =       2552 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -3466,6 +3466,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_EventProcess
 </UL>
 
+<P><STRONG><a name="[187]"></a>TCH_SPI_Config</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, lcd.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TCH_SPI_Config &rArr; GPIO_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+</UL>
+
 <P><STRONG><a name="[188]"></a>TCH_SPI_UNConfig</STRONG> (Thumb, 214 bytes, Stack size 16 bytes, lcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TCH_SPI_UNConfig &rArr; GPIO_Init
 </UL>
@@ -6400,16 +6410,6 @@ Local Symbols
 <LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;floor
 </UL>
 <BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kiss_fft_alloc
-</UL>
-
-<P><STRONG><a name="[187]"></a>TCH_SPI_Config</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, lcd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TCH_SPI_Config &rArr; GPIO_Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
 </UL>
 
 <P><STRONG><a name="[193]"></a>SD_DMAEndOfTransferStatus</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, sdcard.o(.text))
