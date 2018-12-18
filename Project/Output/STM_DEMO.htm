@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Output\STM_DEMO.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Output\STM_DEMO.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 09:50:39 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 09:57:57 2018
 <BR><P>
 <H3>Maximum Stack Usage =       2552 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -13,6 +13,7 @@ main &rArr; USART_EventProcess &rArr; OTP &rArr; SD_Write_OTPInfo &rArr; f_open 
 Mutually Recursive functions
 </H3> <LI><a href="#[1c]">ADC_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1c]">ADC_IRQHandler</a><BR>
  <LI><a href="#[239]">pattern_matching</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[239]">pattern_matching</a><BR>
+ <LI><a href="#[188]">TCH_SPI_UNConfig</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[188]">TCH_SPI_UNConfig</a><BR>
  <LI><a href="#[12d]">kf_work</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[12d]">kf_work</a><BR>
 </UL>
 <P>
@@ -438,7 +439,7 @@ Global Symbols
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_SPI3Write
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CTP_Start
 <LI><a href="#[1d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_OTP
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
 <LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_Config
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_Reset
@@ -1410,7 +1411,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
 <P><STRONG><a name="[9a]"></a>task_list</STRONG> (Thumb, 284 bytes, Stack size 8 bytes, taskpolling.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1144<LI>Call Chain = task_list &rArr; KeyProc &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1152<LI>Call Chain = task_list &rArr; KeyProc &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;KeyProc
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;KEY_GetState
@@ -1513,7 +1514,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delay_us
 </UL>
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[16f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI3Write
 <LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_Delay
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetResValue
@@ -1543,7 +1544,7 @@ Global Symbols
 <LI><a href="#[1d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ON3sec_OFF3sec
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Meas_Current_Sleep
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Res_Check
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DisplayOn
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DisplayOff
 <LI><a href="#[17b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_Reset
@@ -2670,7 +2671,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[9c]"></a>KeyProc</STRONG> (Thumb, 402 bytes, Stack size 8 bytes, key.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1136<LI>Call Chain = KeyProc &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1144<LI>Call Chain = KeyProc &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -2924,7 +2925,7 @@ Global Symbols
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESD_Fail_Recover
-<LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
+<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OTPTimes_Read
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OTPSequence
 <LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ICReg_chk
@@ -3473,33 +3474,27 @@ Global Symbols
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<BR>[Called By]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
 </UL>
 
 <P><STRONG><a name="[188]"></a>TCH_SPI_UNConfig</STRONG> (Thumb, 214 bytes, Stack size 16 bytes, lcd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TCH_SPI_UNConfig &rArr; GPIO_Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
-</UL>
-
-<P><STRONG><a name="[189]"></a>RA_Program_FW</STRONG> (Thumb, 238 bytes, Stack size 16 bytes, lcd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1120<LI>Call Chain = RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1120 + In Cycle
+<LI>Call Chain = TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
 <LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_Config
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Init
-<LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Reset
+<BR>[Called By]<UL><LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
+<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
 </UL>
 
 <P><STRONG><a name="[87]"></a>LCM_Init</STRONG> (Thumb, 1018 bytes, Stack size 24 bytes, lcd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1144<LI>Call Chain = LCM_Init &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1152<LI>Call Chain = LCM_Init &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
@@ -3510,13 +3505,12 @@ Global Symbols
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_DisPattern
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Connect_Check
-<LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
+<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
 <LI><a href="#[18f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TE_Detect
 <LI><a href="#[18d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TEST_Config_CTP
 <LI><a href="#[18e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SleepCurrent_Check
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
-<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IDCheck
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IDCheck
 <LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCMPower_ON
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;POWER_I2C_SETTING
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
@@ -3525,6 +3519,7 @@ Global Symbols
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_LitSquence
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IC_Init
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriverIC_Reset
+<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
@@ -3533,18 +3528,18 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[16d]"></a>LCM_Reset</STRONG> (Thumb, 152 bytes, Stack size 8 bytes, lcd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1128<LI>Call Chain = LCM_Reset &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1136<LI>Call Chain = LCM_Reset &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_ON
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_Info_Visible
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_Info_Set
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_DisPattern
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MIPI_Reset
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_LitSquence
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IC_Init
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DriverIC_Reset
+<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;KeyProc
@@ -3941,7 +3936,7 @@ Global Symbols
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 
-<P><STRONG><a name="[18c]"></a>IDCheck</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, lcd_test.o(.text))
+<P><STRONG><a name="[18b]"></a>IDCheck</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, lcd_test.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = IDCheck &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -3996,7 +3991,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1d2]"></a>ESD_Fail_Recover</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, lcd_test.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1136<LI>Call Chain = ESD_Fail_Recover &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1144<LI>Call Chain = ESD_Fail_Recover &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MIPI_DCS_Read
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Reset
@@ -4378,7 +4373,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1d9]"></a>Test_ESD</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, test_esd.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1144<LI>Call Chain = Test_ESD &rArr; ESD_Fail_Recover &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
+<BR><BR>[Stack]<UL><LI>Max Depth = 1152<LI>Call Chain = Test_ESD &rArr; ESD_Fail_Recover &rArr; LCM_Reset &rArr; RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESD_Fail_Recover
 <LI><a href="#[1f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ESD_Visual_Check
@@ -4470,7 +4465,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
 <LI><a href="#[172]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MIPI_DCS_Write
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
+<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Set
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanForward
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ScanBackward
@@ -4542,7 +4537,7 @@ Global Symbols
 <LI><a href="#[1ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoVcom
 </UL>
 
-<P><STRONG><a name="[18b]"></a>VCOM_Read</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, common_otpcode_nt36672a_v3.o(.text))
+<P><STRONG><a name="[18a]"></a>VCOM_Read</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, common_otpcode_nt36672a_v3.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = VCOM_Read &rArr; SendPage &rArr; MIPI_DCS_Write &rArr; WriteDriverReg &rArr; WriteSSDReg &rArr; WriteDATA2SSD &rArr; SPI3Write &rArr; Delay_us
 </UL>
 <BR>[Calls]<UL><LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MIPI_DCS_Read
@@ -4590,7 +4585,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FPGA_DisPattern
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
-<LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
+<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VCOM_Read
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_VideoMode_ON
 <LI><a href="#[184]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_HSMode
 <LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DisplayOff
@@ -4636,7 +4631,7 @@ Global Symbols
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[201]"></a>SD_FW_Close</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -4645,7 +4640,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_close
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_closedir
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[203]"></a>TCH_SPI_WriteByte</STRONG> (Thumb, 102 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -4669,7 +4664,7 @@ Global Symbols
 <LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_us
 <LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WriteByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check_HW_CRC
 <LI><a href="#[212]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvt_set_bld_crc
 <LI><a href="#[20b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvt_bootloader_reset
@@ -4687,7 +4682,7 @@ Global Symbols
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[210]"></a>Write_Partition</STRONG> (Thumb, 236 bytes, Stack size 48 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -4699,7 +4694,7 @@ Global Symbols
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_FW_Read
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[212]"></a>nvt_set_bld_crc</STRONG> (Thumb, 86 bytes, Stack size 32 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -4720,7 +4715,7 @@ Global Symbols
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordRead
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[214]"></a>Check_CheckSum</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text), UNUSED)
@@ -4731,7 +4726,7 @@ Global Symbols
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 
-<P><STRONG><a name="[18a]"></a>Program_FW</STRONG> (Thumb, 204 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[189]"></a>Program_FW</STRONG> (Thumb, 204 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1104<LI>Call Chain = Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -4751,7 +4746,19 @@ Global Symbols
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Init
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
+<LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Reset
+<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+</UL>
+
+<P><STRONG><a name="[18c]"></a>RA_Program_FW</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, nt36672a_fw_update_v1p0.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1128<LI>Call Chain = RA_Program_FW &rArr; TCH_SPI_UNConfig &rArr;  TCH_SPI_UNConfig (Cycle)
+</UL>
+<BR>[Calls]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Init
 <LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCM_Reset
 </UL>
 
@@ -4860,7 +4867,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Lcd_Load_bmp
 <LI><a href="#[1cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Write_Str2File
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Partition
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_FW_OPEN
 <LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Write_OTPInfo
@@ -5849,9 +5856,9 @@ Global Symbols
 <LI><a href="#[1d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Meas_Current_Sleep
 <LI><a href="#[1cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Res_Check
 <LI><a href="#[1cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SD_Write_Str2File
-<LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
-<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IDCheck
-<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
+<LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<LI><a href="#[18b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IDCheck
+<LI><a href="#[188]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_UNConfig
 <LI><a href="#[186]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MIPI_SleepMode_OFF
 <LI><a href="#[185]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_VideoMode_ON
 <LI><a href="#[184]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_HSMode
@@ -5909,6 +5916,7 @@ Global Symbols
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_ProcessIRQSrc
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_write
 <LI><a href="#[219]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disk_read
+<LI><a href="#[18c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RA_Program_FW
 <LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check_CheckSum
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check_HW_CRC
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Partition
@@ -6566,7 +6574,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_read
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Partition
 </UL>
 
@@ -6623,7 +6631,7 @@ Local Symbols
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordWrite
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordRead
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[20a]"></a>nvt_boot_ready</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -6632,7 +6640,7 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordWrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[20b]"></a>nvt_bootloader_reset</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -6640,7 +6648,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordWrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[20c]"></a>nvt_check_fw_reset_state</STRONG> (Thumb, 146 bytes, Stack size 40 bytes, nt36672a_fw_update_v1p0.o(.text))
@@ -6650,7 +6658,7 @@ Local Symbols
 <LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordRead
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
+<BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
 <P><STRONG><a name="[20f]"></a>CheckSum</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, nt36672a_fw_update_v1p0.o(.text))

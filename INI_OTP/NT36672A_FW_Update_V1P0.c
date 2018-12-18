@@ -945,3 +945,44 @@ SD_FW_Close();
 #endif
 return ret;	
 }
+
+/*********************************************************************************
+* Function: RA Program_FW 
+* Description: RA FW Upgrate
+* Input: none
+* Output: none
+* Return: FW upgrate result
+* Call: external
+*/
+ErrorStatus RA_Program_FW(void)
+{
+	ErrorStatus ret=SUCCESS;
+	printf("\r\n Begin FW Program !\r\n");
+	if(Program_FW())
+	printf("\r\n Panel 1 FW Program success!\r\n");
+	else
+	{
+	 printf("\r\n Panel 1 FW Program error!\r\n");
+	 ret=ERROR;
+	}
+	TCH_SPI_CSN_PIN=TCH_SPI_CSN2_PIN;
+	TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_GPIO_PORT;
+	if(Program_FW())
+	printf("\r\n Panel 2 FW Program success!\r\n");
+	else
+	{
+	 printf("\r\n Panel 2 FW Program error!\r\n");
+	 ret=ERROR;
+	}
+	TCH_SPI_CSN_PIN=TCH_SPI_CSN3_PIN;
+	TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_GPIO_PORT;
+	if(Program_FW())
+	printf("\r\n Panel 3 FW Program success!\r\n");
+	else
+   {
+	 printf("\r\n Panel 3 FW Program error!\r\n");
+	 ret=ERROR;
+   }
+ 	TCH_SPI_UNConfig();
+  return ret;
+}
