@@ -1058,78 +1058,64 @@ return ret;
 * Return: FW upgrate result
 * Call: external
 */
-ErrorStatus RA_Program_FW(void)
-{
-uint8_t i=0;
-uint8_t k=0;
-ErrorStatus ret=SUCCESS;
-printf("\r\n Begin FW Program !\r\n");
+ErrorStatus RA_Program_FW(void){
+	uint8_t i=0;
+	uint8_t k=0;
+	ErrorStatus ret=SUCCESS;
+	printf("\r\n Begin FW Program !\r\n");
 	TCH_SPI_UNConfig();
-	for (i=0;i<9;i++)
-	{
-    if (i==0)		
-		{
+	for (i=0;i<9;i++){
+		if (i==0){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_2_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_2_GPIO_PORT;
 		}
-		if (i==1)		
-		{
+		if (i==1){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_2_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_2_GPIO_PORT;
 		}
-		 if (i==2)		
-		{
+		if (i==2){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_2_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_2_GPIO_PORT;
 		}
-		if (i==3)		
-		{
+		if (i==3){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_3_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_3_GPIO_PORT;
 		}
-		if (i==4)		
-		{
+		if (i==4){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_3_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_3_GPIO_PORT;
 		}
-		if (i==5)		
-		{
+		if (i==5){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_3_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_3_GPIO_PORT;
 		}
-		 if (i==6)		
-		{
+		if (i==6){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_GPIO_PORT;
 		}
-		if (i==7)		
-		{
+		if (i==7){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_GPIO_PORT;
 		}
-		if (i==8)		
-		{
+		if (i==8){
 			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_PIN;
 			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_GPIO_PORT;
 		}
-	  if(Program_FW())
-		{
+	  if(Program_FW()){
 			k=0;
 			printf("\r\n FW Program success!, Panel NO =%d\n", i+1);
 		}
-	  else
-		 {
-			 printf("\r\n FW Program error!, Panel NO =%d\n", i+1);
-			 i--;
-			 k++;
-			 if (k==10)
-			 {
-				 ret=ERROR;
-				 break;
-			 }		   
-		 }
-		 Delay_ms(200);
-		 TCH_SPI_UNConfig();
+	  else{
+			printf("\r\n FW Program error!, Panel NO =%d\n", i+1);
+			i--;
+			k++;
+			if (k==10){
+				ret=ERROR;
+				break;
+			}
+		}
+		Delay_ms(200);
+		TCH_SPI_UNConfig();
 	}
   return ret;
 }
