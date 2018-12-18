@@ -1,5 +1,8 @@
 #include "include.h"
 
+uint16_t				TCH_SPI_CSN_PIN				=	TCH_SPI_CSN1_PIN;
+GPIO_TypeDef *	TCH_SPI_CSN_GPIO_PORT	=	TCH_SPI_CSN1_GPIO_PORT;
+
 uint16_t PWM_T_cnt = 0;
 uint16_t PWM_DUTY = 0;
 
@@ -153,7 +156,6 @@ void LCD_SleepOut(void)
 */
 void LCD_DisplayOff(void)
 {
-//	SendPage(0x10);
 	printf("\r\nDriver IC display off...\r\n");
 	SSD_B7 |= SSD_CFGR_DCS;
 	SSD_B7 &= ~SSD_CFGR_REN;
@@ -395,6 +397,182 @@ void ARM_PWM_Control(void)
 }
 
 /*********************************************************************************
+* Function: TCH_SPI_Config
+* Description: TCH SPI interface configure
+* Input: none
+* Output: none
+* Return: none
+* Call: internal
+*/
+void TCH_SPI_Config(void){
+GPIO_InitTypeDef GPIO_InitStructure;
+
+GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24 TP_RST
+GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
+GPIO_SetBits(TCH_RST_GPIO_PORT, TCH_RST_PIN);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN;
+GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
+GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT,TCH_SPI_CSN_PIN);	
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN;
+GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
+GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT,TCH_SPI_SCK_PIN);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN;
+GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
+GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);	
+
+GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+GPIO_InitStructure.GPIO_Mode  =  GPIO_Mode_IN;
+GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
+GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
+}
+
+/*********************************************************************************
+* Function: TCH_SPI_UNConfig
+* Description: TCH SPI interface recovery to original settings
+* Input: none
+* Output: none
+* Return: none
+* Call: internal
+*/
+void TCH_SPI_UNConfig(void){
+GPIO_InitTypeDef GPIO_InitStructure;
+
+GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_PIN;
+GPIO_Init(TCH_SPI_CSN1_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_PIN;
+GPIO_Init(TCH_SPI_CSN2_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_PIN;
+GPIO_Init(TCH_SPI_CSN3_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_2_PIN;
+GPIO_Init(TCH_SPI_CSN1_2_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_2_PIN;
+GPIO_Init(TCH_SPI_CSN2_2_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_2_PIN;
+GPIO_Init(TCH_SPI_CSN3_2_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_3_PIN;
+GPIO_Init(TCH_SPI_CSN1_3_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_3_PIN;
+GPIO_Init(TCH_SPI_CSN2_3_GPIO_PORT, &GPIO_InitStructure);
+	
+GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_3_PIN;
+GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
+
+GPIO_SetBits(TCH_SPI_CSN1_GPIO_PORT, TCH_SPI_CSN1_PIN);
+GPIO_SetBits(TCH_SPI_CSN2_GPIO_PORT, TCH_SPI_CSN2_PIN);
+GPIO_SetBits(TCH_SPI_CSN3_GPIO_PORT, TCH_SPI_CSN3_PIN);
+GPIO_SetBits(TCH_SPI_CSN1_2_GPIO_PORT, TCH_SPI_CSN1_2_PIN);
+GPIO_SetBits(TCH_SPI_CSN2_2_GPIO_PORT, TCH_SPI_CSN2_2_PIN);
+GPIO_SetBits(TCH_SPI_CSN3_2_GPIO_PORT, TCH_SPI_CSN3_2_PIN);
+GPIO_SetBits(TCH_SPI_CSN1_3_GPIO_PORT, TCH_SPI_CSN1_3_PIN);
+GPIO_SetBits(TCH_SPI_CSN2_3_GPIO_PORT, TCH_SPI_CSN2_3_PIN);
+GPIO_SetBits(TCH_SPI_CSN3_3_GPIO_PORT, TCH_SPI_CSN3_3_PIN);
+}
+
+/*********************************************************************************
+* Function: RA Program_FW 
+* Description: RA FW Upgrate
+* Input: none
+* Output: none
+* Return: FW upgrate result
+* Call: external
+*/
+__weak ErrorStatus RA_Program_FW(void){
+	uint8_t i=0;
+	uint8_t k=0;
+	ErrorStatus ret=SUCCESS;
+	printf("\r\n Begin 1TO9 FW Program !\r\n");
+	TCH_SPI_UNConfig();
+	for (i=0;i<9;i++){
+    if (i==0)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_2_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_2_GPIO_PORT;
+		}
+		if (i==1)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_2_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_2_GPIO_PORT;
+		}
+		 if (i==2)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_2_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_2_GPIO_PORT;
+		}
+		if (i==3)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_3_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_3_GPIO_PORT;
+		}
+		if (i==4)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_3_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_3_GPIO_PORT;
+		}
+		if (i==5)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_3_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_3_GPIO_PORT;
+		}
+		 if (i==6)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN1_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_GPIO_PORT;
+		}
+		if (i==7)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN2_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN2_GPIO_PORT;
+		}
+		if (i==8)		
+		{
+			TCH_SPI_CSN_PIN=TCH_SPI_CSN3_PIN;
+			TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN3_GPIO_PORT;
+		}
+		TCH_SPI_Config();//spi_config
+	  if(Program_FW())
+		{
+			k=0;
+			printf("\r\n FW Program success!, Panel NO =%d\n", i+1);
+		}
+	  else
+		 {
+			 printf("\r\n FW Program error!, Panel NO =%d\n", i+1);
+			 i--;
+			 k++;
+			 if (k==10)
+			 {
+				 ret=ERROR;
+				 break;
+			 }		   
+		 }
+		 Delay_ms(200);
+		 TCH_SPI_UNConfig();
+	}
+  return ret;
+}
+
+/*********************************************************************************
 * Function: LCM_Init
 * Description: Initial SSD2828 and DDIC to lit on LCM
 * Input: none
@@ -430,7 +608,6 @@ void LCM_Init(void)
 	DriverIC_Reset();
 	printf("\r\nLCD_Init...\r\n");
 	debug = TIMESTAMP;
-
 	switch (TEST_MODE) 
 	{
 		case (TEST_MODE_ET1):	IC_Init(ET1_InitCode);	break;
@@ -473,14 +650,13 @@ void LCM_Init(void)
 		printf("*#*#4:0x%04X#*#*\r\n", vcom_best);
 		printf("*#*#6:%d#*#*\r\n", OTP_TIMES);
 		printf("\r\n===== OTP status check time elapsed: %.3f(second)\r\n", TIMESTAMP - debug);
-		
+
 		/* ID check */	
 		if( (TEST_MODE == TEST_MODE_ET2)||(TEST_MODE == TEST_MODE_OQC1) )
 		{
 			IDCheck();
 		}
  	}
-	
 	
 	/* discharge */
 	LCD_LitSquence();
@@ -491,20 +667,15 @@ void LCM_Init(void)
 #endif
 	
 #ifdef NO_FLASH_MODE
-	if (TEST_MODE == TEST_MODE_CTP)
-	{
+	if (TEST_MODE == TEST_MODE_CTP){
 		sprintf(FWVersion, "");
 	}
-	else if (TEST_MODE == TEST_MODE_RA)
-	{	
-		Delay_ms(4000);
-		FW_NG = RESET;
-		if (RA_Program_FW() == ERROR) 
-		{
+	else if (TEST_MODE == TEST_MODE_RA){	
+		if (RA_Program_FW() == ERROR){
 			FW_NG = SET;
-		}	
-		if(FW_NG == SET)
-		{
+			FPGA_Info_Visible(INFO_STR);
+			FPGA_Info_Set((uint8_t *)"FW ERROR");	
+			FPGA_DisPattern(114, 0, 0, 0);
 			LED_ON(RED);
 		}
 		else
@@ -513,8 +684,7 @@ void LCM_Init(void)
 		}
 			
 	}
-	else
-	{		
+	else{
 		if (Program_FW() == ERROR) 
 		{
 			FW_NG = SET;

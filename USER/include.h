@@ -8,13 +8,14 @@
 //#define	SDCARD_MODE
 //#define CMD_MODE
 #define SINGLE_PORT						  //single port enable, if project use dual port, please comment the define
-//#define DIFFER2_DETECT				//FOCAL CTP test, if you don't need it, please comment the define
+//#define DIFFER2_DETECT				//only for FT8716, FOCAL CTP test
 //#define PWM_DETECT						
 //#define TE_DETECT
 //#define CHROMA								// HTC SONY 10.1 chroma control, if you don't need it, please comment the define
 //#define	HOT_PLUG							//FPC connection check, if you don't need it, please comment the define
 //#define	CURRENT_CHECK					//current check, if you don't need it, please comment the define
 //#define	CURRENT_METER					//current measure, if you don't need it, please comment the define
+//#define	AG_TEST							  //FPC connection check, if you don't need it, please comment the define
 
 /*********************************************************************************
  * adjustable parameters
@@ -30,7 +31,8 @@
 #define AUTOSWITCH_T						20			//display pattern auto switch time: (AUTO_TIME*0.1)s
 #define AUTORESET_T							1800		//for RA auto reset period set, unit is 1 second
 #define OTP_TIMES_MAX						2				//maximum number of OTP times
-#define PIC_NUM									0	  //picture loading number, 0 indicate not to load picture
+#define PIC_NUM									0 	  //picture loading number, 0 indicate not to load picture
+#define SD_MODE_PIC             2   
 #define INFO_Y_AXIS							100   		//informatin display start Y point, uint is line
 
 #define SAM_CRST_OFFSET		      143 		//samsung crosstalk offset, uint is pixel, 9mm = ? pixel
@@ -49,6 +51,10 @@
 #define HW_CROSS_BG_R						255			//HW color cross background color
 #define HW_CROSS_BG_G						255
 #define HW_CROSS_BG_B						0
+#define RECT_START_X						0			//for hole align
+#define RECT_START_Y						0
+#define RECT_SIZE_X							0
+#define RECT_SIZE_Y							0
 
 /*********************************************************************************
  * product informations
@@ -66,19 +72,19 @@
 #define	TEST_MODE_OQC1		10	
 
 #define	VERSION_DEBUG	"DEBUG_V1P0"	
-#define	VERSION_ET1		"ET1_V1P0"//ET1_V1P0 DJ_V1P0
+#define	VERSION_ET1		"ET1_V1P0"
 #define	VERSION_ET2		"ET2_V1P0"	  
 //#define	VERSION_ET2		"OQC2_V01"	//OQC2 = ET2 with the same delay
 //#define	VERSION_ET2		"FP_V01"		//FP = ET2 without delay
 #define	VERSION_ET3		"ET3_V1P0"
-#define	VERSION_OTP		"OTP_V1P0"//OTP_V1P0
+#define	VERSION_OTP		"OTP_V1P0"
 #define	VERSION_RA		"RA_V1P0"
 #define	VERSION_ESD		"ESDDJ_V1P0"
 #define	VERSION_OD		"OD_V2P0"			   
 #define	VERSION_DEMO	"DEMO_V1P0"
 #define	VERSION_CTP		"CTP_V1P0"	  
 #define	VERSION_OQC1	"OQC1_V1P0"	
-#define	VERSION_SDmode	"V3P1"
+#define	VERSION_SDmode	"V1P0"
 
 //Begin=====================SPEC should be edited by each projcet=======================
 #define SPEC_MIN_IOVCC	2.0								//mA
@@ -207,6 +213,7 @@
 #define Info_Typical_VCOM			"010E"							//VCOM typical
 //=========================SPEC SETTING(NECESSARY)================================//
 #define SPEC_Lv 							380.00
+#define SPEC_Lv_MAX							600.00
 #define SPEC_x 								0.295
 #define SPEC_y								0.315
 #define SPEC_xy_RANGE 				0.05						//Default TM spec = 0.03
@@ -260,6 +267,8 @@
 #define Info_TarBx            0.149
 #define Info_TarBy            0.054
 #define Info_RangeB           0.5
+#define ID_OTP_FLAG           1
+#define GammaPro_VERSION      "GammaPro_V1P0"
 #define Info_Fliker_Code			"0x1B7 0x259 0x202; 0x1BC 0x202 0x200; 0x1BF 0x2FF 0x220;0x1BF 0x2FB 0x201;0x1BF 0x289 VCOM"//VCOM change code
 #define Info_Gamma_Register		""												//one gamma initial setting 
 //**********************************OTP, GAMMAEXPERT SETTING FINISH*******************************************************//
@@ -312,6 +321,7 @@ extern uint16_t SSDInitCode[];
 extern uint16_t ET1_InitCode[];
 extern uint16_t ET2_InitCode[];
 extern uint16_t RA_InitCode[];
+extern uint16_t GAMMA_InitCode[];
 extern uint8_t OTP_TIMES;
 extern uint16_t vcom_best;
 extern float flicker_best;
@@ -320,10 +330,19 @@ extern float black;
 extern float chroma_x;
 extern float chroma_y;
 extern float chroma_Lv;
+extern float chroma_x_before;
+extern float chroma_y_before;
+extern float chroma_Lv_before;
 extern uint8_t MAIN_PORT;
 extern uint8_t ID1;
 extern uint8_t ID2;
 extern uint8_t ID3;
+extern uint8_t DATE_YY;
+extern uint8_t DATE_MM;
+extern uint8_t DATE_DD;
+extern uint8_t DATE_HR;
+extern uint8_t DATE_MIM;
+extern uint8_t DATE_SEC;
 
 void SendPage(unsigned char pageNum); //add wwp 20180428
 	
@@ -348,6 +367,61 @@ void Date_Set(unsigned char year, unsigned char month, unsigned char day);
 extern char FWVersion[];
 ErrorStatus Program_FW(void);
 ErrorStatus RA_Program_FW(void);
+void TCH_SPI_Config(void);
+void TCH_SPI_UNConfig(void);
+
+/*********************************************************************************
+ * Interface definition for all IC, not to change!
+ */
+#ifndef	TCH_SPI_CSN1_PIN
+
+	#define	TCH_SPI_CSN1_PIN					GPIO_Pin_9		//TEST22: TP_SDA --> SPI_CSN
+	#define	TCH_SPI_CSN1_GPIO_PORT		GPIOB
+
+	#define	TCH_SPI_SCK_PIN						GPIO_Pin_8		//TEST23: TP_SCL --> SPI_SCK
+	#define	TCH_SPI_SCK_GPIO_PORT			GPIOB
+
+	#define	TCH_SPI_MISO_PIN					GPIO_Pin_6		//TEST19: POWER_I2C_SCL --> SPI_MISO
+	#define	TCH_SPI_MISO_GPIO_PORT		GPIOB
+
+	#define	TCH_SPI_MOSI_PIN					GPIO_Pin_5		// TEST18: POWER_I2C_SDA --> SPI_MOSI
+	#define	TCH_SPI_MOSI_GPIO_PORT		GPIOB
+
+	#define	TCH_SPI_CSN2_PIN					GPIO_Pin_7		//TEST20: TP_INT --> SPI_CSN
+	#define	TCH_SPI_CSN2_GPIO_PORT		GPIOB
+
+	#define	TCH_SPI_CSN3_PIN					GPIO_Pin_2		//TEST21: TP_SCL --> SPI_CSN
+	#define	TCH_SPI_CSN3_GPIO_PORT		GPIOC
+
+	#define	TCH_RST_PIN								GPIO_Pin_3		//TEST24: TP_RST --> TP_RST
+	#define	TCH_RST_GPIO_PORT					GPIOC
+	
+#endif
+	
+	//YWB
+	#define	TCH_SPI_CSN1_2_PIN				GPIO_Pin_4	
+	#define	TCH_SPI_CSN1_2_GPIO_PORT	GPIOE
+
+	#define	TCH_SPI_CSN2_2_PIN				GPIO_Pin_5		
+	#define	TCH_SPI_CSN2_2_GPIO_PORT	GPIOE
+
+	#define	TCH_SPI_CSN3_2_PIN				GPIO_Pin_6		
+	#define	TCH_SPI_CSN3_2_GPIO_PORT	GPIOE
+
+	#define	TCH_SPI_CSN1_3_PIN				GPIO_Pin_6	
+	#define	TCH_SPI_CSN1_3_GPIO_PORT	GPIOF
+
+	#define	TCH_SPI_CSN2_3_PIN				GPIO_Pin_7		
+	#define	TCH_SPI_CSN2_3_GPIO_PORT	GPIOF
+
+	#define	TCH_SPI_CSN3_3_PIN				GPIO_Pin_8		
+	#define	TCH_SPI_CSN3_3_GPIO_PORT	GPIOF
+	
+
+/* 
+ * End of interface definition
+*********************************************************************************/
+
 #endif
 
 #endif /* _INCLUDE_H */
