@@ -2,49 +2,48 @@
 /*********************************************************************************
  * Interface definition for all IC, not to change!
  */
-#define    TCH_SPI_CSN1_PIN                GPIO_Pin_9		//TEST22: TP_SDA --> SPI_CSN
-#define    TCH_SPI_CSN1_GPIO_PORT          GPIOB
+#define    TCH_SPI_CSN1_PIN					GPIO_Pin_9		//TEST22: TP_SDA --> SPI_CSN
+#define    TCH_SPI_CSN1_GPIO_PORT		GPIOB
 
-#define    TCH_SPI_SCK_PIN                 GPIO_Pin_8		//TEST23: TP_SCL --> SPI_SCK
-#define    TCH_SPI_SCK_GPIO_PORT           GPIOB
+#define    TCH_SPI_SCK_PIN					GPIO_Pin_8		//TEST23: TP_SCL --> SPI_SCK
+#define    TCH_SPI_SCK_GPIO_PORT		GPIOB
 
-#define    TCH_SPI_MISO_PIN                GPIO_Pin_6		//TEST19: POWER_I2C_SCL --> SPI_MISO
-#define    TCH_SPI_MISO_GPIO_PORT          GPIOB
+#define    TCH_SPI_MISO_PIN					GPIO_Pin_6		//TEST19: POWER_I2C_SCL --> SPI_MISO
+#define    TCH_SPI_MISO_GPIO_PORT		GPIOB
 
-#define    TCH_SPI_MOSI_PIN                GPIO_Pin_5		// TEST18: POWER_I2C_SDA --> SPI_MOSI
-#define    TCH_SPI_MOSI_GPIO_PORT          GPIOB
+#define    TCH_SPI_MOSI_PIN					GPIO_Pin_5		// TEST18: POWER_I2C_SDA --> SPI_MOSI
+#define    TCH_SPI_MOSI_GPIO_PORT		GPIOB
 
-#define    TCH_SPI_CSN2_PIN                GPIO_Pin_7		//TEST20: TP_INT --> SPI_CSN
-#define    TCH_SPI_CSN2_GPIO_PORT          GPIOB
+#define    TCH_SPI_CSN2_PIN					GPIO_Pin_7		//TEST20: TP_INT --> SPI_CSN
+#define    TCH_SPI_CSN2_GPIO_PORT		GPIOB
 
-#define    TCH_SPI_CSN3_PIN                GPIO_Pin_2		//TEST21: TP_SCL --> SPI_CSN
-#define    TCH_SPI_CSN3_GPIO_PORT          GPIOC
+#define    TCH_SPI_CSN3_PIN					GPIO_Pin_2		//TEST21: TP_SCL --> SPI_CSN
+#define    TCH_SPI_CSN3_GPIO_PORT		GPIOC
 
-#define    TCH_RST_PIN				       GPIO_Pin_3		//TEST24: TP_RST --> TP_RST
-#define    TCH_RST_GPIO_PORT		       GPIOC
-
+#define    TCH_RST_PIN							GPIO_Pin_3		//TEST24: TP_RST --> TP_RST
+#define    TCH_RST_GPIO_PORT				GPIOC
 
 //YWB
-#define    TCH_SPI_CSN1_2_PIN                GPIO_Pin_4	
-#define    TCH_SPI_CSN1_2_GPIO_PORT          GPIOE
+#define    TCH_SPI_CSN1_2_PIN				GPIO_Pin_4	
+#define    TCH_SPI_CSN1_2_GPIO_PORT	GPIOE
 
-#define    TCH_SPI_CSN2_2_PIN                GPIO_Pin_5		
-#define    TCH_SPI_CSN2_2_GPIO_PORT          GPIOE
+#define    TCH_SPI_CSN2_2_PIN				GPIO_Pin_5		
+#define    TCH_SPI_CSN2_2_GPIO_PORT	GPIOE
 
-#define    TCH_SPI_CSN3_2_PIN                GPIO_Pin_6		
-#define    TCH_SPI_CSN3_2_GPIO_PORT          GPIOE
+#define    TCH_SPI_CSN3_2_PIN				GPIO_Pin_6		
+#define    TCH_SPI_CSN3_2_GPIO_PORT	GPIOE
 
-#define    TCH_SPI_CSN1_3_PIN                GPIO_Pin_6	
-#define    TCH_SPI_CSN1_3_GPIO_PORT          GPIOF
+#define    TCH_SPI_CSN1_3_PIN				GPIO_Pin_6	
+#define    TCH_SPI_CSN1_3_GPIO_PORT	GPIOF
 
-#define    TCH_SPI_CSN2_3_PIN                GPIO_Pin_7		
-#define    TCH_SPI_CSN2_3_GPIO_PORT          GPIOF
+#define    TCH_SPI_CSN2_3_PIN				GPIO_Pin_7		
+#define    TCH_SPI_CSN2_3_GPIO_PORT	GPIOF
 
-#define    TCH_SPI_CSN3_3_PIN                GPIO_Pin_8		
-#define    TCH_SPI_CSN3_3_GPIO_PORT          GPIOF
+#define    TCH_SPI_CSN3_3_PIN				GPIO_Pin_8		
+#define    TCH_SPI_CSN3_3_GPIO_PORT	GPIOF
 
-uint16_t    TCH_SPI_CSN_PIN=TCH_SPI_CSN1_PIN;
-GPIO_TypeDef * TCH_SPI_CSN_GPIO_PORT=TCH_SPI_CSN1_GPIO_PORT;
+uint16_t				TCH_SPI_CSN_PIN				=	TCH_SPI_CSN1_PIN;
+GPIO_TypeDef *	TCH_SPI_CSN_GPIO_PORT	=	TCH_SPI_CSN1_GPIO_PORT;
 /* 
  * End of interface definition
 *********************************************************************************/
@@ -56,11 +55,9 @@ typedef enum {
 	RESET_STATE_MAX  = 0xAF
 } RST_COMPLETE_STATE;
 
-  
 #define SPI_WRITE_MASK(a)	(a | 0x80)
 #define SPI_READ_MASK(a)	(a & 0x7F)
 #define BLD_CRC_EN(a)	    (a | 0x80)
-
 #define EVENT_BUF_ADDR           0x21C00
 #define EVENT_MAP_RESET_COMPLETE 0x21C60
 #define EVENT_MAP_FWINFO         0x21C78
@@ -128,86 +125,73 @@ uint8_t FWContent[1024];
 uint8_t fwbuf[20];
 char FWVersion[12]= "FW";
 char FW_project[14];
-ErrorStatus SD_FW_OPEN(void)
-{ 
-ErrorStatus ret;
-char file_name[30];
-TCHAR *path = (TCHAR*)"0:\\";
-FATFS filefs;
-FRESULT frs;
-static FILINFO fileInfo;
-uint8_t cntFile = 0;
-uint8_t kk = 0;
-uint8_t jj = 0;
- for ( ; ; )
- {
- if (kk>13) break;
-// FW_project[jj] = PROJECT_NO[jj];
+
+ErrorStatus SD_FW_OPEN(void){ 
+	ErrorStatus ret;
+	char file_name[30];
+	TCHAR *path = (TCHAR*)"0:\\";
+	FATFS filefs;
+	FRESULT frs;
+	static FILINFO fileInfo;
+	uint8_t cntFile = 0;
+	uint8_t kk = 0;
+	uint8_t jj = 0;
+	for ( ; ; ){
+		if (kk>13) break;
 	  FW_project[jj] = FW_NO[jj];
- jj++ ;
- kk++ ;
- }
-printf("\r\n");
-printf("FW_project No is %s\r\n", FW_project);
-sprintf(file_name, "%s*.bin", FW_project);
-frs = f_mount(&filefs, path, 0);
-frs = f_opendir(&filedir,path);
-frs =	f_findfirst(&filedir, &fileInfo, path, (TCHAR*)file_name);		//????????????
- for ( ; ; )
- {
- frs = f_findnext(&filedir, &fileInfo);
- if (frs != FR_OK || fileInfo.fname[0] == 0) break;
- cntFile++ ;
- printf("%s\r\n", fileInfo.fname);
- }
-frs =	f_findfirst(&filedir, &fileInfo, path, (TCHAR*)file_name);		//????????????
- if (cntFile != 0)
- {
-  printf("There are %d FW files match the project %s\r\n", (cntFile+1), FW_project);
-  return ERROR;
- }
-else if (frs == FR_OK)
- {
-		 
- printf("\r\n The FW File name:%s",file_name);
- fileSize=fileInfo.fsize;
- printf("\r\n The FW File size:%dbytes",fileSize);
- cntFile = strlen(FW_project) +strlen(Info_IC_Type) + 4;
- strncpy(&FWVersion[2], &fileInfo.fname[cntFile], 5);
- printf("\r\n The FW File vertion:%s",FWVersion);
- if (f_open(&fwfile, (TCHAR *)fileInfo.fname, FA_OPEN_EXISTING | FA_READ) == FR_OK)// FA_OPEN_EXISTING | FA_READ) == FR_OK)
-  {
-  f_lseek(&fwfile, fileInfo.fsize); //important
-  
-   printf("\r\n The FW File has open!\r\n");
-		ret = SUCCESS;
- 		return ret;		
- 		
-  }
-  else
-  {
-  printf("FW file open fail!\r\n");
+		jj++ ;
+		kk++ ;
+	}
+	printf("\r\n");
+	printf("FW_project No is %s\r\n", FW_project);
+	sprintf(file_name, "%s*.bin", FW_project);
+	frs = f_mount(&filefs, path, 0);
+	frs = f_opendir(&filedir,path);
+	frs =	f_findfirst(&filedir, &fileInfo, path, (TCHAR*)file_name);		//????????????
+	for ( ; ; ){
+		frs = f_findnext(&filedir, &fileInfo);
+		if (frs != FR_OK || fileInfo.fname[0] == 0) break;
+		cntFile++ ;
+		printf("%s\r\n", fileInfo.fname);
+	}
+	frs =	f_findfirst(&filedir, &fileInfo, path, (TCHAR*)file_name);		//????????????
+	if (cntFile != 0){
+		printf("There are %d FW files match the project %s\r\n", (cntFile+1), FW_project);
+		return ERROR;
+	}
+	else if (frs == FR_OK){
+		printf("\r\n The FW File name:%s",file_name);
+		fileSize=fileInfo.fsize;
+		printf("\r\n The FW File size:%dbytes",fileSize);
+		cntFile = strlen(FW_project) +strlen(Info_IC_Type) + 4;
+		strncpy(&FWVersion[2], &fileInfo.fname[cntFile], 5);
+		printf("\r\n The FW File vertion:%s",FWVersion);
+		if (f_open(&fwfile, (TCHAR *)fileInfo.fname, FA_OPEN_EXISTING | FA_READ) == FR_OK){// FA_OPEN_EXISTING | FA_READ) == FR_OK)
+			f_lseek(&fwfile, fileInfo.fsize); //important
+			printf("\r\n The FW File has open!\r\n");
+			ret = SUCCESS;
+			return ret;
+		}
+		else{
+			printf("FW file open fail!\r\n");
+			ret = ERROR;
+			return ret;
+		}
+	}else{
+		printf("There is no FW file match the project %s\r\n", FW_project);
 		ret = ERROR;
-  return ret;
-  }
- }	
- else
- {
- printf("There is no FW file match the project %s\r\n", FW_project);
-	 ret = ERROR;
- return ret;
- }
+		return ret;
+	}
 }
 
-static void SD_FW_Read(uint8_t * pbuf,UINT Len)
-{	
-UINT* br;
-f_read(&fwfile,pbuf,Len,br);
+static void SD_FW_Read(uint8_t * pbuf,UINT Len){
+	UINT* br;
+	f_read(&fwfile,pbuf,Len,br);
 }
-void SD_FW_Close(void)
-{	
-f_close(&fwfile);
-f_closedir(&filedir);
+
+void SD_FW_Close(void){
+	f_close(&fwfile);
+	f_closedir(&filedir);
 }
  
 /*************************************************/
@@ -227,23 +211,26 @@ static void TCH_SPI_Config(void){
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_RST_PIN; //TEST24 TP_RST
 	GPIO_Init(TCH_RST_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_SetBits(TCH_RST_GPIO_PORT, TCH_RST_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN_PIN;
 	GPIO_Init(TCH_SPI_CSN_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT,TCH_SPI_CSN_PIN);	
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_SCK_PIN;
 	GPIO_Init(TCH_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_ResetBits(TCH_SPI_SCK_GPIO_PORT,TCH_SPI_SCK_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_MOSI_PIN;
 	GPIO_Init(TCH_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
 	GPIO_ResetBits(TCH_SPI_MOSI_GPIO_PORT, TCH_SPI_MOSI_PIN);	
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Mode  =  GPIO_Mode_IN;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-	GPIO_InitStructure.GPIO_Pin = TCH_SPI_MISO_PIN ;
+	
+	GPIO_InitStructure.GPIO_Mode  =	GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType =	GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_Pin		= TCH_SPI_MISO_PIN ;
 	GPIO_Init(TCH_SPI_MISO_GPIO_PORT , &GPIO_InitStructure);
 }
 /*********************************************************************************
@@ -260,32 +247,41 @@ void TCH_SPI_UNConfig(void){
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_PIN;
 	GPIO_Init(TCH_SPI_CSN1_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN1_GPIO_PORT, TCH_SPI_CSN1_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_PIN;
 	GPIO_Init(TCH_SPI_CSN2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN2_GPIO_PORT, TCH_SPI_CSN2_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_PIN;
 	GPIO_Init(TCH_SPI_CSN3_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN3_GPIO_PORT, TCH_SPI_CSN3_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_2_PIN;
 	GPIO_Init(TCH_SPI_CSN1_2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN1_2_GPIO_PORT, TCH_SPI_CSN1_2_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_2_PIN;
 	GPIO_Init(TCH_SPI_CSN2_2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN2_2_GPIO_PORT, TCH_SPI_CSN2_2_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_2_PIN;
 	GPIO_Init(TCH_SPI_CSN3_2_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN3_2_GPIO_PORT, TCH_SPI_CSN3_2_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN1_3_PIN;
 	GPIO_Init(TCH_SPI_CSN1_3_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN1_3_GPIO_PORT, TCH_SPI_CSN1_3_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN2_3_PIN;
 	GPIO_Init(TCH_SPI_CSN2_3_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_SetBits(TCH_SPI_CSN2_3_GPIO_PORT, TCH_SPI_CSN2_3_PIN);
+	
 	GPIO_InitStructure.GPIO_Pin = TCH_SPI_CSN3_3_PIN;
 	GPIO_Init(TCH_SPI_CSN3_3_GPIO_PORT, &GPIO_InitStructure);
-	GPIO_SetBits(TCH_SPI_CSN1_GPIO_PORT, TCH_SPI_CSN1_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_GPIO_PORT, TCH_SPI_CSN2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN3_GPIO_PORT, TCH_SPI_CSN3_PIN);
-	GPIO_SetBits(TCH_SPI_CSN1_2_GPIO_PORT, TCH_SPI_CSN1_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_2_GPIO_PORT, TCH_SPI_CSN2_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN3_2_GPIO_PORT, TCH_SPI_CSN3_2_PIN);
-	GPIO_SetBits(TCH_SPI_CSN1_3_GPIO_PORT, TCH_SPI_CSN1_3_PIN);
-	GPIO_SetBits(TCH_SPI_CSN2_3_GPIO_PORT, TCH_SPI_CSN2_3_PIN);
 	GPIO_SetBits(TCH_SPI_CSN3_3_GPIO_PORT, TCH_SPI_CSN3_3_PIN);
 }
  /*********************************************************************************

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Output\STM_DEMO.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Output\STM_DEMO.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 07:56:37 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Tue Dec 18 19:46:36 2018
 <BR><P>
 <H3>Maximum Stack Usage =       2552 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -4626,7 +4626,7 @@ Global Symbols
 <LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
-<P><STRONG><a name="[20d]"></a>nvt_bin_header_parser</STRONG> (Thumb, 1310 bytes, Stack size 48 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[20d]"></a>nvt_bin_header_parser</STRONG> (Thumb, 1412 bytes, Stack size 48 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = nvt_bin_header_parser &rArr; __2sprintf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;byte_to_word
@@ -4638,7 +4638,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
-<P><STRONG><a name="[210]"></a>Write_Partition</STRONG> (Thumb, 354 bytes, Stack size 48 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[210]"></a>Write_Partition</STRONG> (Thumb, 236 bytes, Stack size 48 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = Write_Partition &rArr; SD_FW_Read &rArr; f_read &rArr; get_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;f_lseek
@@ -4671,7 +4671,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[18a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Program_FW
 </UL>
 
-<P><STRONG><a name="[214]"></a>Check_CheckSum</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text), UNUSED)
+<P><STRONG><a name="[214]"></a>Check_CheckSum</STRONG> (Thumb, 512 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[215]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;byte_to_word
 <LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvt_set_page
@@ -4679,7 +4679,7 @@ Global Symbols
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 
-<P><STRONG><a name="[18a]"></a>Program_FW</STRONG> (Thumb, 780 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[18a]"></a>Program_FW</STRONG> (Thumb, 212 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1104<LI>Call Chain = Program_FW &rArr; SD_FW_OPEN &rArr; f_open &rArr; dir_register &rArr; dir_find &rArr; dir_next &rArr; create_chain &rArr; put_fat &rArr; move_window &rArr; sync_window &rArr; disk_write &rArr; SD_WriteMultiBlocks &rArr; SD_DMA_TxConfig &rArr; DMA_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -6532,7 +6532,7 @@ Local Symbols
 <LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Partition
 </UL>
 
-<P><STRONG><a name="[201]"></a>TCH_SPI_Config</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[201]"></a>TCH_SPI_Config</STRONG> (Thumb, 142 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = TCH_SPI_Config &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
@@ -6554,7 +6554,7 @@ Local Symbols
 <LI><a href="#[205]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordWrite
 </UL>
 
-<P><STRONG><a name="[204]"></a>TCH_SPI_ReadByte</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[204]"></a>TCH_SPI_ReadByte</STRONG> (Thumb, 160 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = TCH_SPI_ReadByte &rArr; Delay_ms &rArr; Delay_us
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
@@ -6566,7 +6566,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[206]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TCH_SPI_WordRead
 </UL>
 
-<P><STRONG><a name="[205]"></a>TCH_SPI_WordWrite</STRONG> (Thumb, 522 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[205]"></a>TCH_SPI_WordWrite</STRONG> (Thumb, 602 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = TCH_SPI_WordWrite &rArr; TCH_SPI_WriteByte &rArr; Delay_us
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
@@ -6584,7 +6584,7 @@ Local Symbols
 <LI><a href="#[207]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteSram
 </UL>
 
-<P><STRONG><a name="[206]"></a>TCH_SPI_WordRead</STRONG> (Thumb, 186 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
+<P><STRONG><a name="[206]"></a>TCH_SPI_WordRead</STRONG> (Thumb, 262 bytes, Stack size 24 bytes, nt36672a_fw_update_v1p0.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = TCH_SPI_WordRead &rArr; TCH_SPI_ReadByte &rArr; Delay_ms &rArr; Delay_us
 </UL>
 <BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
@@ -6608,7 +6608,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[210]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Write_Partition
 </UL>
 
-<P><STRONG><a name="[208]"></a>nvt_set_page</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text), UNUSED)
+<P><STRONG><a name="[208]"></a>nvt_set_page</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, nt36672a_fw_update_v1p0.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_ms
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
