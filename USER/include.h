@@ -358,8 +358,6 @@ void Date_Set(unsigned char year, unsigned char month, unsigned char day);
 extern char FWVersion[];
 ErrorStatus Program_FW(void);
 ErrorStatus RA_Program_FW(void);
-void TCH_SPI_Config(void);
-void TCH_SPI_UNConfig(void);
 
 /*********************************************************************************
  * Interface definition for all IC, not to change!
