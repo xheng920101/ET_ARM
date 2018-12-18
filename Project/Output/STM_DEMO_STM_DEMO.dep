@@ -2212,7 +2212,7 @@ I (..\USER\test_ctp.h)(0x5C186933)
 I (..\USER\test_oqc1.h)(0x5C186933)
 I (..\USER\test_SDcard.h)(0x5C186933)
 I (..\USER\TaskPolling.h)(0x5C186933)
-F (..\INI_OTP\NT36672A_FW_Update_V1P0.c)(0x5C18CCFD)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\nt36672a_fw_update_v1p0.o --omf_browse .\output\nt36672a_fw_update_v1p0.crf --depend .\output\nt36672a_fw_update_v1p0.d)
+F (..\INI_OTP\NT36672A_FW_Update_V1P0.c)(0x5C18F46A)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\nt36672a_fw_update_v1p0.o --omf_browse .\output\nt36672a_fw_update_v1p0.crf --depend .\output\nt36672a_fw_update_v1p0.d)
 I (..\USER\include.h)(0x5C186C5E)
 I (..\FWlib\inc\misc.h)(0x5C186933)
 I (..\CMSIS\stm32f2xx.h)(0x5C186933)
@@ -2273,6 +2273,9 @@ I (..\USER\test_ctp.h)(0x5C186933)
 I (..\USER\test_oqc1.h)(0x5C186933)
 I (..\USER\test_SDcard.h)(0x5C186933)
 I (..\USER\TaskPolling.h)(0x5C186933)
+F (..\..\FT8719_FW_Update_V4P0.c)(0x5C18F469)()
+F (..\..\HX83112A_FW_Update_V3P0.c)(0x5C18F296)()
+F (..\..\TD4320_FW_Update_V4P0.c)(0x5C18E66F)()
 F (..\USER\ff9\ff.c)(0x5C186933)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\FWlib\inc -I ..\CMSIS -I ..\USER-ID:\V2P5\ET_ARM\Project\RTE-IC:\Keil_v5\ARM\PACK\Keil\STM32F2xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F2xx\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="521" -DSTM32F207xx -DUSE_STDPERIPH_DRIVER -DTM32F2XX-o .\output\ff.o --omf_browse .\output\ff.crf --depend .\output\ff.d)
 I (..\USER\ff9\ff.h)(0x5C186933)
 I (..\USER\ff9\integer.h)(0x5C186933)
