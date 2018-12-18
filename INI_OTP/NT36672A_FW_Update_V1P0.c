@@ -376,31 +376,57 @@ static void TCH_SPI_ReadByte(uint8_t* dataRdbuf, uint16_t len){//fall edge
 * Return: none
 * Call: Internal
 */
-static void TCH_SPI_WordWrite(uint32_t addr, uint16_t length , uint8_t* write_data)
-{ 
-uint8_t write_buf[4];
-write_buf[0] = 0xFF;  //set index/page/addr command 
-write_buf[1] =(addr >> 15) & 0xFF; //NT36672A addr:23bit
-write_buf[2] =(addr >> 7) & 0xFF;
-GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection 
-Delay_us(100);
-Delay_ms(1);
-TCH_SPI_WriteByte(write_buf,3);
-Delay_us(1);
-GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//CS=1,cancel chip selection
-Delay_ms(1);
+static void TCH_SPI_WordWrite(uint32_t addr, uint16_t length , uint8_t* write_data){
+	uint8_t write_buf[4];
+	write_buf[0] = 0xFF;  //set index/page/addr command 
+	write_buf[1] =(addr >> 15) & 0xFF; //NT36672A addr:23bit
+	write_buf[2] =(addr >> 7) & 0xFF;
+	GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection 
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	TCH_SPI_WriteByte(write_buf,3);
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//CS=1,cancel chip selection
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
 	//---write data to index---
-write_buf[0] = addr&(0x7F);
-write_buf[0] = SPI_WRITE_MASK(write_buf[0]); //bit8 R/W=0/1;
-GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection 
-Delay_us(100);
-	Delay_ms(1);
-TCH_SPI_WriteByte(write_buf,1);
-TCH_SPI_WriteByte(write_data,length);
-Delay_us(1);
-GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//CS=1,cancel chip selection
-Delay_us(1);
-Delay_ms(1);
+	write_buf[0] = addr&(0x7F);
+	write_buf[0] = SPI_WRITE_MASK(write_buf[0]); //bit8 R/W=0/1;
+	GPIO_ResetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//chip selection 
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	TCH_SPI_WriteByte(write_buf,1);
+	TCH_SPI_WriteByte(write_data,length);
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
+	GPIO_SetBits(TCH_SPI_CSN_GPIO_PORT, TCH_SPI_CSN_PIN);//CS=1,cancel chip selection
+	if(TEST_MODE != TEST_MODE_RA){
+		Delay_us(10);
+	}//ET delay
+	else{
+		Delay_ms(1);
+	}//RA delay
 }
 
 /*********************************************************************************
