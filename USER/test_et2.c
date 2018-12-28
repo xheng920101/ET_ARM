@@ -99,7 +99,7 @@
 //			FPGA_DisPattern(0, 0, 0, 255); 	//blue
 //			break;
 //		case (16): 
-//			FPGA_DisPattern(17, 0, 0, 0); 	//�ҽ�bar
+//			FPGA_DisPattern(17, 0, 0, 0); 	//»Ò½×bar
 //			break;
 //		case (17): 
 //			FPGA_DisPattern(7, 127, 0, 0); 	//crosstalk

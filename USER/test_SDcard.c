@@ -93,13 +93,13 @@ void TEST_MODE_Init(void)
 	sprintf(txt_name, "%s*.DAT", PROJECT_NO);
 	frs = f_mount(&txtfs, path, 0);
 	frs = f_opendir(&my_dir,path);
-//	for ( ; ; )	//²éÑ¯µ±Ç°Ä¿Â¼ÏÂµÄËùÓĞÎÄµµ²¢´òÓ¡µ½´®¿Ú
+//	for ( ; ; )	//æŸ¥è¯¢å½“å‰ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡æ¡£å¹¶æ‰“å°åˆ°ä¸²å£
 //	{
 //		frs = f_readdir(&my_dir, &MyInfo);
 //		if (frs != FR_OK || MyInfo.fname[0] == 0)	break;
 //		printf("%s\r\n", MyInfo.fname);
 //	}
-	frs =	f_findfirst(&my_dir, &MyInfo, path, (TCHAR*)txt_name);		//²éÑ¯µÚÒ»¸öÆ¥ÅäÌõ¼şµÄÎÄ¼ş
+	frs =	f_findfirst(&my_dir, &MyInfo, path, (TCHAR*)txt_name);		//æŸ¥è¯¢ç¬¬ä¸€ä¸ªåŒ¹é…æ¡ä»¶çš„æ–‡ä»¶
 	for ( ; ; )
 	{
 		frs = f_findnext(&my_dir, &MyInfo);
@@ -107,7 +107,7 @@ void TEST_MODE_Init(void)
 		cntFile++ ;
 		printf("%s\r\n", MyInfo.fname);
 	}
-	frs =	f_findfirst(&my_dir, &MyInfo, path, (TCHAR*)txt_name);		//²éÑ¯µÚÒ»¸öÆ¥ÅäÌõ¼şµÄÎÄ¼ş
+	frs =	f_findfirst(&my_dir, &MyInfo, path, (TCHAR*)txt_name);		//æŸ¥è¯¢ç¬¬ä¸€ä¸ªåŒ¹é…æ¡ä»¶çš„æ–‡ä»¶
 //	f_closedir(&my_dir);
 	if (cntFile != 0)
 	{
@@ -305,7 +305,7 @@ void Display_Pattern(void)
 		  	{
 			  	while(GetResValue() < 10000)//modify base on test spec.
 			    {
-			  	  FPGA_DisPattern(139, 0, 0, 0);     //¿ª¸Ç
+			  	  FPGA_DisPattern(139, 0, 0, 0);     //å¼€ç›–
 			  	  FPGA_Info_Set((uint8_t *)"OPEN_AG");
 			    }
 				  FPGA_Info_Visible(INFO_NONE);
