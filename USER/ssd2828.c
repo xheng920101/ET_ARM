@@ -112,7 +112,7 @@ void IC_Init(uint16_t * initCode)
 							case (0xC1): POWER_VSP_Set(); break;
 							case (0xD0): POWER_VSN_Reset(); break;
 							case (0xD1): POWER_VSN_Set(); break;
-							case (0xE0): LCD_PWM(0x0FFF); break;
+							case (0xE0): LEDA_NORM(); break;
 							case (0xE1): LCD_PWM(0x0000); break;
 							case (0xF0): POWER_OTP_Reset(); break;
 							case (0xF1): POWER_OTP_Set(); break;
