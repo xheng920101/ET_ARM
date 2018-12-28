@@ -1,0 +1,17 @@
+.\output\misc.o: ..\FWlib\src\misc.c
+.\output\misc.o: ..\FWlib\inc\misc.h
+.\output\misc.o: ..\CMSIS\stm32f2xx.h
+.\output\misc.o: ..\CMSIS\core_cm3.h
+.\output\misc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\output\misc.o: ..\CMSIS\system_stm32f2xx.h
+.\output\misc.o: ..\USER\stm32f2xx_conf.h 
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_adc.h
+.\output\misc.o: ..\CMSIS\stm32f2xx.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_dma.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_flash.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_fsmc.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_gpio.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_rcc.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_sdio.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_tim.h
+.\output\misc.o: ..\FWlib\inc\stm32f2xx_usart.h

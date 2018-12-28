@@ -1,0 +1,10 @@
+.\output\admesy_flicker.o: ..\USER\admesy_flicker.c
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\float.h
+.\output\admesy_flicker.o: ..\USER\admesy_colour.h
+.\output\admesy_flicker.o: ..\USER\_kiss_fft_guts.h
+.\output\admesy_flicker.o: ..\USER\kiss_fft.h
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\output\admesy_flicker.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
