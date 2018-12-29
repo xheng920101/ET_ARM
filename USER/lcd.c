@@ -426,7 +426,7 @@ void LCM_Init(void)
 	/* DDIC initial */
 	LCMPower_ON();
 	Delay_ms(20);		
-	POWER_I2C_SETTING(5.5, 5.5);
+	POWER_I2C_SETTING(6.5, 6.5);
 	Delay_ms(50);		
 //	DriverIC_Reset();	
 //	Delay_ms(20); 	

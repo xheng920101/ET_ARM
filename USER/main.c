@@ -116,10 +116,10 @@ int main(void)
 	printf("\r\nMain loop...\r\n");
 	printf("\r\n===== System on time elapsed: %.3f(second)\r\n", TIMESTAMP);	
   printf("\r\n*#*#SYSTEM OK#*#*\r\n");
-	
-
 	while (1)//主要循环执行程序
 	{	
+//		uint8_t data[]="System on time elapsed";
+//		USART1_TO_I2C(data);
 		Test_Mode_Switch();
 		Connect_Check();
 		USART_EventProcess();

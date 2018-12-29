@@ -27,5 +27,6 @@ FlagStatus I2C_Sequential_Write16(uint16_t Addr, uint8_t* Data, uint8_t Data_Len
 FlagStatus I2C_Sequential_Read(uint8_t Addr, uint8_t* Data, uint8_t Data_Len);
 FlagStatus I2C_Sequential_Read16(uint16_t Addr, uint8_t* Data, uint8_t Data_Len);
 FlagStatus I2C_Check_Addr(uint8_t Addr);
+FlagStatus I2C_Write(uint8_t Data);
 
 #endif /* __I2C_H */

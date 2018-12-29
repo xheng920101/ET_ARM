@@ -27,5 +27,5 @@ void USART1_RXD(void);
 void UART4_RXD(void);
 void USART_EventProcess(void);
 void USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...);
-
+void USART1_TO_I2C(uint8_t *data);
 #endif /* __USART_H */

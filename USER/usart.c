@@ -35,6 +35,14 @@ FlagStatus USART_CMD_FLAG = RESET;
 FlagStatus auto_line = RESET;
 FlagStatus GAMMAEXPERT = RESET;
 
+
+void USART1_TO_I2C(uint8_t *data)
+{
+	POWER_I2C_Config();
+	I2C_ADDR = 0x10;
+	I2C_Sequential_Write(data[0],&data[1],strlen((char *)data));
+	Delay_ms(1000);
+}
 /*********************************************************************************
 * Function: USART1_Config
 * Description: USART1 configure, 115200 8-N-1
