@@ -45,7 +45,7 @@ ErrorStatus get_RGBGray(uint8_t DisNum,	const char *InFile,	uint8_t *PatNum, uin
 			 SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;
 	     SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;	
 			*SetPwm = 0xFFF;
-			LCD_PWM(0xFFF);
+			LCD_PWM(0x0FFF);
 		}
 		
 		if (*FiPa == 'B') 

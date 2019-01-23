@@ -8,7 +8,6 @@ FlagStatus PWM_NG = RESET;
 FlagStatus ID_NG = RESET;
 FlagStatus FW_NG = RESET;
 FlagStatus FPGA_NG = RESET;
-FlagStatus OSC_TRIM_NG = RESET;
 
 uint16_t delay_cnt;
 uint16_t PWM_detect_cnt;
@@ -630,7 +629,7 @@ void AOI_Current_Check_Normal()
 		{
 			printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
 		}
-		else if ((TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP) && (I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX))
+		else if (TEST_MODE != TEST_MODE_ET1 && I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX)
 		{
 			printf("\r\n*#*#CURRENT_NG:LEDA!#*#*\r\n");
 		}
@@ -1270,7 +1269,7 @@ void Test_Mode_Switch(void)
 		FPGA_DisPattern(84, 0, 0, 0);	
 		return;
 	}
-	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET || FPGA_NG == SET || OSC_TRIM_NG == SET)	
+	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET || FPGA_NG == SET)	
 	{		
 		return;
 	}
@@ -1317,7 +1316,7 @@ void Test_Mode_Switch(void)
 		
 		if (!auto_line)
 		{
-			if (Flag_Test_Current && TEST_MODE != TEST_MODE_ET3 && TEST_MODE != TEST_MODE_CTP)
+			if (Flag_Test_Current && TEST_MODE != TEST_MODE_ET3)
 			{
 				Current_Check();	
 			}
@@ -1334,7 +1333,7 @@ void Test_Mode_Switch(void)
 			printf("*#*#6:%d#*#*\r\n", OTP_TIMES);
 		}
 		if (DIS_NUM == TOTAL_DIS_NUM - 2) printf("\r\n*#*#E:TEST END#*#*\r\n");	
-		
+		if (DIS_NUM == 11) printf("\r\n*#*#E:TEST END#*#*\r\n");	//befor the first sleep pattern
 		DIS_NUM_OLD = DIS_NUM;			
 	}
 }

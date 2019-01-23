@@ -12,7 +12,7 @@
 //	TEST_MODE_DEMO
 //	TEST_MODE_CTP
 //	TEST_MODE_DEBUG
-uint8_t TEST_MODE = TEST_MODE_DEBUG;
+uint8_t TEST_MODE = TEST_MODE_ET1;
 
 /*********************************************************************************
 * Function: main
@@ -64,7 +64,7 @@ int main(void)
 		}			
 		Pic_Load_Finish = RESET; //remain the flag for TM ET picture loading		
 		
-		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
+		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET)
 		{	
 			/* picture loading for TM manual line */ 
 			if (PIC_NUM != 0)
@@ -90,8 +90,7 @@ int main(void)
 			else if (TE_NG == SET) FPGA_Info_Set((uint8_t *)"TE NG");	
 			else if (PWM_NG == SET) FPGA_Info_Set((uint8_t *)"PWM NG");	
 			else if (ID_NG == SET)	FPGA_DisPattern(86, 0, 0, 0);
-			else if (FPGA_NG == SET) FPGA_Info_Set((uint8_t *)"FPGA ERROR");
-			else if (OSC_TRIM_NG == SET) FPGA_Info_Set((uint8_t *)"OSC TRIM OFF");				
+			else if (FPGA_NG == SET) FPGA_Info_Set((uint8_t *)"FPGA ERROR");				
 		}
 	} //end of 	if (!auto_line)
 	else

@@ -278,17 +278,11 @@ void CTPProc(void)
 			break;		
 		case (1): 	
 			printf("\r\nCTPState:CTP fail.");
-			DriverIC_Reset();
-			IC_Init(ET1_InitCode);	
-			LCD_LitSquence();
 			FPGA_DisPattern(0, 255, 0, 0);	//red pattern indicate CTP fail
 //		  GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //Feedback to CTP kit
 			break;
 		case (2):
-			printf("\r\nCTPState:CTP pass.");		
-			DriverIC_Reset();
-			IC_Init(ET1_InitCode);	
-			LCD_LitSquence();		
+			printf("\r\nCTPState:CTP pass.");				
 			FPGA_DisPattern(0, 0, 255, 0); //green pattern indicate CTP pass	
 //			GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //Feedback to CTP kit
 			break;
@@ -303,7 +297,9 @@ void CTPProc(void)
 			break;
 		case (4):
 			printf("\r\nCTPState:sleep out.");
-			LCD_LitSquence();	
+			LCD_SleepOut();
+			LCD_HSMode();				
+		  LCD_VideoMode_ON();
 			GPIO_SetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN);
 			Delay_ms(150);	//Feedback to CTP kit	
 			GPIO_ResetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN); 				

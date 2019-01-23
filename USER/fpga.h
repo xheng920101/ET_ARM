@@ -39,6 +39,8 @@
 #define 	ADDR_PIC_LAST_BST_NUM_1   0x25
 #define 	ADDR_PIC_LAST_BST_NUM_2   0x26
 
+#define		ADDR_TEST   		0x28
+
 #define 	ADDR_DIS_MODE       0x30
 #define 	ADDR_DIS_SN         0x31
 #define 	ADDR_PORT_MAP       0x32
@@ -71,11 +73,6 @@
 #define 	ADDR_PAT_BG_R       0x5D
 #define 	ADDR_PAT_BG_G       0x5E
 #define 	ADDR_PAT_BG_B       0x5F
-#define 	ADDR_PAT_RECT_XY		0x45
-#define 	ADDR_PAT_RECT_X			0x46
-#define 	ADDR_PAT_RECT_Y			0x47
-#define 	ADDR_PAT_RECT_S_X		0x48
-#define 	ADDR_PAT_RECT_S_Y		0x49
 
 #define 	ADDR_OTP_TIMES     	0x60
 #define 	ADDR_INFO_SHOW_EN  	0x61	
@@ -176,5 +173,6 @@ void Version_Set(void);
 void Project_Info_Upload(void);
 void FPGA_PORT_MAP(uint8_t port0_map);
 void FPGA_Initial(void);
+void FPGA_Reg_Test(uint8_t ADDR,uint8_t *info,uint8_t *buf_ptr);
 
 #endif /* __FPGA_H */

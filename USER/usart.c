@@ -403,6 +403,7 @@ void USART_EventProcess(void)
 				printf("%.3f$%.3f$%.3f$", Info_TarGx, Info_TarGy, Info_RangeG);
 				printf("%.3f$%.3f$%.3f$", Info_TarBx, Info_TarBy, Info_RangeB);
 				printf("%s$\r\n", Info_Check_gamma);
+				Print_Gamma_Code(GAMMA_InitCode);
 				printf("$\r\n");			
 			  printf("%.3f$%.3f$", Info_SHX1, Info_SHY1);
 				printf("%.3f$%.3f$", Info_SHX2, Info_SHY2);
@@ -410,8 +411,7 @@ void USART_EventProcess(void)
 			  printf("%.3f$%.3f$", Info_SHX4, Info_SHY4);
 				printf("%.2f$", Info_Vlimit);
 				printf("%d$", ID_OTP_FLAG);
-				printf("%s$", GammaPro_VERSION);
-				printf("%.2f##**\r\n", SPEC_Lv_MAX);
+				printf("%s##**\r\n", GammaPro_VERSION);
 				Delay_ms(20);
 				printf("*#*#ACK#*#*\r\n");	
 				break;
@@ -493,13 +493,15 @@ void USART_EventProcess(void)
 				Delay_ms(50);	
 				IC_Init(ET2_InitCode);
 				Delay_ms(50);
-				LCD_PWM(0x0FFF);					
+				LCD_PWM(0x0FFF);	
 				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA09): 	
 				chroma_x_before = (((USART_RData[16] & 0x00FF) << 8) + (USART_RData[17] & 0x00FF)) / 10000.0;
 				chroma_y_before = (((USART_RData[18] & 0x00FF) << 8) + (USART_RData[19] & 0x00FF)) / 10000.0;
 				chroma_Lv_before = (((USART_RData[20] & 0x00FF) << 8) + (USART_RData[21] & 0x00FF)) / 10.0;
+			  printf("chroma_x_before = %.3f; chroma_y_before = %.3f; chroma_Lv_before = %.3f;\r\n", chroma_x_before, chroma_y_before, chroma_Lv_before);
+				PreGamma_Set();
 			  printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA11):         
@@ -626,11 +628,11 @@ void USART_EventProcess(void)
 				break;
 			case (0xAA41):
 				debug1 = TIMESTAMP;
-				if (AutoVcom1() != 0)
+				if (AutoVcom() != 0)
 				{
 					printf("AutoVcom fail! Please check if both sensor and panel are ready.\r\n");
 				}
-				printf("\r\n===== #AA41# AutoVcom1() time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
+				printf("\r\n===== #AA41# AutoVcom() time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
 				break;
 			case (0xAA42):
 				LCD_SleepIn();
@@ -726,7 +728,6 @@ void USART_EventProcess(void)
 			  PWM_NG = RESET;
 				ID_NG = RESET;
 				FW_NG = RESET;
-			  OSC_TRIM_NG = RESET;
 				LED_ON(GREEN);
 				LED_OFF(RED);
 				LED_OFF(BLUE);
@@ -734,21 +735,13 @@ void USART_EventProcess(void)
 				LCM_Init();
 				/*OTP status check */ 
 				FPGA_Info_Visible(INFO_NONE);
-				if ((OTP_TIMES == 0) && (TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1))
+				if ((OTP_TIMES == 0)&&(TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1))
 				{
 					FPGA_DisPattern(84, 0, 0, 0);
 				}
 				else
 				{
 					FPGA_DisPattern(0, 255, 255, 255); 
-				}
-				if (FW_NG == SET || OSC_TRIM_NG == SET || PWM_NG == SET || TE_NG == SET)
-				{
-					printf("\r\n*#*#OTHER NG#*#*\r\n");	
-				}
-				else
-				{
-					printf("\r\n*#*#OTHER OK#*#*\r\n");
 				}
 				printf("\r\n*#*#POWER:ON#*#*\r\n");			
 				printf("\r\n===== #AAA0# power on time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
@@ -760,7 +753,7 @@ void USART_EventProcess(void)
 			case (0xAAA1):	//power off
 				debug1 = TIMESTAMP;
 				LED_ON(RED);
-				if (TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP)
+				if (TEST_MODE != TEST_MODE_ET1)
 				{
 					LEDA_DIM();
 					FPGA_DisPattern(0, 255, 255, 255);	//low current white  							

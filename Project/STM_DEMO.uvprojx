@@ -650,19 +650,14 @@
           <GroupName>INI_OTP</GroupName>
           <Files>
             <File>
-              <FileName>Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FileName>
+              <FileName>Common_OTP code_FT8719_V3P0.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FilePath>
+              <FilePath>..\INI_OTP\Common_OTP code_FT8719_V3P0.c</FilePath>
             </File>
             <File>
-              <FileName>Common_OTPCode_NT36672A_V3.c</FileName>
+              <FileName>Common_Initial code_6.3inch_NMOS_FT8719_V5P0_OPPO_20180815-1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_OTPCode_NT36672A_V3.c</FilePath>
-            </File>
-            <File>
-              <FileName>NT36672A_FW_Update_V1P0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\INI_OTP\NT36672A_FW_Update_V1P0.c</FilePath>
+              <FilePath>..\INI_OTP\Common_Initial code_6.3inch_NMOS_FT8719_V5P0_OPPO_20180815-1.c</FilePath>
             </File>
           </Files>
         </Group>

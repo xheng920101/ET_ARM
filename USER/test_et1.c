@@ -8,19 +8,19 @@
 * Return: none
 * Call: external
 */
- void Test_ET1(void)
- {
- 	TOTAL_DIS_NUM = 5;	
- 	switch (DIS_NUM) 
+void Test_ET1(void)
+{
+	uint8_t *info=(uint8_t *)"F";
+	uint8_t buf_ptr=(uint8_t)'D';
+	TOTAL_DIS_NUM = 5;
+	switch (DIS_NUM) 
 	{
-//		case (0): 
+		case (0):
+			FPGA_Reg_Test(ADDR_TEST,info,&buf_ptr);
+			printf("YOU ARE %c\r\n",buf_ptr);
+			FPGA_Info_Visible(INFO_STR);
+		
 //			FPGA_Info_Visible(INFO_VERSION | INFO_PROJECT_NO);
-//			FPGA_DisPattern(24, 127, 127, 127);	//dotcheck
-//			break;
-//		case (1):	
-//			FPGA_Info_Visible(INFO_NONE);
-		case (0):			
-			FPGA_Info_Visible(INFO_VERSION | INFO_PROJECT_NO);
 			ScanForward();	
  			FPGA_DisPattern(0, 0, 0, 0);	//black
 			Delay_ms(ET_DLY_LOCK * 2700); 

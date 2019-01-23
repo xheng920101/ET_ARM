@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "string.h"
 
-#define ARMVERSION "V2P5"
+#define ARMVERSION "V2P4"
 
 uint16_t hsum;
 uint16_t vsum;
@@ -323,17 +323,6 @@ void FPGA_Display_Set(void)
 	FPGA_SPI3Write((INFO_Y_AXIS & 0x0F00) >> 8);		
 	FPGA_SPI3Write(ADDR_INFO_Y_2);
 	FPGA_SPI3Write(INFO_Y_AXIS & 0x00FF);
-	
-	FPGA_SPI3Write(ADDR_PAT_RECT_XY);
-	FPGA_SPI3Write(((RECT_START_X & 0x0F00) >> 4) + ((RECT_START_Y & 0x0F00) >> 8));
-	FPGA_SPI3Write(ADDR_PAT_RECT_X);
-	FPGA_SPI3Write(RECT_START_X & 0x00FF);
-	FPGA_SPI3Write(ADDR_PAT_RECT_Y);
-	FPGA_SPI3Write(RECT_START_Y & 0x00FF);
-	FPGA_SPI3Write(ADDR_PAT_RECT_S_X);
-	FPGA_SPI3Write(RECT_SIZE_X);
-	FPGA_SPI3Write(ADDR_PAT_RECT_S_Y);
-	FPGA_SPI3Write(RECT_SIZE_Y);
 }
 
 /*********************************************************************************
@@ -362,7 +351,20 @@ void FPGA_Display_Set(void)
 		FPGA_SPI3Write(0);
 		i++;
 	}
- }
+}
+
+void FPGA_Reg_Test(uint8_t ADDR,uint8_t *info,uint8_t *buf_ptr){
+	uint8_t buf;
+	FPGA_SPI3Write(ADDR);
+	FPGA_SPI3Write(*(info));
+	buf = FPGA_SPI3Read();
+	printf("READ:%c\r\n",buf);
+	printf("PONITER_BEFORE:%p\r\n",buf_ptr);
+	printf("PONITER_VALUE_BEFORE:%c\r\n",*buf_ptr);
+	*buf_ptr=buf;
+	printf("PONITER_AFTER:%p\r\n",buf_ptr);
+	printf("PONITER_VALUE_AFTER:%c\r\n",*buf_ptr);
+}
 
 /*********************************************************************************
 * Function: FPGA_Project_Set
@@ -519,14 +521,14 @@ void Project_Info_Upload(void)
 #ifndef SDCARD_MODE
 	printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
 #else
-//	if (!auto_line) 
+	if (!auto_line) 
 	{
 		printf("\r\n*#*#1:%s_ET_ARM%s_%s_%s#*#*\r\n", PROJECT_NO, ARMVERSION, VERSION_SDmode, VERSION_DISPLAY);
 	}
-//	else
-//	{
-//		printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
-//	}
+	else
+	{
+		printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
+	}
 #endif
 }
 
@@ -892,10 +894,8 @@ void FPGA_DisPicture(uint8_t picNum)
 */
  void FPGA_Initial()
  {
-#ifndef SDCARD_MODE
 		char buf[] = PROJECT_NO;
 		char *tmp;
-#endif
 
 		/* FPGA initial */
 		printf("\r\nFPGA_Reset...\r\n");

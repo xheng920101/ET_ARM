@@ -159,54 +159,54 @@ void LCMPower_Init(void)
 	POWER_VSP_Set();
 }
 
+///*********************************************************************************
+//* Function: LCMPower_ON
+//* Description: power on timing, low active
+//* Input: none
+//* Output: none
+//* Return: none
+//* Call: external
+//*/
+//void LCMPower_ON(void)
+//{	
+// 	POWER_IOVCC_Reset();
+//	Delay_ms(10);
+// 	POWER_VCI_Reset();
+//	Delay_ms(1);
+//	POWER_VSP_Reset();	
+//	Delay_ms(1);
+//	POWER_VSN_Reset();
+//	Delay_ms(1);
+//	
+//	printf("\r\nLCMPower_ON...\r\n");
+//}
+
+///*********************************************************************************
+//* Function: LCMPower_OFF
+//* Description: power off timing, low active
+//* Input: none
+//* Output: none
+//* Return: none
+//* Call: external
+//*/
+//void LCMPower_OFF(void)
+//{	
+// 	LCD_PWM(0x0000);
+//	Delay_ms(1); 
+//	POWER_VSN_Set();
+//	Delay_ms(1);
+//	POWER_VSP_Set();
+//	Delay_ms(1);	
+// 	POWER_VCI_Set();
+//	Delay_ms(1);
+//	POWER_IOVCC_Set();
+//	Delay_ms(1);	
+//	
+//	printf("\r\nLCMPower_OFF...\r\n");
+//}
+
 /*********************************************************************************
 * Function: LCMPower_ON
-* Description: power on timing, low active
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void LCMPower_ON(void)
-{	
- 	POWER_IOVCC_Reset();
-	Delay_ms(10);
- 	POWER_VCI_Reset();
-	Delay_ms(1);
-	POWER_VSP_Reset();	
-	Delay_ms(1);
-	POWER_VSN_Reset();
-	Delay_ms(1);
-	
-	printf("\r\nLCMPower_ON...\r\n");
-}
-
-/*********************************************************************************
-* Function: LCMPower_OFF
-* Description: power off timing, low active
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void LCMPower_OFF(void)
-{	
- 	LCD_PWM(0x0000);
-	Delay_ms(1); 
-	POWER_VSN_Set();
-	Delay_ms(1);
-	POWER_VSP_Set();
-	Delay_ms(1);	
- 	POWER_VCI_Set();
-	Delay_ms(1);
-	POWER_IOVCC_Set();
-	Delay_ms(1);	
-	
-	printf("\r\nLCMPower_OFF...\r\n");
-}
-
-/*********************************************************************************
-* Function: LCMPower_ON1
 * Description: power on timing, high active
 * Input: none
 * Output: none

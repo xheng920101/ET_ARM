@@ -206,8 +206,10 @@ void Pattern_check(void)
 //  FPGA_DisPattern(DIS_NUM, 164, 0x77, 0x41);
 //	return;
 	
-	TOTAL_DIS_NUM = PIC_NUM; 
-	FPGA_DisPicture(DIS_NUM);
+//	TOTAL_DIS_NUM = PIC_NUM; 
+//	FPGA_DisPicture(DIS_NUM);
+//	return;
+
  	TOTAL_DIS_NUM = 6;
   switch (DIS_NUM) 
  	{
@@ -252,7 +254,6 @@ void Pattern_check(void)
  			FPGA_DisPattern(0, 0, 0, 0); 
  			break;
  	}
-	return;
 }
 
 void ACD_test(void)
@@ -400,10 +401,10 @@ void pattern24_test(void)
 */
  void Test_DEBUG(void)
  {	
-//	 Visual_check();
+	 Visual_check();
 //	 Power_check();
 //	 ACD_test();
-	 Pattern_check();
+//	 Pattern_check();
 //	 pattern24_test();
  }
 
