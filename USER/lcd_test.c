@@ -592,7 +592,18 @@ void IDCheck(void)
 //		ID_NG = SET;
 //		FPGA_Info_Set((uint8_t *)"TL052VVXS06-00");	//the correct project number of the panel		 			
 //	}
+unsigned char rdBuf[4];
+  ID_NG = RESET;
+	rdBuf[0] = 0x04;
+  MIPI_GEN_Write((PORT0 | PORT1), 0xB0, 1, rdBuf); 
+	Delay_ms(10);
 
+	MIPI_DCS_Read(MAIN_PORT, 0xDA, 1, rdBuf);	 
+	if ((rdBuf[0] & 0x00FF) != 0x0A) 
+	{
+		ID_NG = SET; 
+	}
+	
 	if (ID_NG == SET)	printf("*#*#ID NG#*#*\r\n");
 	else	printf("*#*#ID OK#*#*\r\n");
 }
@@ -1333,8 +1344,8 @@ void Test_Mode_Switch(void)
 			printf("*#*#4:0x%04X#*#*\r\n", vcom_best);
 			printf("*#*#6:%d#*#*\r\n", OTP_TIMES);
 		}
-		if (DIS_NUM == TOTAL_DIS_NUM - 2) printf("\r\n*#*#E:TEST END#*#*\r\n");	
-		
+		if (DIS_NUM == TOTAL_DIS_NUM - 2 ) printf("\r\n*#*#E:TEST END#*#*\r\n");	
+		if (DIS_NUM == 11) printf("\r\n*#*#E:TEST END#*#*\r\n");	
 		DIS_NUM_OLD = DIS_NUM;			
 	}
 }

@@ -403,6 +403,7 @@ void USART_EventProcess(void)
 				printf("%.3f$%.3f$%.3f$", Info_TarGx, Info_TarGy, Info_RangeG);
 				printf("%.3f$%.3f$%.3f$", Info_TarBx, Info_TarBy, Info_RangeB);
 				printf("%s$\r\n", Info_Check_gamma);
+				Print_Gamma_Code(GAMMA_InitCode);
 				printf("$\r\n");			
 			  printf("%.3f$%.3f$", Info_SHX1, Info_SHY1);
 				printf("%.3f$%.3f$", Info_SHX2, Info_SHY2);
@@ -476,7 +477,7 @@ void USART_EventProcess(void)
 				Delay_ms(50);	
 				IC_Init(ET1_InitCode);
 				Delay_ms(50);
-				LCD_PWM(0x0FFF);		
+				LEDA_NORM();	
 				printf("*#*#ACK#*#*\r\n");
 				break;	
 			case (0xAA07):
@@ -493,13 +494,15 @@ void USART_EventProcess(void)
 				Delay_ms(50);	
 				IC_Init(ET2_InitCode);
 				Delay_ms(50);
-				LCD_PWM(0x0FFF);					
+				LEDA_NORM();
 				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA09): 	
 				chroma_x_before = (((USART_RData[16] & 0x00FF) << 8) + (USART_RData[17] & 0x00FF)) / 10000.0;
 				chroma_y_before = (((USART_RData[18] & 0x00FF) << 8) + (USART_RData[19] & 0x00FF)) / 10000.0;
 				chroma_Lv_before = (((USART_RData[20] & 0x00FF) << 8) + (USART_RData[21] & 0x00FF)) / 10.0;
+			  printf("chroma_x_before = %.3f; chroma_y_before = %.3f; chroma_Lv_before = %.3f;\r\n", chroma_x_before, chroma_y_before, chroma_Lv_before);
+				PreGamma_Set();
 			  printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA11):         
@@ -849,7 +852,7 @@ void USART_EventProcess(void)
 				else
 				{
 					FPGA_DisPattern(0, 255, 255, 255);
-					LCD_PWM(0x0FFF);
+					LEDA_NORM();
 				}				
 				break;
 			case (0xAAE1)://work mode config 

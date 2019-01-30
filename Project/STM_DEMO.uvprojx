@@ -650,19 +650,19 @@
           <GroupName>INI_OTP</GroupName>
           <Files>
             <File>
-              <FileName>Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FileName>
+              <FileName>Common _initial code_TD4330_CMOS_RGBBGR V1.1_20180904.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FilePath>
+              <FilePath>..\INI_OTP\Common _initial code_TD4330_CMOS_RGBBGR V1.1_20180904.c</FilePath>
             </File>
             <File>
-              <FileName>Common_OTPCode_NT36672A_V3.c</FileName>
+              <FileName>Common _otp code_TD4330_V1.3_20181122 .c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_OTPCode_NT36672A_V3.c</FilePath>
+              <FilePath>..\INI_OTP\Common _otp code_TD4330_V1.3_20181122 .c</FilePath>
             </File>
             <File>
-              <FileName>NT36672A_FW_Update_V1P0.c</FileName>
+              <FileName>TD4330_FW_Update_V2P0_20181119.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\NT36672A_FW_Update_V1P0.c</FilePath>
+              <FilePath>..\INI_OTP\TD4330_FW_Update_V2P0_20181119.c</FilePath>
             </File>
           </Files>
         </Group>

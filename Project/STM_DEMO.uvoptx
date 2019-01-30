@@ -695,7 +695,7 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>35</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\USER\lcd.c</PathWithFileName>
@@ -898,8 +898,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\INI_OTP\Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</PathWithFileName>
-      <FilenameWithoutPath>Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FilenameWithoutPath>
+      <PathWithFileName>..\INI_OTP\Common _initial code_TD4330_CMOS_RGBBGR V1.1_20180904.c</PathWithFileName>
+      <FilenameWithoutPath>Common _initial code_TD4330_CMOS_RGBBGR V1.1_20180904.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -910,8 +910,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\INI_OTP\Common_OTPCode_NT36672A_V3.c</PathWithFileName>
-      <FilenameWithoutPath>Common_OTPCode_NT36672A_V3.c</FilenameWithoutPath>
+      <PathWithFileName>..\INI_OTP\Common _otp code_TD4330_V1.3_20181122 .c</PathWithFileName>
+      <FilenameWithoutPath>Common _otp code_TD4330_V1.3_20181122 .c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -919,11 +919,11 @@
       <GroupNumber>5</GroupNumber>
       <FileNumber>53</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\INI_OTP\NT36672A_FW_Update_V1P0.c</PathWithFileName>
-      <FilenameWithoutPath>NT36672A_FW_Update_V1P0.c</FilenameWithoutPath>
+      <PathWithFileName>..\INI_OTP\TD4330_FW_Update_V2P0_20181119.c</PathWithFileName>
+      <FilenameWithoutPath>TD4330_FW_Update_V2P0_20181119.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
