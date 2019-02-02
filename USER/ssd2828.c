@@ -112,8 +112,8 @@ void IC_Init(uint16_t * initCode)
 							case (0xC1): POWER_VSP_Set(); break;
 							case (0xD0): POWER_VSN_Reset(); break;
 							case (0xD1): POWER_VSN_Set(); break;
-							case (0xE0): LCD_PWM(0x0FFF); break;
-							case (0xE1): LCD_PWM(0x0000); break;
+							case (0xE0): LCD_PWM(0xFF); break;
+							case (0xE1): LCD_PWM(0x00); break;
 							case (0xF0): POWER_OTP_Reset(); break;
 							case (0xF1): POWER_OTP_Set(); break;
 							default: break;
@@ -423,15 +423,15 @@ void IC_Init(uint16_t * initCode)
 * Input: -port, MIPI port to be read
 * Input: -reg, DDIC register to be read
 * Input: -para, parameter
-* Output: Read reg result
-* Return: uint8_t
+* Output: none
+* Return: none
 * Call: external
 * --------------------------------------------------------------------------------
 *						MIPI(SSD_RR)				  SPI(SSD_RRA)
 *		| Driver IC | <<------------>>  | SSD2828 | <<------------>> | STM32 |
 * --------------------------------------------------------------------------------
 */
-uint8_t ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para)
+void ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para)
 {
  	uint16_t rdDataTemp;
 	uint8_t rdCnt = 0;
@@ -446,20 +446,8 @@ uint8_t ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para)
 		rdDataTemp = ReadSSDReg(port, 0xC6);
 		printf("The register 0xC6 of SSD2828 is: 0x%04X\r\n", rdDataTemp);
 		rdCnt++;
-	} while (((rdDataTemp & 0x0001) ==  0x0000) && (rdCnt < 10));
-	
-	if (rdCnt >= 10)//2017-1-20 when read process over time, return!
-	{
-		rdCnt = 0x00;
-		while (rdCnt < nPara)//if time out clr read data ;2017-2-7 ywq add 
-		{
-			*(para + rdCnt)= 0x00;
-			rdCnt++;
-		}
-		printf("error: data from the MIPI slave is time out!!!\r\n");
-		return ERROR;
-	}
-	
+	} while (((rdDataTemp & 0x0001) ==  0x0000) && (rdCnt < 20));
+
 	rdDataTemp = ReadSSDReg(port, 0xC2);
 	printf("The data lenth of returning from driver IC is: 0x%04X\r\n", rdDataTemp);
 
@@ -541,7 +529,6 @@ uint8_t ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para)
 	printf("\r\n");
 
 #endif	
-	return SUCCESS;
 }
 
 /*********************************************************************************
@@ -648,10 +635,10 @@ void SSD2828_Init(void)
 	MIPI_Reset();
 	printf("\r\nSSD2828 initial...\r\n");
 	IC_Init(SSDInitCode);		
-//	printf("SSD_B1 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB1));
-//	printf("SSD_B2 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB2));
-//	printf("SSD_B3 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB3));
-//	printf("SSD_B4 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB4));
-//	printf("SSD_B5 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB5));
-//	printf("SSD_B6 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB6));
+	Debug_Printf("SSD_B1 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB1));
+	Debug_Printf("SSD_B2 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB2));
+	Debug_Printf("SSD_B3 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB3));
+	Debug_Printf("SSD_B4 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB4));
+	Debug_Printf("SSD_B5 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB5));
+	Debug_Printf("SSD_B6 = 0x%04X\r\n", ReadSSDReg(MAIN_PORT, 0xB6));
 }

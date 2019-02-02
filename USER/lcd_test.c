@@ -1,14 +1,10 @@
 #include "include.h"
 
-FlagStatus Flag_Test_Current = SET;
-FlagStatus current_NG = RESET;
-FlagStatus SDCard_NG = RESET;
-FlagStatus TE_NG = RESET;
-FlagStatus PWM_NG = RESET;
-FlagStatus ID_NG = RESET;
-FlagStatus FW_NG = RESET;
-FlagStatus FPGA_NG = RESET;
-FlagStatus OSC_TRIM_NG = RESET;
+FlagStatus Delay_Enable = RESET;
+uint16_t Delay_Time = 0;	//uint is 10ms
+
+FlagStatus Auto_Switch = RESET;
+uint16_t Auto_Time = AUTO_TIME;
 
 uint16_t delay_cnt;
 uint16_t PWM_detect_cnt;
@@ -21,14 +17,11 @@ float I_VSP;
 float	I_VSN;
 float	I_LEDA;
 
-float SPEC_MAX_IOVCC =	200.0;							//mA
-float SPEC_MAX_VSP =	100.0;								//mA
-float SPEC_MAX_VSN	=	100.0;								//mA
+float SPEC_NORMAL_IOVCC_MAX =	200.0;							//mA
+float SPEC_NORMAL_VSP_MAX =	100.0;								//mA
+float SPEC_NORMAL_VSN_MAX	=	100.0;								//mA
 
-float SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;			  //mA
-float SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;				//mA
-
-/********************************************************************************* 
+/*********************************************************************************
 * Function: TEST_Config_ON
 * Description: test pin configure for power on
 * Input: none
@@ -40,83 +33,111 @@ void TEST_Config_ON(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+//	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+//	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;       
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//	
+//	GPIO_InitStructure.GPIO_Pin = TEST23_PIN; //I_IOVCC
+//	GPIO_Init(TEST23_GPIO_PORT, &GPIO_InitStructure);
+	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;       
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	
-	GPIO_InitStructure.GPIO_Pin = CTP_START_PIN;  //CTP START
-	GPIO_Init(CTP_START_GPIO_PORT, &GPIO_InitStructure);
-#ifdef DIFFER2_DETECT
-	GPIO_SetBits(CTP_START_GPIO_PORT, CTP_START_PIN);
-#else
-	GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN);
-#endif
-	
-	GPIO_InitStructure.GPIO_Pin = CTP_ACK_PIN;  //CTP ACK
-	GPIO_Init(CTP_ACK_GPIO_PORT, &GPIO_InitStructure);
-	GPIO_ResetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN);
-	
-	GPIO_InitStructure.GPIO_Pin = TEST17_PIN; //PWM_OUTPUT
+	GPIO_InitStructure.GPIO_Pin = TEST17_PIN; //FOR_LEDA
 	GPIO_Init(TEST17_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = TEST1_PIN; //CTP START(Focal)
+	GPIO_Init(TEST1_GPIO_PORT, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin = TEST18_PIN; //POWER_I2C_SDA
 	GPIO_Init(TEST18_GPIO_PORT, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin = TEST19_PIN; //POWER_I2C_SCL
 	GPIO_Init(TEST19_GPIO_PORT, &GPIO_InitStructure);
-
+//	
+//	GPIO_InitStructure.GPIO_Pin = TEST20_PIN;
+//	GPIO_Init(TEST20_GPIO_PORT, &GPIO_InitStructure);
+//	
+//	GPIO_InitStructure.GPIO_Pin = TEST21_PIN;
+//	GPIO_Init(TEST21_GPIO_PORT, &GPIO_InitStructure);
+//	
+//	GPIO_InitStructure.GPIO_Pin = TEST22_PIN;
+//	GPIO_Init(TEST22_GPIO_PORT, &GPIO_InitStructure);
+	
 	GPIO_InitStructure.GPIO_Pin = TEST31_PIN; //solenoid valve 
 	GPIO_Init(TEST31_GPIO_PORT, &GPIO_InitStructure);
-	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //new    2017-1-6 12:17:25 change for G6 demond
-//	GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //old  2017-1-6 12:17:25 change for G6 demond
-
-	//2017-3-3 modify for TED current test, pull high will casue leakage
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;	
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;	
-
-	GPIO_InitStructure.GPIO_Pin = TEST20_PIN;	//TP_INT
-	GPIO_Init(TEST20_GPIO_PORT, &GPIO_InitStructure);
-
-	GPIO_InitStructure.GPIO_Pin = TEST21_PIN; //TP_SLC
-	GPIO_Init(TEST21_GPIO_PORT, &GPIO_InitStructure);
 	
-	GPIO_InitStructure.GPIO_Pin = TEST22_PIN; //TP_SDA
-	GPIO_Init(TEST22_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = TEST24_PIN; //CONNECTOR2 / TP_RST
-	GPIO_Init(TEST24_GPIO_PORT, &GPIO_InitStructure);	
-	
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;       
-
-	GPIO_InitStructure.GPIO_Pin = TEST23_PIN; //I_IOVCC
-	GPIO_Init(TEST23_GPIO_PORT, &GPIO_InitStructure);     
+	GPIO_InitStructure.GPIO_Pin = TEST17_PIN; //PWM_OUTPUT
+	GPIO_Init(TEST17_GPIO_PORT, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin = TEST25_PIN; //CONNECTOR1
 	GPIO_Init(TEST25_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;       
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 
-	GPIO_InitStructure.GPIO_Pin = TEST15_PIN; //CTP2
-	GPIO_Init(TEST15_GPIO_PORT, &GPIO_InitStructure);	
+//	GPIO_InitStructure.GPIO_Pin = TEST23_PIN; //I_IOVCC
+//	GPIO_Init(TEST23_GPIO_PORT, &GPIO_InitStructure);
+	
+//	GPIO_InitStructure.GPIO_Pin = TEST21_PIN;
+//	GPIO_Init(TEST21_GPIO_PORT, &GPIO_InitStructure);
+//	
+//	GPIO_InitStructure.GPIO_Pin = TEST22_PIN;
+//	GPIO_Init(TEST22_GPIO_PORT, &GPIO_InitStructure);
+	
+//	GPIO_InitStructure.GPIO_Pin = TEST24_PIN; //CONNECTOR2
+//	GPIO_Init(TEST24_GPIO_PORT, &GPIO_InitStructure);
+	
+
+	
+	GPIO_InitStructure.GPIO_Pin = TEST4_PIN; //RES_TEST
+	GPIO_Init(TEST4_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = TE_PIN; //TE_DETECT
+	GPIO_Init(TE_GPIO_PORT, &GPIO_InitStructure);
+	
+//	GPIO_InitStructure.GPIO_Pin = TEST1_PIN; 
+//	GPIO_Init(TEST1_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = TEST2_PIN; 
+	GPIO_Init(TEST2_GPIO_PORT, &GPIO_InitStructure);
+		
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;       
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+	
+	GPIO_InitStructure.GPIO_Pin = TEST24_PIN; //I_IOVCC
+	GPIO_Init(TEST24_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;       
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+			
+	GPIO_InitStructure.GPIO_Pin = TEST20_PIN;
+	GPIO_Init(TEST20_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = TEST21_PIN;
+	GPIO_Init(TEST21_GPIO_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = TEST22_PIN;
+	GPIO_Init(TEST22_GPIO_PORT, &GPIO_InitStructure);
 	
 #ifdef PWM_DETECT
 	GPIO_InitStructure.GPIO_Pin = TEST17_PIN; //PWM_DETECT
 	GPIO_Init(TEST17_GPIO_PORT, &GPIO_InitStructure);
 #endif
-
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	
-		
-	GPIO_InitStructure.GPIO_Pin = TE_PIN; //TE_DETECT
-	GPIO_Init(TE_GPIO_PORT, &GPIO_InitStructure);
-	
-	GPIO_InitStructure.GPIO_Pin = TEST26_PIN; //AUTO SET
-	GPIO_Init(TEST26_GPIO_PORT, &GPIO_InitStructure);
 }
 
 /*********************************************************************************
 * Function: TEST_Config_CTP
-* Description: test pin (on connector 60pin2panel) configure for CTP test 
+* Description: test pin configure for CTP test
 * Input: none
 * Output: none
 * Return: none
@@ -129,19 +150,13 @@ void TEST_Config_CTP(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;       
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	
-
-	GPIO_InitStructure.GPIO_Pin = TEST15_PIN; //CTP2
-	GPIO_Init(TEST15_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	
-	GPIO_InitStructure.GPIO_Pin = TEST18_PIN; //CTP1
+	GPIO_InitStructure.GPIO_Pin = TEST18_PIN; //Focal p1.4
 	GPIO_Init(TEST18_GPIO_PORT, &GPIO_InitStructure);
 	
-	GPIO_InitStructure.GPIO_Pin = TEST19_PIN; //CTP0
+	GPIO_InitStructure.GPIO_Pin = TEST19_PIN; //Focal p1.4
 	GPIO_Init(TEST19_GPIO_PORT, &GPIO_InitStructure);
-	
-	//2017-3-3 modify for TED current test, pull high will casue leakage
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	
 	GPIO_InitStructure.GPIO_Pin = TEST20_PIN; //TP_INT
 	GPIO_Init(TEST20_GPIO_PORT, &GPIO_InitStructure);
@@ -158,7 +173,7 @@ void TEST_Config_CTP(void)
 
 /*********************************************************************************
 * Function: TEST_Config_OFF
-* Description: test pin (on connector 60pin2panel) configure for power off  
+* Description: test pin configure for power off
 * Input: none
 * Output: none
 * Return: none
@@ -240,6 +255,78 @@ void Current_Check_Config(void)
 } 
 
 /*********************************************************************************
+* Function: Delay_Lock
+* Description: display pattern switch delay lock
+* Input: none
+* Output: none
+* Return: none
+* Call: external
+*/
+void Delay_Lock(void)
+{
+	if (Delay_Enable == SET)
+	{
+		if (Delay_Time > 0)
+		{
+			Delay_Time--;
+		}
+		else
+		{
+			Delay_Enable = RESET;
+		}
+	}
+}
+
+/*********************************************************************************
+* Function: Auto_Switch_Delay
+* Description: display pattern auto switch delay
+* Input: none
+* Output: none
+* Return: none
+* Call: external
+*/
+void Auto_Switch_Delay(void)
+{
+	if (Auto_Switch == RESET)
+	{
+		if (Auto_Time > 0)
+		{
+			Auto_Time--;
+		}
+		else
+		{
+			Auto_Switch = SET;
+		}
+	}
+}
+
+/*********************************************************************************
+* Function: Test_XXX
+* Description: test mode switch
+* Input: none
+* Output: none
+* Return: none
+* Call: external
+*/
+void Test_XXX(void)
+{	
+	switch (TEST_MODE) 
+	{
+		case (TEST_MODE_DEBUG): Test_DEBUG(); break;
+		case (TEST_MODE_ET1): Test_ET1(); break;
+		case (TEST_MODE_ET2): Test_ET2(); break;
+		case (TEST_MODE_ET3): Test_ET3(); break;
+		case (TEST_MODE_OTP): Test_OTP(); break;
+		case (TEST_MODE_RA): Test_RA(); break;
+		case (TEST_MODE_ESD): Test_ESD(); break;
+		case (TEST_MODE_OD): Test_OD(); break;
+		case (TEST_MODE_DEMO): Test_DEMO(); break;
+		case (TEST_MODE_CTP): Test_CTP(); break;
+		default: Test_DEBUG(); break;
+	}
+}
+
+/*********************************************************************************
 * Function: CTP_Start
 * Description: CTP start signal
 * Input: none
@@ -249,24 +336,23 @@ void Current_Check_Config(void)
 */
 void CTP_Start(void)
 {
-//	uint8_t Reg_0A;
-//	
-//	MIPI_DCS_Read(MAIN_PORT, 0x0A, 1, &Reg_0A);
-//	printf("The register 0x0A of DDIC is: 0x%02X\r\n", Reg_0A);
-//	
-//	if (Reg_0A == 0X9C)
-//	{
-//		GPIO_SetBits(CTP_START_GPIO_PORT, CTP_START_PIN);
-//		Delay_ms(850); 
-		GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); 
-		Delay_ms(850); //low active for focal CTP start
-		GPIO_SetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //positive edge for syna/novatek/himax CTP start
+	uint8_t Reg_0A;
+	
+	MIPI_DCS_Read(MAIN_PORT, 0x0A, 1, &Reg_0A);
+	printf("The register 0x0A of DDIC is: 0x%02X\r\n", Reg_0A);
+	
+	if (Reg_0A == 0X9C)
+	{
+		GPIO_ResetBits(TEST1_GPIO_PORT, TEST1_PIN); // Start notice.
+		Delay_ms(150);
+		GPIO_SetBits(TEST1_GPIO_PORT, TEST1_PIN); // End notice.
+		Delay_ms(20);
 		printf("Notice test start has been sent out!\r\n");
-// }
-// else
-// {
-//	 ;
-// }
+ }
+ else
+ {
+	 while (1);
+ }
 }
 
 /*********************************************************************************
@@ -275,10 +361,10 @@ void CTP_Start(void)
 * Input: none
 * Output: none
 * Return: none
-* Call: external 
+* Call: external
 */
-void Differ2_Detect(void)//notice add test15m3 as ctp differ 2 read pin (J19 pin2)2017-2-28 
-{												
+void Differ2_Detect(void)
+{
 #ifdef DIFFER2_DETECT
 	uint8_t P1_4, P1_5, P1_4_d, P1_5_d;
 	uint8_t Detect_Status;
@@ -288,8 +374,8 @@ void Differ2_Detect(void)//notice add test15m3 as ctp differ 2 read pin (J19 pin
 	uint8_t P1_5_n = RESET;
 	uint8_t rbuf_C589[1];
 	uint8_t rbuf_C595[3];
-	
-	while(1)
+
+	while (1)
 	{
 		if (KEY_GetState() == KEY_SLEEP)
 		{
@@ -299,22 +385,20 @@ void Differ2_Detect(void)//notice add test15m3 as ctp differ 2 read pin (J19 pin
 
 		P1_4 = GPIO_ReadInputDataBit(TEST18_GPIO_PORT, TEST18_PIN);
 		P1_5 = GPIO_ReadInputDataBit(TEST19_GPIO_PORT, TEST19_PIN);
-		printf("\r\nP1_4 is: %d\r\n", P1_4);
-		printf("P1_5 is: %d\r\n", P1_5);
-		printf("P1_4_n is: %d\r\n", P1_4_n);
-		printf("P1_5_n is: %d\r\n", P1_5_n);
-		printf("Sensor_Detect!\r\n");
-		if (P1_4 == P1_4_n && P1_5 == P1_5_n)//machine status
-			continue;
-		printf("\r\nChange OK!\r\n");
+		Debug_Printf("\r\nP1_4 is: %d\r\n", P1_4);
+		Debug_Printf("P1_5 is: %d\r\n", P1_5);
+		Debug_Printf("P1_4_n is: %d\r\n", P1_4_n);
+		Debug_Printf("P1_5_n is: %d\r\n", P1_5_n);
+		Debug_Printf("Sensor_Detect!\r\n");
+		if (P1_4 == P1_4_n && P1_5 == P1_5_n) continue;
+		Debug_Printf("\r\nChange OK!\r\n");
 		P1_4_d = P1_4;
 		P1_5_d = P1_5;
 		Delay_ms(10);
 		P1_4 = GPIO_ReadInputDataBit(TEST18_GPIO_PORT, TEST18_PIN);
 		P1_5 = GPIO_ReadInputDataBit(TEST19_GPIO_PORT, TEST19_PIN);
-		if (P1_4 != P1_4_d || P1_5 != P1_5_d) 
-			continue;
-		printf("\r\nJitter OK!\r\n");
+		if (P1_4 != P1_4_d || P1_5 != P1_5_d) continue;
+		Debug_Printf("\r\nJitter OK!\r\n");
 		P1_4_n = P1_4;
 		P1_5_n = P1_5;
 		
@@ -412,7 +496,9 @@ void TE_Detect(void)
 		 FPGA_Info_Set((uint8_t *)"TE NG");	
 		 FPGA_Info_Visible(INFO_STR);
 		 FPGA_DisPattern(114, 0, 0, 0); 
-		 TE_NG = SET;
+		 while (KEY_GetState() == KEY_IDLE);
+	   KEY_SLEEPIN();	
+	   while (1);
 	 }	
 	 printf("TE is normal!\r\n");	 
 	 printf("TE_detect_cnt=%d\r\n", TE_detect_cnt);
@@ -476,7 +562,9 @@ void PWM_Detect(void)
 		 FPGA_Info_Set((uint8_t *)"PWM NG");	
 		 FPGA_Info_Visible(INFO_STR);
 		 FPGA_DisPattern(114, 0, 0, 0); 
-		 PWM_NG = SET;
+		 while (KEY_GetState() == KEY_IDLE);
+	   KEY_SLEEPIN();	
+	   while (1);
 	 }
 #endif
 }
@@ -490,25 +578,14 @@ void PWM_Detect(void)
 * Call: external
 */
 void Connect_Check(void)
-{	
+{
 #ifdef HOT_PLUG
-	if (auto_line) //2017-1-16
+//	if ((GPIO_ReadInputDataBit(TEST24_GPIO_PORT, TEST24_PIN) == SET) || (GPIO_ReadInputDataBit(TEST25_GPIO_PORT, TEST25_PIN) == SET))	 // connector is open
+	if ((GPIO_ReadInputDataBit(TEST25_GPIO_PORT, TEST25_PIN) == SET))	 // connector is open	
 	{
-	//NOP, auto line will not check the connector.
-	}
-  else
-	{
-	//	if ((GPIO_ReadInputDataBit(TEST24_GPIO_PORT, TEST24_PIN) == SET) || (GPIO_ReadInputDataBit(TEST25_GPIO_PORT, TEST25_PIN) == SET))	 // connector is open
-		if ((GPIO_ReadInputDataBit(TEST25_GPIO_PORT, TEST25_PIN) == SET))	 // connector is open	
-		{
-			Delay_ms(20);
-			if (GPIO_ReadInputDataBit(TEST25_GPIO_PORT, TEST25_PIN) == SET)
-			{			
-				LCMPower_OFF();
-				printf("\r\nConnector is open!!!\r\n");
-				while (1);
-			}				
-		}
+		LCMPower_OFF();
+		printf("\r\nConnector is open!\r\n");
+		while(1);
 	}
 #endif
 }
@@ -523,259 +600,14 @@ void Connect_Check(void)
 */
 void Res_Check(void)
 {
-	float resistor = 0;
-	
-	resistor = GetResValue();
-	printf("Detect the AG resistor is %f !", resistor);
-	if (auto_line)
+#ifdef RES_TEST
+	Delay_sec(2);	
+	if (GPIO_ReadInputDataBit(TEST4_GPIO_PORT, TEST4_PIN) == SET)
 	{
-		if (resistor > 10000 || resistor < 0.5)	//modify base on test spec.
-		{
-			
-		}
-		else
-		{
-			
-		}
+		printf("\r\nSilver resistance is abnormal!\r\n");
+		while(1);
 	}
-	else
-	{
-		if (resistor > 10000 || resistor < 0.5)	//modify base on test spec.
-		{
-			FPGA_DisPattern(114, 0, 0, 0);	//display NG
-			while (1)
-			{
-				LED_ON(RED);
-				Delay_ms(200);
-				LED_OFF(RED);
-				Delay_ms(200);
-			}
-		}
-		else
-		{
-			while (KEY_GetState() != KEY_UP);	//display res value before new key in
-			FPGA_DisPattern(139, 0, 0, 0);	//display "开盖"
-			while (GetResValue() < 10000);	//modify base on test spec.
-		}
-	}
-}
-
-/*********************************************************************************
- * 函数名：IDCheck
- * 描述  ：Check panel ID
- * 输入  ：无 
- * 输出  ：无
- * 返回  : 无
- * 调用  ：外部调用
- */
-void IDCheck(void)
-{
-	//change your ID check code according to your project
-//	unsigned char rdBuf[1];	
-//	MIPI_GEN_Read(MAIN_PORT, 0xDA, 1, rdBuf);	 
-//	if ((rdBuf[0] & 0x00FF) == 0xD2) //"TL052VVXS04-00"
-//	{
-//		ID_NG = RESET; //panel ID is in accordance with the current project
-//	}
-//	else if ((rdBuf[0] & 0x00FF) == 0xE1)
-//	{
-//		ID_NG = SET;
-//		FPGA_Info_Set((uint8_t *)"TL052VVXS05-00");	//the correct project number of the panel				
-//	}
-//	else if ((rdBuf[0] & 0x00FF) == 0x96)
-//	{
-//		ID_NG = SET;
-//		FPGA_Info_Set((uint8_t *)"TL052VVXS07-00");	//the correct project number of the panel						
-//	}		
-//	else
-//	{
-//		ID_NG = SET;
-//		FPGA_Info_Set((uint8_t *)"TL052VVXS06-00");	//the correct project number of the panel		 			
-//	}
-
-	if (ID_NG == SET)	printf("*#*#ID NG#*#*\r\n");
-	else	printf("*#*#ID OK#*#*\r\n");
-}
-
-/*********************************************************************************
-* Function: AOI_Current_Check_Normal
-* Description: current check while AOI test
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void AOI_Current_Check_Normal()
-{
-	if (auto_line)
-	{
-#ifdef CURRENT_METER			
-		SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;
-		SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;	
-		
-		Meas_Current_Normal();
-		if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-		{
-			printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		}
-		else if (I_IOVCC < SPEC_MIN_IOVCC || I_IOVCC > SPEC_MAX_IOVCC)
-		{
-			printf("\r\n*#*#CURRENT_NG:IOVCC!#*#*\r\n");
-		}
-		else if (I_VSP < SPEC_MIN_VSP || I_VSP > SPEC_MAX_VSP)
-		{
-			printf("\r\n*#*#CURRENT_NG:VSP!#*#*\r\n");
-		}
-		else if (I_VSN < SPEC_MIN_VSN || I_VSN > SPEC_MAX_VSN)
-		{
-			printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
-		}
-		else if ((TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP) && (I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX))
-		{
-			printf("\r\n*#*#CURRENT_NG:LEDA!#*#*\r\n");
-		}
-		else//current ok
-		{
-			printf("\r\n*#*#CURRENT_OK#*#*\r\n");			
-		}
-		Current_Upload();
 #endif
-	}
-}
-
-/*********************************************************************************
-* Function: AOI_Current_Check_Sleep
-* Description: current check while AOI test
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void AOI_Current_Check_Sleep()
-{
-	if (auto_line)
-	{
-#ifdef CURRENT_METER
-		Meas_Current_Sleep();
-		if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-		{
-			printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		}
-		else if (I_IOVCC > SPEC_SLEEP_IOVCC)
-		{
-			printf("\r\n*#*#CURRENT_NG:IOVCC!#*#*\r\n");
-		}
-		else if (I_VSP > SPEC_SLEEP_VSP)
-		{
-			printf("\r\n*#*#CURRENT_NG:VSP!#*#*\r\n");
-		}
-		else if (I_VSN > SPEC_SLEEP_VSN)
-		{
-			printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
-		}
-		else
-		{
-			printf("\r\n*#*#CURRENT_OK#*#*\r\n");	
-		}
-		DIS_NUM = 255;
-		Current_Upload();
-		DIS_NUM = 0;
-#endif
-	}
-}
-
-/*********************************************************************************
-* Function: AOI_Current_Check
-* Description: current check while AOI test
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void AOI_Current_Check(void)
-{
-#ifdef CURRENT_METER
-	/* normal pattern current check */
-	FPGA_DisPattern(0, 255, 0, 0); //red
-	Meas_Current_Normal();
-{	
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-	{
-		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		return;
-	}	
-	if ((I_IOVCC < SPEC_MIN_IOVCC || I_IOVCC > SPEC_MAX_IOVCC)
-	 || (I_VSP < SPEC_MIN_VSP || I_VSP > SPEC_MAX_VSP)
-	 || (I_VSN < SPEC_MIN_VSN || I_VSN > SPEC_MAX_VSN)
-	 || (I_LEDA < SPEC_MIN_LEDA_NORMAL || I_LEDA > SPEC_MAX_LEDA_NORMAL))
-	{
-		printf("\r\n*#*#CURRENT_NG#*#*\r\n");
-		return;
-	}
-}	
-	FPGA_DisPattern(0, 255, 255, 255); //white
-	Meas_Current_Normal();
-{	
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-	{
-		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		return;
-	}	
-	if ((I_IOVCC < SPEC_MIN_IOVCC || I_IOVCC > SPEC_MAX_IOVCC)
-	 || (I_VSP < SPEC_MIN_VSP || I_VSP > SPEC_MAX_VSP)
-	 || (I_VSN < SPEC_MIN_VSN || I_VSN > SPEC_MAX_VSN)
-	 || (I_LEDA < SPEC_MIN_LEDA_NORMAL || I_LEDA > SPEC_MAX_LEDA_NORMAL))
-	{
-		printf("\r\n*#*#CURRENT_NG#*#*\r\n");
-		return;
-	}
-}	
-	
-	/* low current white check */
-	LEDA_DIM();
-	FPGA_DisPattern(0, 255, 255, 255);  							
-	Delay_ms(100);	//should wait until BLU stable
-	Meas_Current_Normal();	
-{	
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-	{
-		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		return;
-	}	
-	if (I_LEDA < SPEC_MIN_LEDA_DIM || I_LEDA > SPEC_MAX_LEDA_DIM) 
-	{
-		printf("\r\n*#*#CURRENT_NG#*#*\r\n");
-		return;
-	}
-}
-	
-	/* sleep current check */
-	LCD_PWM(0x0000); 	
-	LCD_SleepIn();
-	LCD_VideoMode_OFF();
-	LCD_LPMode();
-	MIPI_SleepMode_ON();	
-	Meas_Current_Sleep();
-{	
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
-	{
-		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
-		return;
-	}	
-	if ((I_IOVCC > SPEC_SLEEP_IOVCC)
-	 || (I_VSP > SPEC_SLEEP_VSP)
-	 || (I_VSN > SPEC_SLEEP_VSN))
-	{
-		printf("\r\n*#*#CURRENT_NG#*#*\r\n");
-		return;
-	}
-	MIPI_SleepMode_OFF();
-	LCD_LitSquence();
-}	
-	
-	/* current check ok */
-	printf("\r\n*#*#CURRENT_OK#*#*\r\n");
-#endif	
 }
 
 /*********************************************************************************
@@ -796,94 +628,107 @@ void Current_Check(void)
 		Delay_ms(1);
 		if ((GPIO_ReadInputDataBit(IIOVCC_GPIO_PORT, IIOVCC_PIN) == RESET))
 		{
-			FPGA_Info_Set((uint8_t *)"DISPLAY");
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(123, 0, 0, 0); 
+				FPGA_DisPattern(123, 0, 0, 0); 
 		}
 		else if ((GPIO_ReadInputDataBit(IVSP_GPIO_PORT, IVSP_PIN) == RESET))
 		{
-			FPGA_Info_Set((uint8_t *)"DISPLAY");
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(99, 0, 0, 0); 
+				FPGA_DisPattern(99, 0, 0, 0); 
 		}
 		else if (GPIO_ReadInputDataBit(IVSN_GPIO_PORT, IVSN_PIN) == RESET)
 		{
-			FPGA_Info_Set((uint8_t *)"DISPLAY");
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(98, 0, 0, 0); 
+				FPGA_DisPattern(98, 0, 0, 0); 
 		}
 		else
 		{
 			return;
 		}
-	}
 	
-	printf("\r\nCurrent is abnormal!\r\n");
-	current_NG = SET;	
+		printf("\r\nCurrent is abnormal!\r\n");
+		while (KEY_GetState() == KEY_IDLE);
+	  KEY_SLEEPIN();
+		while (1);
+	}
 #endif	
 	
 #ifdef CURRENT_METER	
 	///////////////////////////////////////20160628///////////////////////////////
 	Meas_Current_Normal();
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
+	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0)
 	{
-		FPGA_Info_Set((uint8_t *)"METER NO ACK");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(114, 0, 0, 0);
-		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
+//		FPGA_DisPattern(114, 0, 0, 0);
+//		FPGA_Info_Set((uint8_t *)"METER NO ACK");
+//		FPGA_Info_Visible(INFO_STR);
+	Current_Upload();	
+	SPEC_NORMAL_IOVCC_MAX =	200.0;
+	SPEC_NORMAL_VSP_MAX =	100.0;
+	SPEC_NORMAL_VSN_MAX	=	100.0;	
+	printf("\r\nCurrent is abnormal!\r\n");
+	ScanForward();
+	FPGA_DisPicture(2);
+	Delay_ms(4000);
+  KEY_SLEEPIN();
 	}
-	else if (I_IOVCC < SPEC_MIN_IOVCC || I_IOVCC > SPEC_MAX_IOVCC)
+	else if (I_IOVCC < SPEC_NORMAL_IOVCC_MIN || I_IOVCC > SPEC_NORMAL_IOVCC_MAX)
 	{
-		FPGA_Info_Set((uint8_t *)"DISPLAY");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(123, 0, 0, 0); 
-		printf("\r\n*#*#CURRENT_NG:IOVCC!#*#*\r\n");
+//		FPGA_DisPattern(123, 0, 0, 0); 
+	Current_Upload();	
+	SPEC_NORMAL_IOVCC_MAX =	200.0;
+	SPEC_NORMAL_VSP_MAX =	100.0;
+	SPEC_NORMAL_VSN_MAX	=	100.0;	
+	printf("\r\nCurrent is abnormal!\r\n");
+	ScanForward();
+	FPGA_DisPicture(3);
+	Delay_ms(4000);
+  KEY_SLEEPIN();
 	}
-	else if (I_VSP < SPEC_MIN_VSP || I_VSP > SPEC_MAX_VSP)
+	else if (I_VSP < SPEC_NORMAL_VSP_MIN || I_VSP > SPEC_NORMAL_VSP_MAX)
 	{
-		FPGA_Info_Set((uint8_t *)"DISPLAY");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(99, 0, 0, 0); 
-		printf("\r\n*#*#CURRENT_NG:VSP!#*#*\r\n");
+//		FPGA_DisPattern(99, 0, 0, 0); 
+	Current_Upload();	
+	SPEC_NORMAL_IOVCC_MAX =	200.0;
+	SPEC_NORMAL_VSP_MAX =	100.0;
+	SPEC_NORMAL_VSN_MAX	=	100.0;	
+	printf("\r\nCurrent is abnormal!\r\n");
+	ScanForward();
+	FPGA_DisPicture(4);
+	Delay_ms(4000);
+  KEY_SLEEPIN();
 	}
-	else if (I_VSN < SPEC_MIN_VSN || I_VSN > SPEC_MAX_VSN)
-	{ 
-		FPGA_Info_Set((uint8_t *)"DISPLAY");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(98, 0, 0, 0);
-		printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
-	}
-	else if (TEST_MODE != TEST_MODE_ET1 && (I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX))
+	else if (I_VSN < SPEC_NORMAL_VSN_MIN || I_VSN > SPEC_NORMAL_VSN_MAX)
 	{
-		FPGA_Info_Set((uint8_t *)"I_LEDA");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(114, 0, 0, 0);//BL Error ,display NG pattern  
-		printf("\r\n*#*#CURRENT_NG:LEDA!#*#*\r\n");		
+//		FPGA_DisPattern(98, 0, 0, 0); 
+	Current_Upload();	
+	SPEC_NORMAL_IOVCC_MAX =	200.0;
+	SPEC_NORMAL_VSP_MAX =	100.0;
+	SPEC_NORMAL_VSN_MAX	=	100.0;	
+	printf("\r\nCurrent is abnormal!\r\n");
+	ScanForward();
+	FPGA_DisPicture(5);
+	Delay_ms(4000);
+  KEY_SLEEPIN();
 	}
 	else
 	{
-		printf("\r\n*#*#CURRENT_OK#*#*\r\n");
 		Current_Upload();
-		SPEC_MAX_IOVCC =	SPEC_MAX_RED_IOVCC;
-		SPEC_MAX_VSP =	SPEC_MAX_RED_VSP;
-		SPEC_MAX_VSN	=	SPEC_MAX_RED_VSN;		
-		SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;
-		SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;
+		SPEC_NORMAL_IOVCC_MAX =	200.0;
+		SPEC_NORMAL_VSP_MAX =	100.0;
+		SPEC_NORMAL_VSN_MAX	=	100.0;	
 		return;
 	}
 	
-	Current_Upload();	
-	SPEC_MAX_IOVCC =	SPEC_MAX_RED_IOVCC;
-	SPEC_MAX_VSP =	SPEC_MAX_RED_VSP;
-	SPEC_MAX_VSN	=	SPEC_MAX_RED_VSN;
-	SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;
-	SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;	
-	
-	printf("\r\nCurrent is abnormal!\r\n");
-	current_NG = SET;	
+//	Current_Upload();	
+//	SPEC_NORMAL_IOVCC_MAX =	200.0;
+//	SPEC_NORMAL_VSP_MAX =	100.0;
+//	SPEC_NORMAL_VSN_MAX	=	100.0;	
+//	printf("\r\nCurrent is abnormal!\r\n");
+//	while (KEY_GetState() == KEY_IDLE);
+//	KEY_SLEEPIN();
+//	while (1);
+
 	///////////////////////////////////////20160628///////////////////////////////
-#endif
+#endif	 
 }
+
 
 /*********************************************************************************
 * Function: SleepCurrent_Check
@@ -895,17 +740,19 @@ void Current_Check(void)
 */
 void SleepCurrent_Check(void)
 {
-#ifdef CURRENT_METER	
+	FlagStatus current_NG = RESET;
+	FlagStatus current_NG_I = RESET;
+	FlagStatus current_NG_P = RESET;
+	FlagStatus current_NG_N = RESET;
+
 	uint8_t Num_Temp;
-#endif
 	
 #ifdef CURRENT_CHECK	
-	LCD_PWM(0x0000); 
 	LCD_SleepIn();
 	LCD_VideoMode_OFF();
 	LCD_LPMode();
 	MIPI_SleepMode_ON();
-	 
+ 
 	GPIO_ResetBits(EN_uA_GPIO_PORT, EN_uA_PIN); 
 	Delay_ms(50);
 	GPIO_SetBits(EN_0_ohm_GPIO_PORT, EN_0_ohm_PIN);
@@ -918,25 +765,19 @@ void SleepCurrent_Check(void)
 		Delay_ms(1);
 		if ((GPIO_ReadInputDataBit(IIOVCC_GPIO_PORT, IIOVCC_PIN) == RESET))
 		{
-			FPGA_Info_Set((uint8_t *)"SLEEP");
-			FPGA_Info_Visible(INFO_STR);
 			FPGA_DisPattern(123, 0, 0, 0); 
 			current_NG = SET;
 			printf("\r\nIOVCC Sleep Current is abnormal!\r\n");
 		}
 		else if ((GPIO_ReadInputDataBit(IVSP_GPIO_PORT, IVSP_PIN) == RESET))
 		{
-			FPGA_Info_Set((uint8_t *)"SLEEP");
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(99, 0, 0, 0);
-			current_NG = SET;			
+			FPGA_DisPattern(99, 0, 0, 0); 
+			current_NG = SET;
 			printf("\r\nVSP Sleep Current is abnormal!\r\n");
 		}
 		else if (GPIO_ReadInputDataBit(IVSN_GPIO_PORT, IVSN_PIN) == RESET)
 		{
-			FPGA_Info_Set((uint8_t *)"SLEEP");
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(98, 0, 0, 0);
+			FPGA_DisPattern(98, 0, 0, 0); 
 			current_NG = SET;
 			printf("\r\nVSN Sleep Current is abnormal!\r\n");
 		}
@@ -953,49 +794,57 @@ void SleepCurrent_Check(void)
 	GPIO_SetBits(EN_uA_GPIO_PORT, EN_uA_PIN);;
 	Delay_ms(50);
 	MIPI_SleepMode_OFF();
-	LCD_LitSquence();
+	LCD_SleepOut();
+#ifdef CMD_MODE
+	LCD_VideoMode_OFF();
+#else
+	LCD_VideoMode_ON();
+#endif
+	LCD_HSMode();
+	FPGA_INIT_END_INFO(1);
+	LCD_PWM(0x00);
+	
+	if (current_NG == SET)	
+	{		
+		while (KEY_GetState() == KEY_IDLE);
+	  KEY_SLEEPIN();
+		while (1);
+	}
 #endif
 	
 #ifdef CURRENT_METER		
-	///////////////////////////////////////20160628///////////////////////////////
-	LCD_PWM(0x0000); 	
+	///////////////////////////////////////20160628///////////////////////////////	 
 	LCD_SleepIn();
 	LCD_VideoMode_OFF();
 	LCD_LPMode();
 	MIPI_SleepMode_ON();
-	
+	Delay_ms(500);
+
 	Meas_Current_Sleep();
-	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
+	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0)
 	{
-		FPGA_Info_Set((uint8_t *)"METER NO ACK");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(114, 0, 0, 0);
+//		FPGA_DisPattern(114, 0, 0, 0);
+//		FPGA_Info_Set((uint8_t *)"METER NO ACK");
+//		FPGA_Info_Visible(INFO_STR);
 		current_NG = SET;
-		printf("\r\nThere is no ack from current meter, please check connection!\r\n");
 	}
 	else if (I_IOVCC > SPEC_SLEEP_IOVCC)
 	{
-		FPGA_Info_Set((uint8_t *)"SLEEP");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(123, 0, 0, 0); 
-		current_NG = SET;
-		printf("\r\nIOVCC Sleep Current is abnormal!\r\n");
+//		FPGA_DisPattern(123, 0, 0, 0); 
+
+		current_NG_I = SET;
 	}
 	else if (I_VSP > SPEC_SLEEP_VSP)
 	{
-		FPGA_Info_Set((uint8_t *)"SLEEP");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(99, 0, 0, 0); 
-		current_NG = SET;
-		printf("\r\nVSP Sleep Current is abnormal!\r\n");
+//		FPGA_DisPattern(99, 0, 0, 0); 
+
+		current_NG_P = SET;
 	}
 	else if (I_VSN > SPEC_SLEEP_VSN)
 	{
-		FPGA_Info_Set((uint8_t *)"SLEEP");
-		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(98, 0, 0, 0); 
-		current_NG = SET;
-		printf("\r\nVSN Sleep Current is abnormal!\r\n");
+//		FPGA_DisPattern(98, 0, 0, 0); 
+
+		current_NG_N = SET;
 	}
 	else
 	{
@@ -1004,14 +853,77 @@ void SleepCurrent_Check(void)
 		printf("\r\nSleep Current is normal!\r\n");	
 	}
 
-	MIPI_SleepMode_OFF();
-	LCD_LitSquence();
-	
-	printf("\r\nCURRENT SPEC -> sleep: IOVCC = %.2f; VSP = %.2f; VSN = %.2f\r\n", SPEC_SLEEP_IOVCC, SPEC_SLEEP_VSP, SPEC_SLEEP_VSN);
+//	MIPI_SleepMode_OFF();
+//	LCD_SleepOut();
+////#ifdef CMD_MODE
+////	LCD_VideoMode_OFF();
+////#else
+//	LCD_VideoMode_ON();
+////#endif
+//	LCD_HSMode();
+//	FPGA_INIT_END_INFO(1);
+//	LCD_PWM(0xFF);
+		MIPI_Reset();
+		IC_Init(SSDInitCode);	
+		GPIO_SetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+	  Delay_ms(10);
+		DriverIC_Reset();
+		IC_Init(ET1_InitCode);
+		LCD_SleepOut();
+		LCD_VideoMode_ON();
+		LCD_HSMode();
+		FPGA_INIT_END_INFO(1);
+	  LCD_PWM(0xFF);
+		
 	Num_Temp = DIS_NUM;
 	DIS_NUM = 255;
 	Current_Upload();
 	DIS_NUM = Num_Temp;
+	//
+	if (current_NG == SET)	
+	{ 
+		FPGA_DisPicture(2);
+		printf("\r\nThere is no ack from current meter, please check connection!\r\n");
+		Delay_ms(4000);
+    KEY_SLEEPIN();
+
+	}
+	else if (current_NG_I == SET)	
+	{
+    ScanBackward();
+		FPGA_DisPicture(3);
+		printf("\r\nIOVCC Sleep Current is abnormal!\r\n");
+		Delay_ms(4000);
+    KEY_SLEEPIN();
+	}
+	else if (current_NG_P == SET)	
+	{
+		ScanBackward();
+		FPGA_DisPicture(4);
+		printf("\r\nVSP Sleep Current is abnormal!\r\n");
+		Delay_ms(4000);
+    KEY_SLEEPIN();
+	}
+	else if (current_NG_N == SET)	
+	{
+		ScanBackward();
+		FPGA_DisPicture(5);
+		printf("\r\nVSN Sleep Current is abnormal!\r\n");
+		Delay_ms(4000);
+    KEY_SLEEPIN();
+	}
+
+	///////
+
+
+	
+//	if (current_NG == SET)	
+//	{		
+//		while (KEY_GetState() == KEY_IDLE);
+//	  KEY_SLEEPIN();
+//		while (1);
+
+//	}
 	///////////////////////////////////////20160628///////////////////////////////
 #endif
 }
@@ -1029,34 +941,24 @@ void Meas_Current_Normal(void)
 	char *Temp_IOVCC, *Temp_VSP, *Temp_VSN, *Temp_LEDA;
 	uint8_t Try_Count = 2;
 	uint16_t m;
-
+	
 	while(Try_Count--)
 	{
 		Admesy_RDataCnt = 0;
 		Admesy_RDataFlag = RESET;
 		m = 0;
-		USART_printf(MSE_COM, (uint8_t *)"\r\n#NORMAL\r\n");
-		while (Admesy_RDataFlag == RESET && m < 1000)			
+		USART_printf(MSE_COM, (uint8_t *)"#NORMAL\r\n");
+		while (Admesy_RDataFlag == RESET && m < 1000)
 		{
 			Delay_ms(1);
 			m++;
 		}
 		if (Admesy_RData[0] != '#' || m >= 1000)	//recieve data is not '#', witch is not effetive data, try agagin
-		continue;
+			continue;
 		else
 			break;	
 	}
 
-	printf("\r\nTry_Count = %d\r\n", Try_Count);
-	if (Try_Count == 255)
-	{
-		I_IOVCC = 0.0;
-		I_VSP = 0.0;
-		I_VSN = 0.0;
-		I_LEDA = 0.0;
-		return;
-	}
-	
 	Temp_IOVCC = strtok(&Admesy_RData[1] , " ");
 	Temp_VSP = strtok(NULL , " ");
 	Temp_VSN = strtok(NULL , " ");
@@ -1065,6 +967,7 @@ void Meas_Current_Normal(void)
 	I_VSP = atof(Temp_VSP);
 	I_VSN = atof(Temp_VSN);
 	I_LEDA = atof(Temp_LEDA);
+	Debug_Printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -1080,34 +983,26 @@ void Meas_Current_Sleep(void)
 	char *Temp_IOVCC, *Temp_VSP, *Temp_VSN, *Temp_LEDA;
 	uint8_t Try_Count = 2;
 	uint16_t m;
-
+	
 	while(Try_Count--)
 	{
 		Admesy_RDataCnt = 0;
 		Admesy_RDataFlag = RESET;
 		m = 0;
-		USART_printf(MSE_COM, (uint8_t *)"\r\n#SLEEP\r\n");		
-		while (Admesy_RDataFlag == RESET && m < 2000)
+//		USART_printf(MSE_COM, (uint8_t *)"#SLEEP\r\n");
+//		USART_printf(MSE_COM, (uint8_t *)"#SLEEP\r\n");
+			USART_printf(MSE_COM, (uint8_t *)"\r\n#NORMAL\r\n");
+		while (Admesy_RDataFlag == RESET && m < 1000)
 		{
 			Delay_ms(1);
 			m++;
 		}
-		if (Admesy_RData[0] != '#' || m >= 2000)	//recieve data is not '#', witch is not effetive data, try agagin
+		if (Admesy_RData[0] != '#' || m >= 1000)	//recieve data is not '#', witch is not effetive data, try agagin
 			continue;
 		else
 			break;	
 	}
-	
-	printf("Try_Count = %d\r\n", Try_Count);
-	if (Try_Count == 255)
-	{
-		I_IOVCC = 0.0;
-		I_VSP = 0.0;
-		I_VSN = 0.0;
-		I_LEDA = 0.0;
-		return;
-	}
-	
+
 	Temp_IOVCC = strtok(&Admesy_RData[1] , " ");
 	Temp_VSP = strtok(NULL , " ");
 	Temp_VSN = strtok(NULL , " ");
@@ -1116,6 +1011,7 @@ void Meas_Current_Sleep(void)
 	I_VSP = atof(Temp_VSP);
 	I_VSN = atof(Temp_VSN);
 	I_LEDA = atof(Temp_LEDA);
+	Debug_Printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -1132,23 +1028,23 @@ void Current_Upload(void)
 	char Str_Temp[64];
 	char File_Name[32];
 	
-	if (!auto_line)//Auto line will not save current log to SD card
+	sprintf(File_Name, "%s.xls", PROJECT_NO);
+	sprintf(Str_Temp, "%d\t%f\t%f\t%f\t%f\r\n", DIS_NUM, I_IOVCC, I_VSP, I_VSN, I_LEDA);
+	if (SD_Write_Str2File(File_Name, Str_Temp) == ERROR)
 	{
-		sprintf(File_Name, "%s.xls", PROJECT_NO);
-		sprintf(Str_Temp, "%d\t%f\t%f\t%f\t%f\r\n", DIS_NUM, I_IOVCC, I_VSP, I_VSN, I_LEDA);
-		if (SD_Write_Str2File(File_Name, Str_Temp) == ERROR)
-		{
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_Info_Set((uint8_t *)"SDCARD ERROR");
-			FPGA_DisPattern(114, 0, 0, 0);
-			printf("SDCARD is not available, or SDCARD maybe overflow!\r\n");
-			SDCard_NG = SET;
-		}
+		FPGA_DisPattern(114, 0, 0, 0);
+		FPGA_Info_Visible(INFO_STR);
+		FPGA_Info_Set((uint8_t *)"SDCARD ERROR");
+		printf("SDCARD is not available, or SDCARD maybe overflow!\r\n");
+		while (KEY_GetState() == KEY_IDLE);
+	  KEY_SLEEPIN();
+		while (1);
 	}
-	printf("\r\n*#*#2:%d IOVCC %.2f ", DIS_NUM, I_IOVCC);	 
-	printf("VSP %.2f ", I_VSP);
-	printf("VSN %.2f ", I_VSN);
-	printf("LEDA %.2f#*#*\r\n\r\n", I_LEDA);
+	
+	printf("\r\n*#*#2:%d IOVCC %f ", DIS_NUM, I_IOVCC);	 
+	printf("VSP %f ", I_VSP);
+	printf("VSN %f ", I_VSN);
+	printf("LEDA %f#*#*\r\n\r\n", I_LEDA);
 #endif
 }
 
@@ -1162,20 +1058,34 @@ void Current_Upload(void)
 */
 void ESD_Fail_Recover(void)
 {
-	static uint8_t Reg_0A = 0x00;
+	uint8_t Reg_0A;
 	
 	MIPI_DCS_Read(MAIN_PORT, 0x0A, 1, &Reg_0A);
 	printf("The register 0x0A of DDIC is: 0x%02X\r\n", Reg_0A);
+	
 	if (Reg_0A == 0X1C || Reg_0A == 0X9C )//SYNA：DSC R0A == 1C,other 0x9C,normal! else need to HW reset!
 	{
 		printf("\r\nThe display is normal.\r\n");
-		Reg_0A = 0x00;
 	}
 	else
 	{
 		printf("\r\nThe display is abnormal.R0A = %x\r\n",Reg_0A);
 		printf("Recovering...\r\n");
-		LCM_Reset();	
+		
+		MIPI_Reset();
+		IC_Init(SSDInitCode);	
+		DriverIC_Reset();
+		Delay_ms(20);
+		DriverIC_Reset();
+		IC_Init(ET2_InitCode);
+		LCD_SleepOut();
+#ifdef CMD_MODE
+		LCD_VideoMode_OFF();
+#else
+		LCD_VideoMode_ON();
+#endif
+		LCD_HSMode();
+		LCD_PWM(0xFF);		
 	}
 }
 
@@ -1244,97 +1154,4 @@ void ON3sec_OFF3sec(void)
 
 	FPGA_DisPattern(0, 64, 64, 64);
 	while (1);          
-}
-
-/*********************************************************************************
-* Function: Test_Mode_Switch
-* Description: check test mode &switch corresponding test pattern
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void Test_Mode_Switch(void)
-{
-	if (OTP_TIMES == 0 && ( 
-												TEST_MODE == TEST_MODE_ET2 || 
-												TEST_MODE == TEST_MODE_ET3 ||
-//												TEST_MODE == TEST_MODE_RA ||
-												TEST_MODE == TEST_MODE_ESD ||
-												TEST_MODE == TEST_MODE_OD ||
-												TEST_MODE == TEST_MODE_DEMO ||
-												TEST_MODE == TEST_MODE_OQC1
-												)
-			) 
-	{
-		FPGA_DisPattern(84, 0, 0, 0);	
-		return;
-	}
-	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET || FPGA_NG == SET || OSC_TRIM_NG == SET)	
-	{		
-		return;
-	}
-		
-//	if (TEST_MODE == TEST_MODE_RA && Timer4_Sec_Counter >= AUTORESET_T)
-//	{
-//		Timer4_Sec_Counter = 0;
-//		printf("//--------RA auto reset Driver IC!\r\n//");
-//		LCM_Reset();
-//	}
-	
-	if (DIS_NUM != DIS_NUM_OLD)
-	{
-#ifndef SDCARD_MODE
-		switch (TEST_MODE) 
-		{
-			case (TEST_MODE_ET1): Test_ET1(); break;
-			case (TEST_MODE_ET2):	Test_ET2(); break;
-			case (TEST_MODE_ET3):	Test_ET3(); break;
-			case (TEST_MODE_OTP): Test_OTP(); break;
-			case (TEST_MODE_RA): Test_RA(); break;
-			case (TEST_MODE_ESD): Test_ESD(); break;
-			case (TEST_MODE_OD): Test_OD(); break;
-			case (TEST_MODE_DEMO): Test_DEMO(); break;
-			case (TEST_MODE_CTP): Test_CTP(); break;
-			case (TEST_MODE_OQC1): Test_OQC1();	break;	
-			case (TEST_MODE_DEBUG): Test_DEBUG(); break;
-			default: Test_DEBUG(); break;						
-		}
-#else	
-		if (!auto_line) 
-		{
-			if (SD_MODE_ERROR == SET)
-			{
-				FPGA_DisPattern (114, 0, 0, 0);
-				FPGA_Info_Visible(INFO_STR);
-			}
-			else		
-			{
-				Display_Pattern();
-			}
-		}
-#endif
-		
-		if (!auto_line)
-		{
-			if (Flag_Test_Current && TEST_MODE != TEST_MODE_ET3 && TEST_MODE != TEST_MODE_CTP)
-			{
-				Current_Check();	
-			}
-		}
-		Flag_Test_Current = SET;
-		
-		//for G6 ET OIC
-		if (DIS_NUM == 2 || DIS_NUM == 3)
-		{
-			Project_Info_Upload();
-			if (OTP_TIMES == 0)	printf("*#*#3:OTP NO#*#*\r\n"); 
-			else printf("*#*#3:OTP YES#*#*\r\n");
-			printf("*#*#4:0x%04X#*#*\r\n", vcom_best);
-			printf("*#*#6:%d#*#*\r\n", OTP_TIMES);
-		}
-		if (DIS_NUM == TOTAL_DIS_NUM - 2) printf("\r\n*#*#E:TEST END#*#*\r\n");	
-		
-		DIS_NUM_OLD = DIS_NUM;			
-	}
 }

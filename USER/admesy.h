@@ -13,10 +13,6 @@ extern float Flicker;
 extern float color_x;
 extern float color_y;
 extern float Lv;
-
-extern float color_u;
-extern float	color_v;
-
 extern int CCT;
 
 /*********************************************************************************
@@ -28,6 +24,5 @@ void Meas_XYZ(void);
 void Meas_CCT(void);
 void Meas_Flicker(void);
 void Meas_JEITA(void);
-void Meas_Yuv(void);
 
 #endif /* __ADMESY_H */

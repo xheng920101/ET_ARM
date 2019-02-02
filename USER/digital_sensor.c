@@ -3,7 +3,7 @@
 #define DSENSOR_I2C_ADDR1	0x42    // AD7994 bus address(7bit): 010 0001
 #define DSENSOR_I2C_ADDR2	0x46    // AD7994 bus address(7bit): 010 0011
 
-#define SAMPLE_RATE	500		//samples  800
+#define SAMPLE_RATE	800		//samples
 
 uint8_t DSENSOR_I2C_ADDR = DSENSOR_I2C_ADDR1;
 

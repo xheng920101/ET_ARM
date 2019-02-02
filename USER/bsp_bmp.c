@@ -26,12 +26,12 @@ FRESULT bmpres;
 */
 static void showBmpHead(BITMAPFILEHEADER* pBmpHead)
 {
-//	printf("位图文件头:\r\n");
-//	printf("文件大小:%ld\r\n", (*pBmpHead).bfSize);
-//	printf("保留字:%ld\r\n", (*pBmpHead).bfReserved1);
-//	printf("保留字:%ld\r\n", (*pBmpHead).bfReserved2);
-//	printf("实际位图数据的偏移字节数:%ld\r\n", (*pBmpHead).bfOffBits);
-//	printf("\r\n");	
+	Debug_Printf("位图文件头:\r\n");
+	Debug_Printf("文件大小:%ld\r\n", (*pBmpHead).bfSize);
+	Debug_Printf("保留字:%ld\r\n", (*pBmpHead).bfReserved1);
+	Debug_Printf("保留字:%ld\r\n", (*pBmpHead).bfReserved2);
+	Debug_Printf("实际位图数据的偏移字节数:%ld\r\n", (*pBmpHead).bfOffBits);
+	Debug_Printf("\r\n");	
 }
 
 /*********************************************************************************
@@ -44,19 +44,19 @@ static void showBmpHead(BITMAPFILEHEADER* pBmpHead)
 */
 static void showBmpInforHead(tagBITMAPINFOHEADER* pBmpInforHead)
 {
-//	printf("位图信息头:\r\n");
-//	printf("结构体的长度:%d\r\n", (*pBmpInforHead).biSize);
-//	printf("位图宽:%d\r\n", (*pBmpInforHead).biWidth);
-//	printf("位图高:%d\r\n", (*pBmpInforHead).biHeight);
-//	printf("平面数:biPlanes = %d\r\n", (*pBmpInforHead).biPlanes);
-//	printf("采用颜色位数:biBitCount = %d\r\n", (*pBmpInforHead).biBitCount);
-//	printf("压缩方式:%d\r\n", (*pBmpInforHead).biCompression);
-//	printf("实际位图数据占用的字节数:biSizeImage = %d\r\n", (*pBmpInforHead).biSizeImage);
-//	printf("X方向分辨率:%d\r\n", (*pBmpInforHead).biXPelsPerMeter);
-//	printf("Y方向分辨率:%d\r\n", (*pBmpInforHead).biYPelsPerMeter);
-//	printf("使用的颜色数:%d\r\n", (*pBmpInforHead).biClrUsed);
-//	printf("重要颜色数:%d\r\n", (*pBmpInforHead).biClrImportant);
-//	printf("\r\n");
+	Debug_Printf("位图信息头:\r\n");
+	Debug_Printf("结构体的长度:%d\r\n", (*pBmpInforHead).biSize);
+	Debug_Printf("位图宽:%d\r\n", (*pBmpInforHead).biWidth);
+	Debug_Printf("位图高:%d\r\n", (*pBmpInforHead).biHeight);
+	Debug_Printf("平面数:biPlanes = %d\r\n", (*pBmpInforHead).biPlanes);
+	Debug_Printf("采用颜色位数:biBitCount = %d\r\n", (*pBmpInforHead).biBitCount);
+	Debug_Printf("压缩方式:%d\r\n", (*pBmpInforHead).biCompression);
+	Debug_Printf("实际位图数据占用的字节数:biSizeImage = %d\r\n", (*pBmpInforHead).biSizeImage);
+	Debug_Printf("X方向分辨率:%d\r\n", (*pBmpInforHead).biXPelsPerMeter);
+	Debug_Printf("Y方向分辨率:%d\r\n", (*pBmpInforHead).biYPelsPerMeter);
+	Debug_Printf("使用的颜色数:%d\r\n", (*pBmpInforHead).biClrUsed);
+	Debug_Printf("重要颜色数:%d\r\n", (*pBmpInforHead).biClrImportant);
+	Debug_Printf("\r\n");
 }
 
 /*********************************************************************************
@@ -78,29 +78,29 @@ ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name
 	LONG width, height;
 	uint16_t num;
 	unsigned int read_num;
+	uint8_t i;
 	
 	//----------------------- open the file and check its type -----------------------
 	sprintf((char*)tmp_name, "0:%s", Pic_Name);
-//	f_mount(0, &bmpfs[0]);
-	f_mount(&bmpfs[0], (TCHAR*)"0:", 0);
-	printf("File mount ok \r\n");  
-	printf("%s\r\n", tmp_name);  
+	f_mount(0, &bmpfs[0]);
+	Debug_Printf("File mount ok \r\n");  
+	Debug_Printf("%s\r\n", tmp_name);  
 	bmpres = f_open(&bmpfsrc, (char *)tmp_name, FA_OPEN_EXISTING | FA_READ);	
 
 	if (bmpres == FR_OK)
 	{
-		printf("Open file success\r\n");
+		Debug_Printf("Open file success\r\n");
 
 		f_read(&bmpfsrc, &fileType, sizeof(WORD), &read_num); //read file head
 		if (fileType != 0x4d42)	//BMP file type: "BM"
 		{
-			printf("Picture is not a .bmp file!\r\n");
+			Debug_Printf("Picture is not a .bmp file!\r\n");
 			f_close(&bmpfsrc);
 			return ERROR;
 		}
 		else
 		{
-			printf("Picture is a .bmp file!\r\n");	
+			Debug_Printf("Picture is a .bmp file!\r\n");	
 		}        
 
 		f_read(&bmpfsrc, &bitHead, sizeof(tagBITMAPFILEHEADER), &read_num);        
@@ -113,13 +113,13 @@ ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name
 	} 
 	else
 	{
-		printf("File open fail!\r\n");
+		Debug_Printf("File open fail!\r\n");
 		return ERROR;
 	}
 	
 	if (bitInfoHead.biBitCount < 24) //24 bit true color picture
 	{
-		printf("Picture is not 24 bit true color.\r\n");
+		Debug_Printf("Picture is not 24 bit true color.\r\n");
 		f_close(&bmpfsrc);
 		return ERROR;
 	}
@@ -142,7 +142,7 @@ ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name
 
 	//----------------------- load data -----------------------	
 	
-	for (; height > 0; height--)
+	for (i = 0; height > 0; height--)
 	{
 		num = bitInfoHead.biWidth * 3;
 		f_lseek(&bmpfsrc, (height - 1) * num + 0x36);
@@ -170,29 +170,20 @@ ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name
 	//1 FHD picture size: 1080 * 1920 * 3 = 6220800 bytes
 	//SDRAM: data bus width = 16 bits = 2 bytes
 	//1 full page burst: 512 * 2 bytes = 1024 bytes
-	//We use 3 SDRAM to store pictures, so 1 burst contains:   bytes
+	//We use 2 SDRAM to store pictures, so 1 burst contains:   bytes
 	//6220800 / 2048 = 3037.5
 	//For each SDRAM, need 3037 and a half bursts. 
 	//Need to transfer: 256(half burst) * 2 (bytes) * 2(SDRAM chips) = 1024 bytes
 	//****************************************************************************
 #ifdef SINGLE_PORT	
-	num = (3072 - (Bmp_Width * Bmp_Hight * 3 % 3072)) / 2;
-	if (num == 1536) //刚好整数个burst
-	{
-		num = 0;
-	}
+	num = (Bmp_Width * Bmp_Hight * 3 % 2048) / 2;
 #else
-	num = (3072 - (Bmp_Width * 2 * Bmp_Hight * 3 % 3072)) / 2;
-	if (num == 1536) //刚好整数个burst
-	{
-		num = 0;
-	}
+	num = (Bmp_Width * Bmp_Hight * 2 % 1024) / 2;
 #endif
-
 	for (; num > 0; num--)
 	{
 			FPGA_FSMC_WR_Data(0x0000);
-	}
+	}	
 	
 	f_close(&bmpfsrc); 
 	return SUCCESS;   
@@ -213,36 +204,26 @@ ErrorStatus PIC_Load_BMP(uint8_t picNum)
 	uint8_t picName[6];
 	uint8_t picSize;
 	uint16_t sdramBurstNum;
-	uint16_t sdramlastBurstUse;
-	
-	FPGA_Info_Set((uint8_t *)"PIC LOADING...");
+
+	FPGA_Info_Set((uint8_t *)"OQC_V2P0 XS05");
 	FPGA_Info_Visible(INFO_STR);
-	FPGA_DisPattern(0, 0, 0, 0);
 
 #ifdef SINGLE_PORT	
-	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
+	{
+		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 2 + 0.99);  //向上取整
+		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 + 0.99);	  //向上取整		
 	}
 #else
 	{
 		sdramBurstNum = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
 		picSize = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3) % 3072 / 6;
 	} 
 #endif
-	if (sdramlastBurstUse == 0) //刚好整数个burst
-	{
-		sdramlastBurstUse = 512;
-	}
 	//para1: send enable
 	//para2: how many pictures to be sent		 
-	//para3: how many SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
+	//para3: how mayn SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
 	//para4: SDRAM size reserved for 1 picture: (HSUM * VSUM * 3) / 1024 / 1024 / SDRAM_NUM	 (uint: MB)
-	//para5:  how many address to use in last SDRAM burst for 1 picture : (2048 - HSUM * VSUM * 3 % 2048) / 4 (4 for single port)
-	FPGA_PIC_WR_CFG(1, picNum, sdramBurstNum, picSize, sdramlastBurstUse);
-	printf("%d\t%d\t%d\t%d\r\n", picNum, sdramBurstNum, picSize, sdramlastBurstUse);
+	FPGA_PIC_WR_CFG(1, picNum, sdramBurstNum, picSize);
 	
 	for (i = 0; i < picNum; i++)
 	{
@@ -250,17 +231,11 @@ ErrorStatus PIC_Load_BMP(uint8_t picNum)
 		FPGA_Info_Visible(INFO_STR | INFO_OTPTIMES);
 		sprintf((char*)picName, "%d%s", i, ".bmp");
 		printf("%s\r\n", picName);
-#ifdef CMD_MODE
-		FPGA_DisPattern(0, i, 1, 1); //display information
-#endif
 		if (Lcd_Load_bmp(FPGA_porchPara.HACT, FPGA_porchPara.VACT, picName) == ERROR)
 		{
 			OTP_TIMES = otp_times;
 			FPGA_Info_Set((uint8_t *)"LOAD PIC FAIL.");
 			FPGA_Info_Visible(INFO_STR);
-#ifdef CMD_MODE
-		FPGA_DisPattern(0, picNum, 0, 0); //display information
-#endif
 			return ERROR;
 		}
 	}
@@ -283,31 +258,23 @@ ErrorStatus PIC_Load_BMP_ET(uint8_t * picName)
 {
 	uint8_t picSize;
 	uint16_t sdramBurstNum;
-	uint16_t sdramlastBurstUse;
 
 #ifdef SINGLE_PORT	
-	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
+	{
+		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 2 + 0.99);  //向上取整
+		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 + 0.99);	  //向上取整		
 	}
 #else
 	{
 		sdramBurstNum = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
 		picSize = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3) % 3072 / 6;
 	} 
 #endif
-	if (sdramlastBurstUse == 0) //刚好整数个burst
-	{
-		sdramlastBurstUse = 512;
-	}
 	//para1: send enable
 	//para2: how many pictures to be sent		 
 	//para3: how mayn SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
 	//para4: SDRAM size reserved for 1 picture: (HSUM * VSUM * 3) / 1024 / 1024 / SDRAM_NUM	 (uint: MB)
-	//para5:  how many address to use in last SDRAM burst for 1 picture : (2048 - HSUM * VSUM * 3 % 2048) / 4 (4 for single port)
-	FPGA_PIC_WR_CFG(1, 1, sdramBurstNum, picSize, sdramlastBurstUse);
+	FPGA_PIC_WR_CFG(1, 1, sdramBurstNum, picSize);
 	if (Lcd_Load_bmp(FPGA_porchPara.HACT, FPGA_porchPara.VACT, picName) == ERROR)
 	{
 		Pic_Load = ERROR;
@@ -316,46 +283,7 @@ ErrorStatus PIC_Load_BMP_ET(uint8_t * picName)
 //		FPGA_Info_Visible(INFO_STR);
 		return ERROR;
 	}
-	Pic_Load = SUCCESS;
 	Pic_Load_Finish = SET;
-	return SUCCESS;
-}
-
-ErrorStatus PIC_Load_BMP_DPT(uint8_t * picName)
-{
-	uint8_t picSize;
-	uint16_t sdramBurstNum;
-	uint16_t sdramlastBurstUse;
-
-#ifdef SINGLE_PORT	
-	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
-	}
-#else
-	{
-		sdramBurstNum = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3) % 3072 / 6;
-	} 
-#endif
-	if (sdramlastBurstUse == 0) //刚好整数个burst
-	{
-		sdramlastBurstUse = 512;
-	}
-	//para1: send enable
-	//para2: how many pictures to be sent		 
-	//para3: how mayn SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
-	//para4: SDRAM size reserved for 1 picture: (HSUM * VSUM * 3) / 1024 / 1024 / SDRAM_NUM	 (uint: MB)
-	//para5:  how many address to use in last SDRAM burst for 1 picture : (2048 - HSUM * VSUM * 3 % 2048) / 4 (4 for single port)
-	FPGA_PIC_WR_CFG(1, 1, sdramBurstNum, picSize, sdramlastBurstUse);
-	if (Lcd_Load_bmp(FPGA_porchPara.HACT, FPGA_porchPara.VACT, picName) == ERROR)
-	{
-//		FPGA_Info_Set((uint8_t *)"LOAD PIC FAIL.");
-//		FPGA_Info_Visible(INFO_STR);
-		return ERROR;
-	}
 	return SUCCESS;
 }
 
@@ -373,8 +301,7 @@ ErrorStatus SD_Write_Str2File(char *File_Name, char *Write_String)
 	char File_Path[32];
 	
 	sprintf(File_Path, "0:%s", File_Name);
-//	f_mount(0, &bmpfs[0]);
-	f_mount(&bmpfs[0], (TCHAR*)"0:", 0);
+	f_mount(0, &bmpfs[0]);
 	bmpres = f_open(&bmpfsrc, File_Path, FA_OPEN_ALWAYS|FA_WRITE);
 	if (bmpres == FR_OK)
 	{
@@ -383,11 +310,11 @@ ErrorStatus SD_Write_Str2File(char *File_Name, char *Write_String)
 	}
 	else
 	{
-		printf("\r\n f_open(%s) Failed !\n", File_Path); 
+		Debug_Printf("\r\n f_open(%s) Failed !\n", File_Path); 
 		return ERROR;
 	}
 	
 	f_close(&bmpfsrc);  
-//	printf("f_close file %s\r\n", File_Path);
+	Debug_Printf("f_close file %s\r\n", File_Path);
 	return SUCCESS;	
 }

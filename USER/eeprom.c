@@ -196,10 +196,6 @@ void Get_Test_Mode(void)
 //			Init_Code = ET2_InitCode;
 //			printf("\r\nTest mode is DEMO\r\n");
 //			break;
-//		case (TEST_MODE_FTP):
-//			Init_Code = ET2_InitCode;
-//			printf("\r\nTest mode is FTP\r\n");
-//			break;
 //		default:
 //			Test_Mode = TEST_MODE_DEBUG;
 //			Init_Code = ET1_InitCode;
@@ -265,7 +261,7 @@ void Disp_Test_Mode(void)
 		case (TEST_MODE_DEMO):
 			FPGA_Info_Set((uint8_t *)"DEMO");
 			printf("Test mode is DEMO\r\n");
-			break;	
+			break;
 		default:
 			FPGA_Info_Set((uint8_t *)"DEBUG");
 		  printf("Test mode is DEBUG\r\n");

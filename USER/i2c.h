@@ -12,7 +12,7 @@ extern uint8_t I2C_ADDR;
 
 void __INLINE I2C_Delay(void)
 {
-	Delay_us(8);//5
+	Delay_us(5);
 }
  
 /*********************************************************************************
@@ -20,8 +20,8 @@ void __INLINE I2C_Delay(void)
  */
 FlagStatus I2C_Write_Byte(uint8_t Addr, uint8_t Data);
 FlagStatus I2C_Write_Byte16(uint16_t Addr, uint8_t Data);
-FlagStatus I2C_Read_Byte(uint8_t Addr, uint8_t* Data);
-FlagStatus I2C_Read_Byte16(uint16_t Addr, uint8_t* Data);
+FlagStatus I2C_Read_Byte(uint8_t Addr, uint8_t Data);
+FlagStatus I2C_Read_Byte16(uint16_t Addr, uint8_t Data);
 FlagStatus I2C_Sequential_Write(uint8_t Addr, uint8_t* Data, uint8_t Data_Len);
 FlagStatus I2C_Sequential_Write16(uint16_t Addr, uint8_t* Data, uint8_t Data_Len);
 FlagStatus I2C_Sequential_Read(uint8_t Addr, uint8_t* Data, uint8_t Data_Len);

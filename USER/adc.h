@@ -5,6 +5,5 @@
  * Function statement for external call
  */
 void ADC3_Config(void);
-float GetResValue(void);
 
 #endif /* __ADC_H */

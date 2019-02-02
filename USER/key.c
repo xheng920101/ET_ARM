@@ -5,22 +5,11 @@
 						+ (GPIO_ReadInputDataBit(KEY3_GPIO_PORT, KEY3_PIN) << 2)	\
 						+ (GPIO_ReadInputDataBit(KEY4_GPIO_PORT, KEY4_PIN) << 3))
 
-//debug add
-#define		CTP_GROUP		(GPIO_ReadInputDataBit(TEST19_GPIO_PORT, TEST19_PIN)	\
-						+ (GPIO_ReadInputDataBit(TEST18_GPIO_PORT, TEST18_PIN) << 1)	\
-						+ (GPIO_ReadInputDataBit(TEST15_GPIO_PORT, TEST15_PIN) << 2))
-
-#define SENSITIVE		5			//(default 8)smaller will effect Highly Sensitive!
-#define SENSITIVE_CTP		8			//(default 8)smaller will effect Highly Sensitive!
-
-uint8_t keyStateTemp  = KEY_IDLE;
-uint8_t CTPStateTemp  = CTP_IDLE;
-
-uint8_t TOTAL_DIS_NUM = 30;
-uint8_t DIS_NUM = 0;
-uint8_t DIS_NUM_OLD = 0xFF;
-
-FlagStatus DIS_AUTO = RESET; //pattern auto switch is disable default.
+uint8_t TOTAL_DIS_NUM = 10;
+uint8_t DIS_NUM =0;
+uint16_t auto_dly_cnt = 0;
+FlagStatus DIS_AUTO = RESET;
+FlagStatus Current_Error = RESET;
 
 /*********************************************************************************
 * Function: KEY_Config
@@ -35,8 +24,7 @@ void KEY_Config(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
    
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; 
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	
 	GPIO_InitStructure.GPIO_Pin = KEY1_PIN;
 	GPIO_Init(KEY1_GPIO_PORT, &GPIO_InitStructure);
@@ -50,135 +38,159 @@ void KEY_Config(void)
 
 /*********************************************************************************
 * Function: KEY_GetState
-* Description: KEY Detect,put this function in the 10mS interval loop!
+* Description: KEY Detect
 * Input: none
 * Output: none
 * Return: KEY state
 * Call: external
-* modify by ywq ,2017-1-25 17:43
 */
 uint8_t KEY_GetState(void)
 {
-	static uint8_t debounce = 0;
-	static uint8_t key_old = KEY_IDLE;
-	
-	if (key_old != KEY_IDLE)
+ 	uint8_t keyStateTemp = KEY_GROUP;
+
+	if (keyStateTemp != KEY_IDLE)
 	{
-		if (KEY_GROUP == key_old) 		
+		Delay_ms(50);  						//delay for jitter
+		if (KEY_GROUP == keyStateTemp) 		//effective input
 		{
-			debounce++;
-			if (debounce == SENSITIVE)				//effective input
-			{
-				return 	key_old;
-			}
-			else if(debounce > SENSITIVE)
-			{
-				  debounce = SENSITIVE + 3;					
-			}		
-		}
-	  else
-		{
-				key_old = KEY_GROUP;
-				debounce = 0;
-				return 	KEY_IDLE;		
-		}
+				if (TEST_MODE == TEST_MODE_OTP)
+				{
+					Delay_ms(300);
+				}
+				else
+				{
+					while (KEY_GROUP != KEY_IDLE);	//wait for key up
+				}
+			
+			return 	keyStateTemp;
+		} 
 	}
-	
-	key_old = KEY_GROUP;
 	return 	KEY_IDLE;          
 }
 
 /*********************************************************************************
-* Function: KeyProc
-* Description: key funtion process
+* Function: DisState_Switch
+* Description: key event process
 * Input: none
 * Output: none
 * Return: none
 * Call: external
 */
-void KeyProc(void)
-{
-	if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET ||  ID_NG == SET || FW_NG == SET || SD_MODE_ERROR == SET || FPGA_NG == SET)	
-	{			
-		if (keyStateTemp != KEY_IDLE)
+ void DisState_Switch(void)
+ {
+ 	uint8_t keyStateTemp  = KEY_IDLE;
+
+ 	switch (DIS_AUTO)
+	{
+		/* KEY control	*/
+		case (RESET):
 		{
-			printf("current_NG = %d\r\n", current_NG);
-			printf("SDCard_NG = %d\r\n", SDCard_NG);
-			printf("TE_NG = %d\r\n", TE_NG);
-			printf("PWM_NG = %d\r\n", PWM_NG);
-			printf("ID_NG = %d\r\n", ID_NG);
-			printf("FW_NG = %d\r\n", FW_NG);
-			printf("SD_MODE_ERROR = %d\r\n", SD_MODE_ERROR);
-			printf("FPGA_NG = %d\r\n", FPGA_NG);
-			KEY_SLEEPIN(); 			
-		}
-		keyStateTemp = KEY_IDLE;
-		return;
-	}
-	
-	switch (keyStateTemp)
-	{																			
-		case (KEY_AUTO): 
-			if (TEST_MODE != TEST_MODE_OTP)	
+			while (keyStateTemp == KEY_IDLE)
 			{
-				if (DIS_AUTO == RESET) DIS_AUTO = SET; 
-				else	DIS_AUTO = RESET;
+		 		USART_EventProcess(); 	
+//				Connect_Check();
+//				Current_Check();
+				RA_Mode_AutoReset();//for RA auto reset
+				keyStateTemp = KEY_GetState(); 
+				Con_Check();
+
+			}
+			switch (keyStateTemp)
+			{																			
+				case (KEY_AUTO): 
+					if (TEST_MODE != TEST_MODE_OTP)	DIS_AUTO = SET; 
+					break;
+				case (KEY_UP): 
+					(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
+					printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
+					break;
+				case (KEY_DOWN):
+					(DIS_NUM == 0) ? (DIS_NUM = TOTAL_DIS_NUM - 1) : DIS_NUM--;
+					printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
+					break;
+				case (KEY_SLEEP): 	
+					printf("*#*#E:0#*#*\r\n"); //zxj@20160526 for G6 ET	
+	        LCD_SleepIn();
+	        LCD_VideoMode_OFF();
+	        LCD_LPMode();
+	        MIPI_SleepMode_ON();	
+				  GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+          LCMPower_OFF();		
+					GPIO_ResetBits(TEST17_GPIO_PORT, TEST17_PIN);
+//         	GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
+//	        Delay_ms(10);
+//	        GPIO_ResetBits(TEST25_GPIO_PORT, TEST25_PIN); //for vpp test	
+					break;
+		case (KEY_TEST): //RESET DRIVER IC
+		GPIO_ResetBits(TEST17_GPIO_PORT, TEST17_PIN);
+		LCMPower_ON();
+		MIPI_Reset();
+		IC_Init(SSDInitCode);	
+		GPIO_SetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+	  Delay_ms(10);
+		DriverIC_Reset();
+		IC_Init(ET1_InitCode);
+		LCD_SleepOut();
+		LCD_VideoMode_ON();
+		LCD_HSMode();
+		FPGA_INIT_END_INFO(1);
+		GPIO_SetBits(TEST17_GPIO_PORT, TEST17_PIN);		
+	  FPGA_DisPicture(6);	//picture
+		LCD_PWM(0xFF);
+		Delay_ms(1000);
+		DIS_NUM = 0;
+		SleepCurrent_Check();
+					break;
+				default: 
+					break;
 			}
 			break;
-		case (KEY_UP): 
-			if (DIS_AUTO) break;
-			(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
-			printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
-			break;
-		case (KEY_DOWN):
-			if (DIS_AUTO) break;
-			(DIS_NUM == 0) ? (DIS_NUM = TOTAL_DIS_NUM - 1) : DIS_NUM--;
-			printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
-			break;
-		case (KEY_SLEEP): 
-			LCD_SleepIn();
-			LCD_VideoMode_OFF();
-			MIPI_SleepMode_ON();
-			LCMPower_OFF();
-			printf("\r\n*#*#E:SLEEP IN#*#*\r\n");		
-			//	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //old
-			GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
-			Delay_sec(120);
-			GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //new 			
-			break;
-		case (KEY_TEST): //RESET DRIVER IC
-			printf("//--------Message from KeyProc(key.c): key control - reset Driver IC!\r\n//");
-			LCM_Reset();
-			break;
-		default: 
-			break;
-	}
-	keyStateTemp = KEY_IDLE;
-}
-
-/*********************************************************************************
-* Function: AutoSwitchPattern
-* Description: key event process,must put this fun in 100mS interval loop
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void AutoSwitchPattern()
-{
-	static uint16_t auto_dly_cnt = 0;
-	
-	if (DIS_AUTO)
-	{
-		auto_dly_cnt++;
-		if (auto_dly_cnt >= AUTOSWITCH_T)
-		{
-			auto_dly_cnt = 0;
-			(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
-			printf("[%9.3f] TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TIMESTAMP, TOTAL_DIS_NUM, DIS_NUM);
 		}
+
+		/* auto run	*/				  
+		case (SET):
+		{
+			USART_EventProcess(); 	
+			Connect_Check();
+//			Current_Check();
+			keyStateTemp = KEY_GetState();
+			switch (keyStateTemp)
+			{
+				case (KEY_AUTO): 
+					DIS_AUTO = RESET;
+					break;
+				case (KEY_SLEEP): 
+					printf("*#*#E:0#*#*\r\n"); //zxj@20160526 for G6 ET
+					KEY_SLEEPIN(); 
+					break;
+				case (KEY_TEST): //RESET DRIVER IC
+					DriverIC_Reset();	
+					IC_Init(ET2_InitCode);	
+					LCD_SleepOut();
+					LCD_VideoMode_ON();
+					LCD_HSMode();				
+					break;
+				default: 
+					break;
+			}
+			Delay_ms(100);
+			auto_dly_cnt++;
+			if (auto_dly_cnt >= AUTO_TIME)
+			{
+				auto_dly_cnt = 0;
+				(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
+				printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM);
+			}
+			break;
+	   }
+	   default:
+			break;			
 	}
-}
+	if (DIS_NUM == TOTAL_DIS_NUM - 1) 
+	 {
+		printf("*#*#E:1#*#*\r\n"); //zxj@20160526 for G6 ET
+	 }
+ }
 
 /*********************************************************************************
 * Function: KEY_SLEEPIN
@@ -188,171 +200,20 @@ void AutoSwitchPattern()
 * Return: none
 * Call: external
 */
-void KEY_SLEEPIN(void)
-{
- 	LCD_SleepIn();
-	LCD_VideoMode_OFF();
- 	MIPI_SleepMode_ON();
-	LCMPower_OFF();
-	
+ void KEY_SLEEPIN(void)
+ {
+//	POWER_OTP_Reset();
+//	Delay_ms(10);
+//	GPIO_ResetBits(TEST25_GPIO_PORT, TEST25_PIN); //for vpp test		
+	    LCD_SleepIn();
+	    LCD_VideoMode_OFF();
+	    LCD_LPMode();
+	    MIPI_SleepMode_ON();	
+			GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+      LCMPower_OFF();	
+      GPIO_ResetBits(TEST17_GPIO_PORT, TEST17_PIN); 
+
 //	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //old
-	GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
-	Delay_sec(120);
-	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
-}
-
-/*********************************************************************************
-* Function: CTP_GetState
-* Description: CTP Detect,put this function in the 10mS interval loop!
-* Input: none
-* Output: none
-* Return: CTP state
-* Call: external
-* modify by ywq ,2017-3-3 16:56
-*/
-uint8_t CTP_GetState(void)
-{
-	static uint8_t debounce = 0;
-	static uint8_t ctp_old = CTP_IDLE;
-	
-	if (ctp_old != CTP_IDLE)
-	{
-		if (CTP_GROUP == ctp_old) 		
-		{
-			debounce++;
-			if (debounce == SENSITIVE_CTP)	//effective input
-			{
-				return ctp_old;
-			}
-			else if (debounce > SENSITIVE_CTP)
-			{
-				  debounce = SENSITIVE_CTP + 3;					
-			}		
-		}
-	  else
-		{
-				ctp_old = CTP_GROUP;
-				debounce = 0;
-				return 	CTP_IDLE;		
-		}
-	}
-	
-	ctp_old = CTP_GROUP;
-	return 	CTP_IDLE;          
-}
-
-/*********************************************************************************
-* Function: CTPProc
-* Description: CTP funtion process
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void CTPProc(void)
-{	
-#ifdef DIFFER2_DETECT
-	uint8_t buf[3];
-	uint8_t rbuf_C589[1], rbuf_C595[3];
-	static FlagStatus reg_backup = RESET; 
-	static FlagStatus reg_recovery = SET; 
-
-	if (reg_backup == RESET)
-	{
-		WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-		WriteSSDReg(MAIN_PORT, 0xBF, 0x8900);           
-		MIPI_GEN_Read(MAIN_PORT, 0xC5, 1, rbuf_C589);	
-		WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-		WriteSSDReg(MAIN_PORT, 0xBF, 0x9500);           
-		MIPI_GEN_Read(MAIN_PORT, 0xC5, 3, rbuf_C595);	
-		reg_backup = SET; 
-	}
-#endif
-		
-	if (TEST_MODE != TEST_MODE_CTP) return;
-//	printf("\r\n CTPStateTemp = %d ", CTPStateTemp);	
-	switch (CTPStateTemp)
-	{
-		case (0): 
-			printf("\r\nCTPState:IDLE.");
-			break;		
-		case (1): 	
-			printf("\r\nCTPState:CTP fail.");
-			DriverIC_Reset();
-			IC_Init(ET1_InitCode);	
-			LCD_LitSquence();
-			FPGA_DisPattern(0, 255, 0, 0);	//red pattern indicate CTP fail
-//		  GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //Feedback to CTP kit
-			break;
-		case (2):
-			printf("\r\nCTPState:CTP pass.");		
-			DriverIC_Reset();
-			IC_Init(ET1_InitCode);	
-			LCD_LitSquence();		
-			FPGA_DisPattern(0, 0, 255, 0); //green pattern indicate CTP pass	
-//			GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //Feedback to CTP kit
-			break;
-		case (3): 
-			printf("\r\nCTPState:sleep in.");	
-			LCD_SleepIn();
-			LCD_VideoMode_OFF();
-			LCD_LPMode();
-			GPIO_SetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN);
-			Delay_ms(150);	//Feedback to CTP kit	
-			GPIO_ResetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN); 			
-			break;
-		case (4):
-			printf("\r\nCTPState:sleep out.");
-			LCD_LitSquence();	
-			GPIO_SetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN);
-			Delay_ms(150);	//Feedback to CTP kit	
-			GPIO_ResetBits(CTP_ACK_GPIO_PORT, CTP_ACK_PIN); 				
-			break;
-		case (5): 
-#ifdef DIFFER2_DETECT
-			printf("\r\nCTPState:set voltage to 4V.");
-
-			buf[0] = 0x06;
-			WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-			WriteSSDReg(MAIN_PORT, 0xBF, 0x8900);
-			MIPI_GEN_Write((PORT0 | PORT1), 0xC5, 1, buf);
-			buf[0] = 0x11;
-			buf[1] = 0x32;
-			buf[2] = 0x50;
-			WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-			WriteSSDReg(MAIN_PORT, 0xBF, 0x9500);
-			MIPI_GEN_Write((PORT0 | PORT1), 0xC5, 3, buf); 
-			reg_recovery = RESET;
-#endif
-			break;
-		case (6):
-#ifdef DIFFER2_DETECT
-			printf("\r\nCTPState:set voltage to 3.5V.");	
-			buf[0] = 0x05;
-			WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-			WriteSSDReg(MAIN_PORT, 0xBF, 0x8900);           
-			MIPI_GEN_Write((PORT0 | PORT1), 0xC5, 1, buf);
-			reg_recovery = RESET;
-#endif
-			break;
-		case (7): 
-#ifdef DIFFER2_DETECT
-			printf("\r\nCTPState:recovery voltage.");	
-			if (reg_recovery == RESET)
-			{
-				WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-				WriteSSDReg(MAIN_PORT, 0xBF, 0x8900);           
-				MIPI_GEN_Write((PORT0 | PORT1), 0xC5, 1, rbuf_C589); 
-				WriteSSDReg(MAIN_PORT, 0xBC, 0x0002);
-				WriteSSDReg(MAIN_PORT, 0xBF, 0x9500);           
-				MIPI_GEN_Write((PORT0 | PORT1), 0xC5, 3, rbuf_C595); 
-				reg_recovery = SET;
-			}
-#endif
-			break;
-		default:
-			printf("\r\nCTPState:IDLE.");
-			break;
-	}
-	CTPStateTemp = CTP_IDLE;
-}
+//	GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
+ 
+ }
