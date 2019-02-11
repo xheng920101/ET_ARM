@@ -369,9 +369,13 @@ void ARM_PWM_Control(void)
 #else		
 		GPIO_ResetBits(TEST17_GPIO_PORT, TEST17_PIN); //test17 connect to DDIC output PWM pin (R8) on FET, high active
 #endif
-//		GPIO_SetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); //enable pin on power board (R9), low active
+		
+		if(BLU_ON==SET){
 		GPIO_ResetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); //enable pin on power board (R9), low active
-
+		}
+		else{
+			GPIO_SetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); //enable pin on power board (R9), low active
+		}
 	}
 	else if (PWM_DUTY != 0 && PWM_T_cnt == 0)
 	{
@@ -382,9 +386,12 @@ void ARM_PWM_Control(void)
 		if (TEST_MODE == TEST_MODE_ET1 || TEST_MODE == TEST_MODE_ET2 || TEST_MODE == TEST_MODE_ET3 
 			|| TEST_MODE == TEST_MODE_OTP || TEST_MODE == TEST_MODE_CTP)
 		{
-//			GPIO_SetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); // 防止非PWM控制方式的power板点亮背光
-				GPIO_ResetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); // 防止非PWM控制方式的power板点亮背光
-
+			if(BLU_ON==SET){
+				GPIO_ResetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); //enable pin on power board (R9), low active
+			}
+			else{
+				GPIO_SetBits(POWER_LED_GPIO_PORT, POWER_LED_PIN); //enable pin on power board (R9), low active
+			}
 		}
 		else
 		{

@@ -254,6 +254,7 @@ extern uint8_t DATE_DD;
 extern uint8_t DATE_HR;
 extern uint8_t DATE_MIM;
 extern uint8_t DATE_SEC;
+extern uint8_t BLU_ON;
 
 void VCOM_Set(unsigned short vcom);
 unsigned short VCOM_Read(void);
