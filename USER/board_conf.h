@@ -7,13 +7,6 @@
  *			| PG9  - EN_VSPM3   |
  *      | PB14 - EN_OTPM3   |
  *        ------------------
- * CURRENT--------------------------
- *			| PC0(TEST33) - I_VSP	    	|
- *      | PC1(TEST34)  - I_VSN      |
- *			| PC2(TEST23)  - I_IOVCC    |
- *      | PF7(TEST27)  - EN_uA      |
- *			| PF8(TEST28)  - EN_0_ohm   |
- *        --------------------------
  * LED		------------------------
  *			| PE3  - LED_Flag4(RED)   |
  *      | PE2  - LED_Flag5(GREEN) |
@@ -49,20 +42,22 @@
  *			| PE6(TEST32)  - ADC_I2C      |
  *        ----------------------------
  * TEST		--------------------------
- *			| PG15(TEST17)  - PWM_DETECT					|
- *			| PB5(TEST18)  - POWER_I2C_SDA				  |
- *			| PB6(TEST19)  - POWER_I2C_SCL 					|
- *			| PB7(TEST20)  - 					  |
- *			| PB8(TEST21)  - 					  |
- *			| PB9(TEST22)  -   					|
+  *			| PG13(TEST15) - CTP2				|
+ *			| PG15(TEST17) - PWM_DETECT	/ PWM_OUTPUT|
+ *			| PB5(TEST18)  - CTP1			  |
+ *			| PB6(TEST19)  - CTP0				|
+ *			| PB7(TEST20)  - TP_INT		  |
+ *			| PB8(TEST21)  - TP_SCL		  |
+ *			| PB9(TEST22)  - TP_SDA			|
  *			| PC2(TEST23)  - I_IOVCC		|
- *			| PC3(TEST24)  - CONNECTOR2 |
+ *			| PC3(TEST24)  - CONNECTOR2  / TP_RST |
  *			| PG3(TEST25)  - CONNECTOR1 |
  *			| PF10(TEST4)  - RES_TEST |
  *			| PG11(TE11)  - TE_DETECT |
- *			| PC13(TEST1)  - SENSOR_DETECT |
- *			| PF6(TEST2)  - SENSOR_DETECT |
- *			| PA8(TEST31)  -  |
+ *			| PC13(TEST1)  - CTP START |
+ *			| PF6(TEST2)  -  CTP ACK|
+ *			| PA8(TEST31)  - solenoid valve  |
+ *			| PB10(TEST26)  - AUTO SET  |
  *      	--------------------------
  * TPS65312	 ---------------------------
  *			| PB5(TEST18)  - POWER_I2C_SDA  |
@@ -79,6 +74,8 @@
 #define __BOARD_CONF_H
 
 #include "stm32f2xx.h"
+
+extern char *prj_no;
 
 /*********************************************************************************
  * POWER configure
@@ -102,26 +99,11 @@
 #define    POWER_VSP_GPIO_PORT		GPIOG
 
 /*********************************************************************************
- * CURRENT configure
- */
-#define    IVSP_PIN                 GPIO_Pin_0
-#define    IVSP_GPIO_PORT           GPIOC
-
-#define    IVSN_PIN                 GPIO_Pin_1
-#define    IVSN_GPIO_PORT           GPIOC
-
-#define    IIOVCC_PIN               GPIO_Pin_2
-#define    IIOVCC_GPIO_PORT         GPIOC
-
-#define    EN_uA_PIN                GPIO_Pin_7
-#define    EN_uA_GPIO_PORT          GPIOF
-
-#define    EN_0_ohm_PIN             GPIO_Pin_8
-#define    EN_0_ohm_GPIO_PORT       GPIOF
-
-/*********************************************************************************
  * TEST configure
  */
+#define    TEST15_PIN                 GPIO_Pin_13
+#define    TEST15_GPIO_PORT           GPIOG 
+ 
 #define    TEST17_PIN                 GPIO_Pin_15
 #define    TEST17_GPIO_PORT           GPIOG
 
@@ -155,14 +137,17 @@
 #define    TE_PIN                 		GPIO_Pin_11
 #define    TE_GPIO_PORT            		GPIOG
 
-#define    TEST1_PIN                  GPIO_Pin_13
-#define    TEST1_GPIO_PORT            GPIOC
+#define    CTP_START_PIN              GPIO_Pin_13
+#define    CTP_START_GPIO_PORT        GPIOC
 
-#define    TEST2_PIN                  GPIO_Pin_6
-#define    TEST2_GPIO_PORT            GPIOF
+#define    CTP_ACK_PIN                GPIO_Pin_6
+#define    CTP_ACK_GPIO_PORT          GPIOF
 
 #define    TEST31_PIN                  GPIO_Pin_8
 #define    TEST31_GPIO_PORT            GPIOA
+
+#define    TEST26_PIN                  GPIO_Pin_10
+#define    TEST26_GPIO_PORT            GPIOB
 
 /*********************************************************************************
  * LED configure

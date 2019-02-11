@@ -470,6 +470,11 @@
               <FilePath>..\USER\main.c</FilePath>
             </File>
             <File>
+              <FileName>TaskPolling.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\TaskPolling.C</FilePath>
+            </File>
+            <File>
               <FileName>stm32f2xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\stm32f2xx_it.c</FilePath>
@@ -488,6 +493,11 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\lcd.c</FilePath>
             </File>
             <File>
               <FileName>timer.c</FileName>
@@ -560,11 +570,6 @@
               <FilePath>..\USER\fpga.c</FilePath>
             </File>
             <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\lcd.c</FilePath>
-            </File>
-            <File>
               <FileName>sdcard.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\sdcard.c</FilePath>
@@ -583,6 +588,16 @@
               <FileName>test_debug.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\test_debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_demo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\test_demo.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_od.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\test_od.c</FilePath>
             </File>
             <File>
               <FileName>test_et1.c</FileName>
@@ -615,16 +630,6 @@
               <FilePath>..\USER\test_esd.c</FilePath>
             </File>
             <File>
-              <FileName>test_od.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\test_od.c</FilePath>
-            </File>
-            <File>
-              <FileName>test_demo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\test_demo.c</FilePath>
-            </File>
-            <File>
               <FileName>test_ctp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\test_ctp.c</FilePath>
@@ -634,20 +639,25 @@
               <FileType>1</FileType>
               <FilePath>..\USER\test_oqc1.c</FilePath>
             </File>
+            <File>
+              <FileName>test_SDcard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\test_SDcard.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>INI_OTP</GroupName>
           <Files>
             <File>
-              <FileName>Common_OTP code_TD4302_V1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\Common_OTP code_TD4302_V1.c</FilePath>
-            </File>
-            <File>
               <FileName>5v7_Initial code_TD4302_V1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\5v7_Initial code_TD4302_V1.c</FilePath>
+              <FilePath>..\INI_OTP\5v7_Initial code_TD4302_V1.c</FilePath>
+            </File>
+            <File>
+              <FileName>Common_OTP code_TD4302_V1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\INI_OTP\Common_OTP code_TD4302_V1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -664,26 +674,15 @@
               <FileType>1</FileType>
               <FilePath>..\USER\ff9\diskio.c</FilePath>
             </File>
+            <File>
+              <FileName>ccsbcs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\ff9\option\ccsbcs.c</FilePath>
+            </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>
   </Targets>
-
-  <RTE>
-    <apis/>
-    <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="Cortex-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
-        <targetInfos>
-          <targetInfo name="STM_DEMO"/>
-        </targetInfos>
-      </component>
-    </components>
-    <files/>
-  </RTE>
 
 </Project>

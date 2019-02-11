@@ -67,6 +67,7 @@ extern FlagStatus Pic_Load_Finish;
 ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name);
 ErrorStatus PIC_Load_BMP(uint8_t picNum);
 ErrorStatus PIC_Load_BMP_ET(uint8_t * picName);
+ErrorStatus PIC_Load_BMP_DPT(uint8_t * picName);
 ErrorStatus SD_Write_Str2File(char *File_Name, char *Write_String);
 
 #endif /* __BSP_BMP_H */

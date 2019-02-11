@@ -3,12 +3,12 @@
 //Syna. Recommend Porch Setting
 #define		SSD_HACT	480 
 #define		SSD_VACT	2560
-#define		SSD_HSA		0x01    
-#define		SSD_HBP		0x50
-#define		SSD_HFP		0x70  
-#define		SSD_VSA		0x01
-#define		SSD_VBP		0x05
-#define		SSD_VFP		0x09
+#define		SSD_HSA		0x02    
+#define		SSD_HBP		0x32
+#define		SSD_HFP		0x6B  
+#define		SSD_VSA		0x02
+#define		SSD_VBP		0x18
+#define		SSD_VFP		0x04
 
 FPGAPORCH_TypeDef FPGA_porchPara = 
 { 
@@ -27,7 +27,7 @@ unsigned short SSDInitCode[]=
 	0X1B7,	0X250,	0X205,
 //	0X1BA,	0X266,	0X2C3,		// 24MHz * 102 / 3 = 816Mbps	 135*24/4=810
 //	0X1BB,	0X20F,	0X200,		//	816 / 16 / 8 = 6.375MHz
-	0X1BA,	0X266,	0X2C4,		// 24MHz * 150 / 4 = 900Mbps	 135*24/4=810
+	0X1BA,	0X296,	0X2C4,		// 24MHz * 150 / 4 = 900Mbps	 135*24/4=810
 	0X1BB,	0X20B,	0X200,		//	900 / 16 / 8 = 7.03125MHz
 //	0X1BB,	0X20B,	0X200,		//	900 / 12 / 8 = 9.375MHz
 	0X1B9,	0X201,	0X200,		//PLL Control Register
@@ -65,6 +65,7 @@ unsigned short ET1_InitCode[]=
 				0x200,
 0x3FF,
 
+
 //Generic packet setting
 0x1B7,	0x210,	0x205,
 
@@ -93,7 +94,7 @@ unsigned short ET1_InitCode[]=
 0x1BC,	0x206,	0x200,
 0x1BF,	0x2B6,
 				0x232,//FOR CMD 1/3 RAM
-				0x2BB,
+				0x2CB,
 				0x201,
 				0x2FF,
 				0x2FF,
@@ -151,8 +152,8 @@ unsigned short ET1_InitCode[]=
 
 //External Clock Setting
 0x1BC,	0x202,	0x200,
-0x1BF,	0x2BE,
-				0x201,
+0x1BF,	0x2BE,   
+				0x200,
 
 //Slew Rate Adjustment (SOUT CKH/XCKH slew rate)
 0x1BC,	0x202,	0x200,
@@ -170,7 +171,7 @@ unsigned short ET1_InitCode[]=
 				0x219,
 				0x2E1,
 				0x27F,
-				0x2FF,
+				0x2F6,//TYPEAA 0210
 				0x2FF, // 10P
 				0x25F,
 				0x206,
@@ -181,8 +182,8 @@ unsigned short ET1_InitCode[]=
 				0x298,
 				0x220,
 				0x2FF,
-				0x2FF, // 20P
-				0x2FF,
+				0x27F, // 20P-TYPE AA
+				0x2FB,//TYPE AA
 				0x23E,
 				0x28C,
 				0x272,
@@ -361,38 +362,38 @@ unsigned short ET1_InitCode[]=
 				0x248, // RTN_TPC1[7:0]:  20160129 From 0C to 48
 				0x248, // RTN_EX: 20160129 From 43 to 48
 
-//----------------------XM 5.2 inch-----------------------//
+//----------------------XM 5.7 inch-----------------------//
 //Gamma Setting Common Set
 0x1BC,	0x21F,	0x200,
 0x1BF,	0x2C7,
 				0x200,
-				0x213,
-				0x21D,
-				0x228,
-				0x237,
-				0x244,
-				0x24D,
-				0x25B,
-				0x23E,
-				0x246,
-				0x252,
-				0x25F,
-				0x268,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
+				0x247,
+				0x254,
+				0x260,
+				0x269,
 				0x270,
 				0x278,
 				0x200,
-				0x213,
-				0x21D,
-				0x228,
-				0x237,
-				0x244,
-				0x24D,
-				0x25B,
-				0x23E,
-				0x246,
-				0x252,
-				0x25F,
-				0x268,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
+				0x247,
+				0x254,
+				0x260,
+				0x269,
 				0x270,
 				0x278,
 //--------------------------------------------------------//
@@ -535,14 +536,14 @@ unsigned short ET1_InitCode[]=
 				0x2FF,
 				0x20F, // 5P
 				0x280,
-				0x200,
+				0x201,//TYPE AA 0210
 				0x206, // 20160129 From 00 to 06
-				0x210,
+				0x218,//TYPE AA 0210
 				0x200, // 10P
 				0x238,
-				0x270,
+				0x270,//APO FOR VCOMSW2-0210
 				0x2E9, // 20160129 From E9 to EF, 20160317 For sleep in sequence VSR signal pull high from EF to E9 (Appendix error!)
-				0x2C0,
+				0x2C0,//APO FOR VCOMSW2-0210
 				0x201, // 15P
 				0x200,
 				0x240,
@@ -616,9 +617,9 @@ unsigned short ET1_InitCode[]=
 //Power Setting (for CHGP)
 0x1BC,	0x212,	0x200,
 0x1BF,	0x2D0,
-				0x211, // 20160127 From 33 to 11
-				0x254,
-				0x2CF,
+				0x291, // 20160127 From 33 to 11
+				0x259,//vgh change 8v to 9v
+				0x2D7,//CF=-7
 				0x231,
 				0x201,
 				0x210,
@@ -654,9 +655,9 @@ unsigned short ET1_InitCode[]=
 				0x200, // 10P
 				0x200,
 				0x26E,
-				0x26E,
-				0x2DB, // VPLVL D[6:0]: 5.2V(5B), 4.1V(2F)
-				0x2DB, // VNLVL D[6:0]: -5.2V(5B), -4.1V(2F)
+				0x26B,//change VCI3 setting 4.6v
+				0x2D3, // VPLVL D[6:0]: 5.2V(5B), 4.1V(2F)
+				0x2D3, // VNLVL D[6:0]: -5.2V(5B), -4.1V(2F)
 				0x233,
 				0x2BB,
 				0x2F2, // VSP detect voltage: F0h(4.7V), F1h(5.1V), F2h(4.0V), F3h(4.4V)
@@ -745,7 +746,7 @@ unsigned short ET1_InitCode[]=
 //Compression Test Register
 0x1BC,	0x202,	0x200,
 0x1BF,	0x2E7,
-				0x200,
+				0x200,//compression A mode
 
 //PPS Setting
 0x1BC,	0x281,	0x200,
@@ -883,12 +884,26 @@ unsigned short ET1_InitCode[]=
 0x1BC,	0x203,	0x200,
 0x1BF,	0x2EB,
 				0x283,
-				0x283,//83
+				0x283,//for SYNA 1/3 compression
 
 //Compression Mode Setting
 0x1BC,	0x202,	0x200,
 0x1BF,	0x2EC,
-				0x207,//07
+				0x200,//07
+		
+
+// VESA Compression Mode  2017.10.18
+0x1BC,	0x202,	0x200,
+0x1BF,	0x2E7,
+				0x280,//compression 
+0x1BC,	0x203,	0x200,
+0x1BF,	0x2EB,
+				0x28B,
+				0x28B,//for VESA compression
+0x1BC,	0x202,	0x200,
+0x1BF,	0x2EC,
+				0x201,
+
 
 //Test Mode
 0x1BC,	0x204,	0x200,
@@ -916,11 +931,11 @@ unsigned short ET1_InitCode[]=
 				0x201, // T_SLPOUT_1=0h, T_SLPOUT_2=0h : OTP/Flash load OFF after exit_sleep_mode
 
 ////Interface setting
-//0x1BC,	0x204,	0x200,
-//0x1BF,	0x2B3,
-//				0x201, // RM=0->1(video to ram)
-//				0x200,
-//				0x206,
+0x1BC,	0x204,	0x200,
+0x1BF,	0x2B3,
+				0x201, // RM=0->1(video to ram)
+				0x200,
+				0x206,
 
 
 //DCS packet setting
@@ -967,10 +982,6 @@ unsigned short ET2_InitCode[]=
 				0x200,
 				0x206,
 
-////Manufacture Command Access Protect
-//0x1BC,	0x202,	0x200,
-//0x1BF,	0x2B0,
-//				0x203, // MCAP=3h : Lock Manufacture Command Protect
 
 //DCS packet setting
 0x1B7,	0x250,	0x205,
@@ -1070,42 +1081,38 @@ unsigned short OTP_InitCode[]=
 0x1BF,	0x2D6,
 				0x201, // T_SLPOUT_1=0h, T_SLPOUT_2=0h : OTP/Flash load OFF after exit_sleep_mode
 
-////----------------------SH 5.5 inch-----------------------//
-
-////--------------------------------------------------------//
-//----------------------XM 5.2 inch-----------------------//
 //Gamma Setting Common Set
 0x1BC,	0x21F,	0x200,
 0x1BF,	0x2C7,
 				0x200,
-				0x20B,
-				0x213,
-				0x21E,
-				0x22E,
-				0x23D,
-				0x247,
-				0x258,
-				0x23E,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
 				0x247,
 				0x254,
-				0x261,
-				0x26A,
-				0x272,
+				0x260,
+				0x269,
+				0x270,
 				0x278,
 				0x200,
-				0x20B,
-				0x213,
-				0x21E,
-				0x22E,
-				0x23D,
-				0x247,
-				0x258,
-				0x23E,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
 				0x247,
 				0x254,
-				0x261,
-				0x26A,
-				0x272,
+				0x260,
+				0x269,
+				0x270,
 				0x278,
 //--------------------------------------------------------//
 
@@ -1148,37 +1155,45 @@ unsigned short OTP_InitCode[]=
 
 unsigned short GAMMA_InitCode[]= 
 {
+	
+//Generic packet setting
+0x1B7,	0x259,	0x205,
+
+//Manufacture Command Access Protect
+0x1BC,	0x202,	0x200,
+0x1BF,	0x2B0,
+				0x204, // Unlock Manufacture Command Protect (high-privilege)
 //Gamma Setting Common Set
 0x1BC,	0x21F,	0x200,
 0x1BF,	0x2C7,
 				0x200,
-				0x213,
-				0x21D,
-				0x228,
-				0x237,
-				0x244,
-				0x24D,
-				0x25B,
-				0x23E,
-				0x246,
-				0x252,
-				0x25F,
-				0x268,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
+				0x247,
+				0x254,
+				0x260,
+				0x269,
 				0x270,
 				0x278,
 				0x200,
-				0x213,
-				0x21D,
-				0x228,
-				0x237,
-				0x244,
-				0x24D,
-				0x25B,
-				0x23E,
-				0x246,
-				0x252,
-				0x25F,
-				0x268,
+				0x20F,
+				0x218,
+				0x223,
+				0x232,
+				0x241,
+				0x24B,
+				0x25A,
+				0x23F,
+				0x247,
+				0x254,
+				0x260,
+				0x269,
 				0x270,
 				0x278,
 

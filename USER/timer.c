@@ -1,5 +1,9 @@
 #include "include.h"
 
+FlagStatus Flag_1ms_Timeup = RESET;
+unsigned long volatile Timer3_Ms_Counter = 0; //2017-2-3 19:45:47 ywq add
+uint16_t Timer4_Sec_Counter;
+
 /*********************************************************************************
 * Function: TIM2_Config
 * Description: timer2 configure, 10us interrupt once
@@ -8,8 +12,6 @@
 * Return: none
 * Call: external
 */
-uint16_t second;
-
 void TIM2_Config(void)
 {	
 #ifdef PWM_DETECT
@@ -53,7 +55,7 @@ void TIM2_Config(void)
 
 /*********************************************************************************
 * Function: TIM3_Config
-* Description: timer3 configure, 10ms interrupt once
+* Description: timer3 configure, 1ms interrupt once
 * Input: none
 * Output: none
 * Return: none
@@ -66,9 +68,9 @@ void TIM3_Config(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3 ,ENABLE);
 	TIM_DeInit(TIM3);
 
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 599; //APB1 = 60MHz, 60/(599+1) = 100k
+	TIM_TimeBaseInitStructure.TIM_Prescaler = 59; //APB1 = 60MHz, 60/(59+1) = 1M
 	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1; //div = 1
-	TIM_TimeBaseInitStructure.TIM_Period = 999; //100k = 10us, 10*(999+1) = 10000us = 10ms
+	TIM_TimeBaseInitStructure.TIM_Period = 999; //1M = 1us, 1*(999+1) = 1000us = 1ms
 	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0; //this parameter is valid only for TIM1 and TIM8.
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseInitStructure);
@@ -78,10 +80,9 @@ void TIM3_Config(void)
 	TIM_Cmd(TIM3, ENABLE);	//enable timer3
 }
 
-
 /*********************************************************************************
 * Function: TIM4_Config
-* Description: timer4 configure, 10ms interrupt once
+* Description: timer4 configure, 1s interrupt once
 * Input: none
 * Output: none
 * Return: none
@@ -94,9 +95,9 @@ void TIM4_Config(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4 ,ENABLE);
 	TIM_DeInit(TIM4);
 
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 59999; //APB1 = 60MHz, 60/(599+1) = 100k
+	TIM_TimeBaseInitStructure.TIM_Prescaler = 59999; //APB1 = 60MHz, 60/(59999+1) = 1k
 	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1; //div = 1
-	TIM_TimeBaseInitStructure.TIM_Period = 999; //100k = 10us, 10*(999+1) = 10000us = 10ms
+	TIM_TimeBaseInitStructure.TIM_Period = 999; //1k = 1ms, 1*(999+1) = 1000ms = 1s
 	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0; //this parameter is valid only for TIM1 and TIM8.
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStructure);
@@ -105,6 +106,7 @@ void TIM4_Config(void)
 	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); //enable overflow interrupt
 	TIM_Cmd(TIM4, ENABLE);	//enable timer4
 }
+
 /*********************************************************************************
 * Function: TIM2_EventProcess
 * Description: interrupt handler
@@ -138,9 +140,8 @@ void TIM3_EventProcess(void)
 {
 	if(TIM_GetFlagStatus(TIM3, TIM_FLAG_Update) == SET) 
   {
-//		KEY_Scan();
-		Delay_Lock();
-		Auto_Switch_Delay();
+		Timer3_Ms_Counter++;
+		Flag_1ms_Timeup = SET;	
 		TIM_ClearFlag(TIM3, TIM_FLAG_Update);
 	}
 }
@@ -157,8 +158,8 @@ void TIM4_EventProcess(void)
 {
 	if(TIM_GetFlagStatus(TIM4, TIM_FLAG_Update) == SET) 
   {
-		printf("\r\n second counter now is %d\r\n",second);
-		second++;
+		Timer4_Sec_Counter++;
+		printf("\r\nTimer4_Sec_Counter = %d(second)\r\n", Timer4_Sec_Counter);	
 		TIM_ClearFlag(TIM4, TIM_FLAG_Update);
 	}
 }

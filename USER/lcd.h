@@ -18,8 +18,13 @@ void LCD_HSMode(void);
 void LCD_VideoMode_ON(void);
 void LCD_VideoMode_OFF(void);
 void LCD_PWM(uint16_t data);
+void LEDA_DIM(void);
+void LEDA_NORM(void);
 void MIPI_SleepMode_ON(void);
 void MIPI_SleepMode_OFF(void);
 void ARM_PWM_Control(void);
+void LCM_Init(void);
+void LCM_Reset(void);
+void LCD_LitSquence(void);
 
 #endif /* __LCD_H */

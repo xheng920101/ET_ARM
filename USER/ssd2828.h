@@ -36,7 +36,7 @@ void WriteDATA2SSD(uint8_t port, uint8_t DATA);
 void WriteSSDReg(uint8_t port, uint8_t reg, uint16_t para);
 uint16_t ReadSSDReg(uint8_t port, uint8_t reg);
 void WriteDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);
-void ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);
+uint8_t ReadDriverReg(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);
 void MIPI_DCS_Write(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);
 void MIPI_GEN_Write(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);
 void MIPI_DCS_Read(uint8_t port, uint8_t reg, uint8_t nPara, uint8_t * para);

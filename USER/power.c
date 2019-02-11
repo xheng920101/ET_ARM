@@ -96,21 +96,21 @@ void POWER_I2C_Config(void)
 	Delay_ms(1);
 	
 	I2C_ADDR = 0xA6;
-	data[0] = 0x1E;//VSP
-	data[1] = 0x17;//VSN
+	data[0] = 0x80;//VSP
+	data[1] = 0x80;//VSN
 	I2C_Sequential_Write(0x00, data, 2);
 	///////////////////FOR eDP power board///////////////////
 	
 	I2C_ADDR = POWER_I2C_ADDR;
-	VSP_New = (vsp_val - 5) * 10 + 0x0A;
-	VSN_New = (vsn_val - 5) * 10 + 0x0A;
+	VSP_New = vsp_val * 10 - 50 + 0x0A;
+	VSN_New = vsn_val * 10 - 50 + 0x0A;
 	
 	if (I2C_Sequential_Read(0x00, data, 2) == SET)
 	{
 		printf("POWER setting read fail!\r\n");
 		return;
 	}	
-	printf("vsp=%d, vsn=%d, data[0]=%d, data[1]=%d\r\n", VSP_New, VSN_New, data[0], data[1]);
+	printf("target setting reg[vsp]=%d reg[vsn]=%d ,read reg[vsp]=%d, reg[vsn]=%d\r\n", VSP_New, VSN_New, data[0], data[1]);
 	
 	if ((VSP_New == data[0]) && (VSN_New == data[1])) //reduce erase times, only write when setting change
 	{
@@ -151,7 +151,7 @@ void POWER_I2C_Config(void)
 */
 void LCMPower_Init(void)
 {	
-	LCD_PWM(0x00);
+	LCD_PWM(0x0000);
 	POWER_VCI_Set();
 	POWER_IOVCC_Reset(); //prevent lit NG probabilistic, ensure IOVCC is stable when 2828 start to work
 	POWER_OTP_Reset();	//PET12 high active 
@@ -159,14 +159,14 @@ void LCMPower_Init(void)
 	POWER_VSP_Set();
 }
 
-/*********************************************************************************
-* Function: LCMPower_ON
-* Description: power on timing, low active
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
+///*********************************************************************************
+//* Function: LCMPower_ON
+//* Description: power on timing, low active
+//* Input: none
+//* Output: none
+//* Return: none
+//* Call: external
+//*/
 void LCMPower_ON(void)
 {	
  	POWER_IOVCC_Reset();
@@ -177,21 +177,21 @@ void LCMPower_ON(void)
 	Delay_ms(1);
 	POWER_VSN_Reset();
 	Delay_ms(1);
-	POWER_OTP_Reset();
+	
 	printf("\r\nLCMPower_ON...\r\n");
 }
 
-/*********************************************************************************
-* Function: LCMPower_OFF
-* Description: power off timing, low active
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
+///*********************************************************************************
+//* Function: LCMPower_OFF
+//* Description: power off timing, low active
+//* Input: none
+//* Output: none
+//* Return: none
+//* Call: external
+//*/
 void LCMPower_OFF(void)
 {	
- 	LCD_PWM(0x00);
+ 	LCD_PWM(0x0000);
 	Delay_ms(1); 
 	POWER_VSN_Set();
 	Delay_ms(1);
@@ -201,8 +201,7 @@ void LCMPower_OFF(void)
 	Delay_ms(1);
 	POWER_IOVCC_Set();
 	Delay_ms(1);	
-	POWER_OTP_Reset();
-
+	
 	printf("\r\nLCMPower_OFF...\r\n");
 }
 
@@ -238,7 +237,7 @@ void LCMPower_ON1(void)
 */
 void LCMPower_OFF1(void)
 {	
- 	LCD_PWM(0x00);
+ 	LCD_PWM(0x0000);
 	Delay_ms(1); 
 	POWER_VSN_Reset();
 	Delay_ms(1);
