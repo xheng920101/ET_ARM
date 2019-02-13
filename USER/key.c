@@ -101,7 +101,8 @@ uint8_t KEY_GetState(void)
 void KeyProc(void)
 {
 	if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET ||  ID_NG == SET || FW_NG == SET || SD_MODE_ERROR == SET || FPGA_NG == SET)	
-	{			
+	{	
+#ifndef DSC_MODE
 		if (keyStateTemp != KEY_IDLE)
 		{
 			printf("current_NG = %d\r\n", current_NG);
@@ -116,6 +117,9 @@ void KeyProc(void)
 		}
 		keyStateTemp = KEY_IDLE;
 		return;
+#else
+
+#endif
 	}
 	
 	switch (keyStateTemp)

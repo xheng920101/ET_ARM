@@ -498,9 +498,11 @@ void LCM_Init(void)
 		if (RA_Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
+#ifndef DSC_MODE
 			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
+#endif
 			LED_ON(RED);
 			printf("*#*#Connector is open!#*#*\r\n"); //for gammaexpert
 		}
@@ -510,9 +512,11 @@ void LCM_Init(void)
 		if (Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
+#ifndef DSC_MODE
 			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
+#endif
 			LED_ON(RED);
 			printf("*#*#Connector is open!#*#*\r\n"); //for gammaexpert
 		}
@@ -553,9 +557,11 @@ void LCM_Init(void)
 		if (RA_Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
+#ifndef DSC_MODE
 			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
+#endif
 			LED_ON(RED);
 			printf("*#*#Connector is open!#*#*\r\n"); //for gammaexpert
 		}
@@ -565,9 +571,11 @@ void LCM_Init(void)
 		if (Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
+#ifndef DSC_MODE
 			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
+#endif
 			LED_ON(RED);
 			printf("*#*#Connector is open!#*#*\r\n"); //for gammaexpert
 		}

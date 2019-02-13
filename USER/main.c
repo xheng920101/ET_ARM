@@ -26,6 +26,79 @@ uint8_t TEST_MODE = TEST_MODE_ET1;
 * Return: none
 * Call: system
 */
+
+void show_NG(){
+
+#ifdef DSC_MODE
+			FPGA_DisPicture(9);//NG pic for DSC_MODE
+#else
+			FPGA_Info_Visible(INFO_STR);
+			FPGA_DisPattern(114, 0, 0, 0);
+			if				(SDCard_NG == SET)		FPGA_Info_Set((uint8_t *)"SDCARD ERROR");
+			else if		(TE_NG == SET)				FPGA_Info_Set((uint8_t *)"TE NG");
+			else if		(PWM_NG == SET)				FPGA_Info_Set((uint8_t *)"PWM NG");
+#endif
+
+#ifdef DSC_MODE
+			if				(ID_NG == SET)				FPGA_DisPicture(9);//ID_NG pic for DSC_MODE
+#else
+			if				(ID_NG == SET)				FPGA_DisPattern(86, 0, 0, 0);
+			else if		(FPGA_NG == SET)			FPGA_Info_Set((uint8_t *)"FPGA ERROR");
+			else if		(OSC_TRIM_NG == SET)	FPGA_Info_Set((uint8_t *)"OSC TRIM OFF");
+#endif
+
+}
+
+void manualline_loadpics(){
+#ifndef DSC_MODE
+		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
+		{
+			/* picture loading for TM manual line */ 
+			if (PIC_NUM > 2)
+			{
+				debug = TIMESTAMP;	
+				printf("\r\nPicture loading...\r\n");			
+				PIC_Load_BMP(PIC_NUM);
+				printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
+			}
+			/* version setting */
+			Version_Set();	
+		}
+		else if (current_NG == SET || FW_NG == SET)
+		{
+		}
+		else
+		{
+			show_NG()
+		}
+#else
+			LCM_POWER_STATE=SET;
+			LED_ON(GREEN);
+			debug = TIMESTAMP;	
+			printf("\r\nPicture loading...\r\n");			
+			PIC_Load_BMP(PIC_NUM);
+			printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
+			LED_OFF(GREEN);
+		/* version setting */
+			Version_Set();	
+		if (FW_NG == RESET && current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
+		{
+		}
+				else if (current_NG == SET)
+		{
+			FPGA_DisPicture(9);
+		}
+				else if (FW_NG == SET)
+		{
+			FPGA_DisPicture(9);
+		}
+		else
+		{
+			show_NG();
+		}
+#endif
+}
+
 int main(void)
 {
 	/* STM32 initial */
@@ -69,40 +142,7 @@ int main(void)
 			}			
 		}			
 		Pic_Load_Finish = RESET; //remain the flag for TM ET picture loading		
-		
-		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
-		{
-			/* picture loading for TM manual line */ 
-			if (PIC_NUM > 2)
-			{
-#ifdef DSC_MODE
-				LCM_POWER_STATE=SET;
-#endif
-				LED_ON(GREEN);
-				debug = TIMESTAMP;	
-				printf("\r\nPicture loading...\r\n");			
-				PIC_Load_BMP(PIC_NUM);
-				LED_OFF(GREEN);
-				printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
-			}
-			/* version setting */
-			Version_Set();	
-		}
-		else if (current_NG == SET || FW_NG == SET)
-		{
-			//
-		}
-		else
-		{
-			FPGA_Info_Visible(INFO_STR);
-			FPGA_DisPattern(114, 0, 0, 0);
-			if (SDCard_NG == SET) FPGA_Info_Set((uint8_t *)"SDCARD ERROR");
-			else if (TE_NG == SET) FPGA_Info_Set((uint8_t *)"TE NG");	
-			else if (PWM_NG == SET) FPGA_Info_Set((uint8_t *)"PWM NG");	
-			else if (ID_NG == SET)	FPGA_DisPattern(86, 0, 0, 0);
-			else if (FPGA_NG == SET) FPGA_Info_Set((uint8_t *)"FPGA ERROR");
-			else if (OSC_TRIM_NG == SET) FPGA_Info_Set((uint8_t *)"OSC TRIM OFF");				
-		}
+		manualline_loadpics();
 	} //end of 	if (!auto_line)
 	else
 	{
@@ -143,3 +183,4 @@ int main(void)
 //		Delay_ms(1000);		
 	} 
 }
+

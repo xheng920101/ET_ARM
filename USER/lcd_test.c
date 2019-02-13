@@ -371,9 +371,11 @@ void TE_Detect(void)
 	 {
 		 printf("*#*#TE is abnormal!#*#*\r\n");  //for gammaexpert
 		 printf("TE_detect_cnt=%d\r\n", TE_detect_cnt);
+#ifndef DSC_MODE
 		 FPGA_Info_Set((uint8_t *)"TE NG");	
 		 FPGA_Info_Visible(INFO_STR);
 		 FPGA_DisPattern(114, 0, 0, 0); 
+#endif
 		 TE_NG = SET;
 	 }	
 	 printf("TE is normal!\r\n");	 
@@ -769,37 +771,47 @@ void Current_Check(void)
 	Meas_Current_Normal();
 	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"METER NO ACK");
 		FPGA_Info_Visible(INFO_STR);
 		FPGA_DisPattern(114, 0, 0, 0);
+#endif
 		printf("\r\n*#*#CURRENT_NG:METER NO ACK!#*#*\r\n");
 	}
 	else if (I_IOVCC < SPEC_MIN_IOVCC || I_IOVCC > SPEC_MAX_IOVCC)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"DISPLAY");
 		FPGA_Info_Visible(INFO_STR);
 		FPGA_DisPattern(123, 0, 0, 0); 
+#endif
 		printf("\r\n*#*#CURRENT_NG:IOVCC!#*#*\r\n");
 	}
 	else if (I_VSP < SPEC_MIN_VSP || I_VSP > SPEC_MAX_VSP)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"DISPLAY");
 		FPGA_Info_Visible(INFO_STR);
 		FPGA_DisPattern(99, 0, 0, 0); 
+#endif
 		printf("\r\n*#*#CURRENT_NG:VSP!#*#*\r\n");
 	}
 	else if (I_VSN < SPEC_MIN_VSN || I_VSN > SPEC_MAX_VSN)
-	{ 
+	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"DISPLAY");
 		FPGA_Info_Visible(INFO_STR);
 		FPGA_DisPattern(98, 0, 0, 0);
+#endif
 		printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
 	}
 	else if (TEST_MODE != TEST_MODE_ET1 && (I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX))
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"I_LEDA");
 		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(114, 0, 0, 0);//BL Error ,display NG pattern  
+		FPGA_DisPattern(114, 0, 0, 0);//BL Error ,display NG pattern
+#endif
 		printf("\r\n*#*#CURRENT_NG:LEDA!#*#*\r\n");		
 	}
 	else
@@ -855,39 +867,49 @@ void SleepCurrent_Check(void)
 	Meas_Current_Sleep();
 	if (I_IOVCC == 0.0 && I_VSP == 0.0 && I_VSN == 0.0 && I_LEDA == 0.0)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"METER NO ACK");
 		FPGA_Info_Visible(INFO_STR);
 		FPGA_DisPattern(114, 0, 0, 0);
+#endif
 		current_NG = SET;
 		printf("\r\nThere is no ack from current meter, please check connection!\r\n");
 	}
 	else if (I_IOVCC > SPEC_SLEEP_IOVCC)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"SLEEP");
 		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(123, 0, 0, 0); 
+		FPGA_DisPattern(123, 0, 0, 0);
+#endif
 		current_NG = SET;
 		printf("\r\nIOVCC Sleep Current is abnormal!\r\n");
 	}
 	else if (I_VSP > SPEC_SLEEP_VSP)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"SLEEP");
 		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(99, 0, 0, 0); 
+		FPGA_DisPattern(99, 0, 0, 0);
+#endif
 		current_NG = SET;
 		printf("\r\nVSP Sleep Current is abnormal!\r\n");
 	}
 	else if (I_VSN > SPEC_SLEEP_VSN)
 	{
+#ifndef DSC_MODE
 		FPGA_Info_Set((uint8_t *)"SLEEP");
 		FPGA_Info_Visible(INFO_STR);
-		FPGA_DisPattern(98, 0, 0, 0); 
+		FPGA_DisPattern(98, 0, 0, 0);
+#endif
 		current_NG = SET;
 		printf("\r\nVSN Sleep Current is abnormal!\r\n");
 	}
 	else
 	{
+#ifndef DSC_MODE
 		FPGA_DisPattern(0, 0, 0, 0); 
+#endif
 		current_NG = RESET;
 		printf("\r\nSleep Current is normal!\r\n");	
 	}
@@ -939,6 +961,7 @@ void Meas_Current_Normal(void)
 	}
 
 	printf("\r\nTry_Count = %d\r\n", Try_Count);
+
 	if (Try_Count == 255)
 	{
 		I_IOVCC = 0.0;
@@ -1156,9 +1179,13 @@ void Test_Mode_Switch(void)
 												TEST_MODE == TEST_MODE_DEMO ||
 												TEST_MODE == TEST_MODE_OQC1
 												)
-			) 
+			)
 	{
+#ifndef DSC_MODE
 		FPGA_DisPattern(84, 0, 0, 0);	
+#else
+		FPGA_DisPicture(9);
+#endif
 		return;
 	}
 	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET || FPGA_NG == SET || OSC_TRIM_NG == SET)	
