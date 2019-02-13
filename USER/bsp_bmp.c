@@ -248,7 +248,7 @@ ErrorStatus PIC_Load_BMP(uint8_t picNum)
 	{
 		OTP_TIMES = picNum - i;
 		FPGA_Info_Visible(INFO_STR | INFO_OTPTIMES);
-		sprintf((char*)picName, "%d%s", i, ".bmp");
+		sprintf((char*)picName, "linshi\\%d%s", i, ".bmp");
 		printf("%s\r\n", picName);
 #ifdef CMD_MODE
 		FPGA_DisPattern(0, i, 1, 1); //display information

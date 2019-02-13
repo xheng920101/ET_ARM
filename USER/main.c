@@ -13,7 +13,7 @@
 //	TEST_MODE_CTP
 //	TEST_MODE_DEBUG
 uint8_t TEST_MODE = TEST_MODE_ET1;
-
+//FPGA程序要用PCLK为135MHz的
 #ifdef DSC_MODE
 	uint8_t LCM_POWER_STATE;
 #endif
@@ -73,21 +73,16 @@ int main(void)
 		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
 		{
 			/* picture loading for TM manual line */ 
-			if (PIC_NUM != 0)
+			if (PIC_NUM > 2)
 			{
+#ifdef DSC_MODE
+				LCM_POWER_STATE=SET;
+#endif
 				debug = TIMESTAMP;	
 				printf("\r\nPicture loading...\r\n");			
 				PIC_Load_BMP(PIC_NUM);
 				printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
 			}
-#ifdef DSC_MODE
-				LCM_POWER_STATE=SET;
-				debug = TIMESTAMP;	
-				printf("\r\nPicture loading...\r\n");			
-				PIC_Load_BMP(PIC_NUM);
-				printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
-#endif
-
 			/* version setting */
 			Version_Set();	
 		}

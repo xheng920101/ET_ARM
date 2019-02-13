@@ -87,6 +87,7 @@ uint8_t KEY_GetState(void)
 		key_old = KEY_GROUP;
 		return 	KEY_IDLE;
 	}
+	return KEY_GROUP;
 }
 
 /*********************************************************************************
@@ -127,19 +128,22 @@ void KeyProc(void)
 				printf("FUCK IT!\r\n");
 			}
 			else{
-				printf("YOU BASTARD!\r\n");
 			}
 #else
 #endif
 			break;
-//		case (KEY_AUTO): 
-//			if (TEST_MODE != TEST_MODE_OTP)	
-//			{
-//				if (DIS_AUTO == RESET) DIS_AUTO = SET; 
-//				else	DIS_AUTO = RESET;
-//			}
-//			keyStateTemp = KEY_IDLE;
-//			break;
+		case (KEY_AUTO): 
+			if (TEST_MODE != TEST_MODE_OTP)	
+			{
+				if (DIS_AUTO == RESET){
+					DIS_AUTO = SET;
+				}
+				else{
+					DIS_AUTO = RESET;
+				}
+			}
+			keyStateTemp = KEY_IDLE;
+			break;
 		case (KEY_UP): 
 			if (DIS_AUTO) break;
 			(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
@@ -152,18 +156,18 @@ void KeyProc(void)
 			printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
 			keyStateTemp = KEY_IDLE;
 			break;
-//		case (KEY_SLEEP): 
-//			LCD_SleepIn();
-//			LCD_VideoMode_OFF();
-//			MIPI_SleepMode_ON();
-//			LCMPower_OFF();
-//			printf("\r\n*#*#E:SLEEP IN#*#*\r\n");		
-//			//	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //old
-//			GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
-//			Delay_sec(120);
-//			GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //new 			
-//			keyStateTemp = KEY_IDLE;
-//			break;
+		case (KEY_SLEEP): 
+			LCD_SleepIn();
+			LCD_VideoMode_OFF();
+			MIPI_SleepMode_ON();
+			LCMPower_OFF();
+			printf("\r\n*#*#E:SLEEP IN#*#*\r\n");		
+			//	GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //old
+			GPIO_ResetBits(TEST31_GPIO_PORT, TEST31_PIN); //new
+			Delay_sec(120);
+			GPIO_SetBits(TEST31_GPIO_PORT, TEST31_PIN); //new 			
+			keyStateTemp = KEY_IDLE;
+			break;
 		case (KEY_TEST): //RESET DRIVER IC
 #ifndef DSC_MODE
 			printf("//--------Message from KeyProc(key.c): key control - reset Driver IC!\r\n//");
@@ -174,11 +178,11 @@ void KeyProc(void)
 				LCD_VideoMode_OFF();
 				MIPI_SleepMode_ON();
 				LCMPower_OFF();
+				DIS_NUM=0;
 				LCM_POWER_STATE=RESET;
 				printf("YOU ARE FUCKED!\r\n");
 			}
 			else{
-				printf("FUCKED!\r\n");
 			}
 #endif
 			keyStateTemp = KEY_TEST;

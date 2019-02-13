@@ -786,7 +786,7 @@ void FPGA_DisPicture(uint8_t picNum)
 	FPGA_SPI3Write(1);
 	FPGA_SPI3Write(ADDR_DIS_SN);
 	FPGA_SPI3Write(picNum);
-	
+
 #ifdef CMD_MODE
 	SSD_B7 |= SSD_CFGR_DCS;
 	SSD_B7 &= ~SSD_CFGR_REN;

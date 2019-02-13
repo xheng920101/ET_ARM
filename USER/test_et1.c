@@ -18,10 +18,10 @@
 			break;
 		case (1):
 			FPGA_DisPicture(1);
-			break;
+		break;
 		case (2):
 			FPGA_DisPicture(2);
-			break;
+		break;
 		case (3):
 			FPGA_DisPicture(3);
 			break;
