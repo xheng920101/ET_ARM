@@ -407,18 +407,3 @@ void pattern24_test(void)
 //	 Pattern_check();
 //	 pattern24_test();
  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

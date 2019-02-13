@@ -78,9 +78,11 @@ int main(void)
 #ifdef DSC_MODE
 				LCM_POWER_STATE=SET;
 #endif
+				LED_ON(GREEN);
 				debug = TIMESTAMP;	
 				printf("\r\nPicture loading...\r\n");			
 				PIC_Load_BMP(PIC_NUM);
+				LED_OFF(GREEN);
 				printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
 			}
 			/* version setting */
