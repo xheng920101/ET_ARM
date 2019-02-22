@@ -27,5 +27,6 @@ void USART1_RXD(void);
 void UART4_RXD(void);
 void USART_EventProcess(void);
 void USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...);
+void shh_pattern_ctr(void);
 
 #endif /* __USART_H */

@@ -13,12 +13,6 @@
  	TOTAL_DIS_NUM = 5;	
  	switch (DIS_NUM) 
 	{
-//		case (0): 
-//			FPGA_Info_Visible(INFO_VERSION | INFO_PROJECT_NO);
-//			FPGA_DisPattern(24, 127, 127, 127);	//dotcheck
-//			break;
-//		case (1):	
-//			FPGA_Info_Visible(INFO_NONE);
 		case (0):			
 			FPGA_Info_Visible(INFO_VERSION | INFO_PROJECT_NO);
 			ScanForward();	
@@ -37,6 +31,9 @@
 			FPGA_DisPattern(0, 255, 255, 255);	//white
 		  Delay_ms(ET_DLY_LOCK * 700); 
 			break;
+//		case (3): 
+//			FPGA_DisPattern(24, 127, 127, 127);	//dotcheck
+//			break;
 		case (3): 
 			FPGA_DisPattern(127, 255, 255, 255);	//RGB
 			break;

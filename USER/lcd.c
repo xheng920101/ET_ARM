@@ -24,22 +24,22 @@ void LCD_RST_Config(void)
 	GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);	
 }
 
-/*********************************************************************************
-* Function: DriverIC_Reset
-* Description: DDIC reset
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
- void DriverIC_Reset(void)
- {
-	 printf("\r\nDriver IC reset...\r\n");
-	 GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
-	 Delay_ms(20);
-	 GPIO_SetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
-	 Delay_ms(150);
- }
+///*********************************************************************************
+//* Function: DriverIC_Reset
+//* Description: DDIC reset
+//* Input: none
+//* Output: none
+//* Return: none
+//* Call: external
+//*/
+// void DriverIC_Reset(void)
+// {
+//	 printf("\r\nDriver IC reset...\r\n");
+//	 GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+//	 Delay_ms(20);
+//	 GPIO_SetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
+//	 Delay_ms(150);
+// }
 
 ///*********************************************************************************
 //* Function: LCD_SoftReset
@@ -70,54 +70,54 @@ void LCD_RST_Config(void)
 * Return: none
 * Call: external
 */
-void LCD_SleepIn(void)
-{	
-	printf("\r\nDriver IC display off then sleep in...\r\n");
-	SSD_B7 |= SSD_CFGR_DCS;
-	SSD_B7 &= ~SSD_CFGR_REN;
-	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
-	printf("SSD_B7 = 0x%04x\r\n", SSD_B7);
-
-	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
-	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0028);
-	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0010);
-	Delay_ms(200);	  //delay more than 120ms
-
-	
-//	 	uint8_t D3_buf[26], D3_P1, D3_P4;
-
-//	printf("\r\n//==========R63350 sleep in start==========//\r\n");
+//void LCD_SleepIn(void)
+//{	
+//	printf("\r\nDriver IC display off then sleep in...\r\n");
 //	SSD_B7 |= SSD_CFGR_DCS;
 //	SSD_B7 &= ~SSD_CFGR_REN;
 //	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
-//	printf("\r\nSSD_B7 = 0x%04x\r\n", SSD_B7);
+//	printf("SSD_B7 = 0x%04x\r\n", SSD_B7);
+
 //	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
 //	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0028);
-
-//	MIPI_GEN_Read(MAIN_PORT, 0xD3, 26, D3_buf);
-//	D3_P1 = D3_buf[0];
-//	D3_P4 = D3_buf[3];
-//	D3_buf[0] = 0x13; // D3 parameter 1 set 0x13
-//	D3_buf[3] = 0xB3; // D3 parameter 4 set 0xB3
-//	MIPI_GEN_Write((PORT0 | PORT1), 0xD3, 26, D3_buf);
-//	Delay_ms(5);	
-
-//	SSD_B7 |= SSD_CFGR_DCS;
-//	SSD_B7 &= ~SSD_CFGR_REN;
-//	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
-//	printf("\r\nSSD_B7 = 0x%04x\r\n", SSD_B7);
-//	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
 //	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0010);
-//	Delay_ms(200);	 // ????120ms
+//	Delay_ms(200);	  //delay more than 120ms
 
-//	D3_buf[0] = D3_P1; // D3 parameter 1 data recover.
-//	D3_buf[3] = D3_P4; // D3 parameter 4 data recover.
-//	MIPI_GEN_Write((PORT0 | PORT1), 0xD3, 26, D3_buf);
-//	Delay_ms(5);	
+//	
+////	 	uint8_t D3_buf[26], D3_P1, D3_P4;
+
+////	printf("\r\n//==========R63350 sleep in start==========//\r\n");
+////	SSD_B7 |= SSD_CFGR_DCS;
+////	SSD_B7 &= ~SSD_CFGR_REN;
+////	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
+////	printf("\r\nSSD_B7 = 0x%04x\r\n", SSD_B7);
+////	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
+////	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0028);
+
 ////	MIPI_GEN_Read(MAIN_PORT, 0xD3, 26, D3_buf);
+////	D3_P1 = D3_buf[0];
+////	D3_P4 = D3_buf[3];
+////	D3_buf[0] = 0x13; // D3 parameter 1 set 0x13
+////	D3_buf[3] = 0xB3; // D3 parameter 4 set 0xB3
+////	MIPI_GEN_Write((PORT0 | PORT1), 0xD3, 26, D3_buf);
+////	Delay_ms(5);	
 
-//	printf("\r\n//==========R63350 sleep in end==========//\r\n");
-}
+////	SSD_B7 |= SSD_CFGR_DCS;
+////	SSD_B7 &= ~SSD_CFGR_REN;
+////	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
+////	printf("\r\nSSD_B7 = 0x%04x\r\n", SSD_B7);
+////	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
+////	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0010);
+////	Delay_ms(200);	 // ????120ms
+
+////	D3_buf[0] = D3_P1; // D3 parameter 1 data recover.
+////	D3_buf[3] = D3_P4; // D3 parameter 4 data recover.
+////	MIPI_GEN_Write((PORT0 | PORT1), 0xD3, 26, D3_buf);
+////	Delay_ms(5);	
+//////	MIPI_GEN_Read(MAIN_PORT, 0xD3, 26, D3_buf);
+
+////	printf("\r\n//==========R63350 sleep in end==========//\r\n");
+//}
 
 /*********************************************************************************
 * Function: LCD_SleepOut
@@ -127,19 +127,19 @@ void LCD_SleepIn(void)
 * Return: none
 * Call: external
 */
-void LCD_SleepOut(void)
-{
-	printf("\r\nDriver IC display on then sleep out...\r\n");
-	SSD_B7 |= SSD_CFGR_DCS;
-	SSD_B7 &= ~SSD_CFGR_REN;
-	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
-	printf("SSD_B7 = 0x%04x\r\n", SSD_B7);
+//void LCD_SleepOut(void)
+//{
+//	printf("\r\nDriver IC display on then sleep out...\r\n");
+//	SSD_B7 |= SSD_CFGR_DCS;
+//	SSD_B7 &= ~SSD_CFGR_REN;
+//	WriteSSDReg((PORT0 | PORT1), SSD_CFGR, SSD_B7);
+//	printf("SSD_B7 = 0x%04x\r\n", SSD_B7);
 
-	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
-	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0011);
-	Delay_ms(200);	  //delay more than 120ms
-	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0029);	
-}
+//	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
+//	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0011);
+//	Delay_ms(200);	  //delay more than 120ms
+//	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0029);	
+//}
 
 /*********************************************************************************
 * Function: LCD_DisplayOff
@@ -159,7 +159,7 @@ void LCD_DisplayOff(void)
 
 	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
 	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0028);
-	Delay_ms(10); //150 -> 10 @2018 V2P4
+	Delay_ms(150);
 }
 
 /*********************************************************************************
@@ -180,7 +180,7 @@ void LCD_DisplayOn(void)
 
 	WriteSSDReg((PORT0 | PORT1), 0xBC, 0x0001);
 	WriteSSDReg((PORT0 | PORT1), 0xBF, 0x0029);
-	Delay_ms(10); //150 -> 10 @2018 V2P4
+	Delay_ms(150);
 }
 
 /*********************************************************************************
@@ -293,17 +293,17 @@ void MIPI_SleepMode_OFF(void)
 * Return: none
 * Call: external
 */
-void LCD_LitSquence(void)
-{
-	LCD_PWM(0xFFF);
-	LCD_SleepOut();
-	LCD_HSMode();	
-#ifdef CMD_MODE
-	LCD_VideoMode_OFF();
-#else
-	LCD_VideoMode_ON();
-#endif
-}
+//void LCD_LitSquence(void)
+//{
+//	LCD_SleepOut();
+//	LCD_HSMode();	
+//#ifdef CMD_MODE
+//	LCD_VideoMode_OFF();
+//#else
+//	LCD_VideoMode_ON();
+//#endif
+//	LCD_PWM(0x0FFF);
+//}
 
 /*********************************************************************************
 * Function: LCD_PWM
@@ -314,35 +314,35 @@ void LCD_LitSquence(void)
 * Return: none
 * Call: external
 */
-void LCD_PWM(uint16_t data)
-{
-	uint8_t wtBuf[2];
+//void LCD_PWM(uint16_t data)
+//{
+//	uint8_t wtBuf[2];
 
-	//8bit pwm
-	wtBuf[0] = data & 0x00FF;
-	PWM_DUTY = (wtBuf[0]*PWM_T/0xFF);
-	printf("\r\nPWM_DUTY=%d\r\n", PWM_DUTY);	
-	MIPI_DCS_Write((PORT0 | PORT1), 0x51, 1, wtBuf);
-	
-	//more than 8bit, for example: 12 bit pwm
+//	//8bit pwm
+////	wtBuf[0] = data & 0x00FF;
+////	PWM_DUTY = (wtBuf[0]*PWM_T/0xFF);
+////	printf("\r\nPWM_DUTY=%d\r\n", PWM_DUTY);	
+////	MIPI_DCS_Write((PORT0 | PORT1), 0x51, 1, wtBuf);
+//	
+//	//more than 8bit, for example: 12 bit pwm
 //	wtBuf[0] = (data >> 8) & 0x000F;
 //	wtBuf[1] = data & 0x00FF;
 //	PWM_DUTY = (data*PWM_T/0x0FFF);
 //	printf("\r\nPWM_DUTY=%d\r\n", PWM_DUTY);
 //	MIPI_DCS_Write((PORT0 | PORT1), 0x51, 2, wtBuf);
 
-	wtBuf[0] = 0x24; //0x2C
-	MIPI_DCS_Write((PORT0 | PORT1), 0x53, 1, wtBuf);
-	wtBuf[0] = 0x00;
-	MIPI_DCS_Write((PORT0 | PORT1), 0x55, 1, wtBuf);
-	Delay_ms(10);
-}
+//	wtBuf[0] = 0x24; //0x2C
+//	MIPI_DCS_Write((PORT0 | PORT1), 0x53, 1, wtBuf);
+//	wtBuf[0] = 0x00;
+//	MIPI_DCS_Write((PORT0 | PORT1), 0x55, 1, wtBuf);
+//	Delay_ms(10);
+//}
 
-void LEDA_DIM(void) //1mA
-{
-	LCD_PWM(0x000D); //8bit
-//	LCD_PWM(0x00CC); //12bit
-}
+//void LEDA_DIM(void)
+//{
+//	LCD_PWM(0x000D); //8bit
+////	LCD_PWM(0x0066); //12bit
+//}
 
 /*********************************************************************************
 * Function: ARM_PWM_Control
@@ -481,16 +481,11 @@ void LCM_Init(void)
 #endif
 	
 #ifdef NO_FLASH_MODE
-	if (TEST_MODE == TEST_MODE_CTP)
-	{
-		sprintf(FWVersion, "");
-	}
-	else if (TEST_MODE == TEST_MODE_RA)
+	if (TEST_MODE == TEST_MODE_RA)
 	{	
 		if (RA_Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
-			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
 			LED_ON(RED);
@@ -501,7 +496,6 @@ void LCM_Init(void)
 		if (Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
-			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
 			LED_ON(RED);
@@ -552,16 +546,11 @@ void LCM_Reset()
 	LCD_LitSquence();
 
 #ifdef NO_FLASH_MODE
-	if (TEST_MODE == TEST_MODE_CTP)
-	{
-		sprintf(FWVersion, "");
-	}
-	else if (TEST_MODE == TEST_MODE_RA)
+	if (TEST_MODE == TEST_MODE_RA)
 	{	
 		if (RA_Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
-			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
 			LED_ON(RED);
@@ -572,7 +561,6 @@ void LCM_Reset()
 		if (Program_FW() == ERROR) 
 		{
 			FW_NG = SET;
-			FPGA_Info_Visible(INFO_STR);
 			FPGA_Info_Set((uint8_t *)"FW ERROR");	
 			FPGA_DisPattern(114, 0, 0, 0);
 			LED_ON(RED);

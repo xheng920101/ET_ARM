@@ -14,9 +14,7 @@ void Board_Init(void)
 	char Str_Temp[64];
 	char File_Name[32];
 #endif
-	
-//	uint32_t  CPU_ID[3];
-	
+
 	OTP_FLAG = OTP_FLAG_MAN; //load defaut otp option
 	if (TEST_MODE == TEST_MODE_OTP)
 	{
@@ -35,18 +33,6 @@ void Board_Init(void)
 	USART1_Config();
  	UART4_Config();
 	printf("\r\nUSART configuration is ready.\r\n");
-		
-	//STM32F103系列
-////	CPU_ID[0] = *(__IO u32*)(0x1FFFF7E8);
-////	CPU_ID[1] = *(__IO u32*)(0x1FFFF7EC);
-////	CPU_ID[2] = *(__IO u32*)(0x1FFFF7F0);
-//	//STM32F207/STM32F40X系列
-//	CPU_ID[0] = *(__IO u32*)(0x1FFF7A10);
-//	CPU_ID[1] = *(__IO u32*)(0x1FFF7A14);
-//	CPU_ID[2] = *(__IO u32*)(0x1FFF7A18);
-//	printf("CPU_ID[0] = 0x%08X\r\n", CPU_ID[0]);
-//	printf("CPU_ID[1] = 0x%08X\r\n", CPU_ID[1]);
-//	printf("CPU_ID[2] = 0x%08X\r\n", CPU_ID[2]);
 	
  	TIM3_Config();
  	printf("\r\nTimer tick start.\r\n[%.3fs]\r\n", TIMESTAMP);

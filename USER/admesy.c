@@ -202,7 +202,7 @@ void Meas_Flicker(void)
 
 	Flicker = atof(Admesy_RData);
 	printf("The Flicker is %f\r\n", Flicker);
-	printf("Try_Count = %d\r\n", Try_Count);
+	printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -290,7 +290,7 @@ void Meas_CCT_MSE(void)
 	CCT = atoi(Admesy_RData);
 	
 	printf("The CCT is %d\r\n", CCT);
-	printf("Try_Count = %d\r\n", Try_Count);
+	printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -324,7 +324,7 @@ void Meas_XYZ(void)
 	}
 
 	printf("The XYZ return from sensor is %s", Admesy_RData);
-	printf("Try_Count = %d\r\n", Try_Count);
+	printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -366,7 +366,7 @@ void Meas_Yxy(void)
 	color_x = atof(tempx);
 	color_y = atof(tempy);
 	printf("The Lv = %f ; x = %f ; y = %f \r\n",Lv, color_x, color_y);
-	printf("Try_Count = %d\r\n", Try_Count);
+	printf("Try_Count = %d", Try_Count);
 }
 
 /*********************************************************************************
@@ -426,5 +426,5 @@ void Meas_Yuv(void)
 	color_u = atof(tempx);
 	color_v = atof(tempy);
 	printf("The Lv = %f ; u = %f ; v = %f \r\n",Lv, color_u, color_v);
-	printf("Try_Count = %d\r\n", Try_Count);
+	printf("Try_Count = %d", Try_Count);
 }

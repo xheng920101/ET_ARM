@@ -170,14 +170,14 @@ ErrorStatus Lcd_Load_bmp(LONG Bmp_Width, LONG Bmp_Hight, unsigned char *Pic_Name
 	//1 FHD picture size: 1080 * 1920 * 3 = 6220800 bytes
 	//SDRAM: data bus width = 16 bits = 2 bytes
 	//1 full page burst: 512 * 2 bytes = 1024 bytes
-	//We use 3 SDRAM to store pictures, so 1 burst contains:   bytes
+	//We use 2 SDRAM to store pictures, so 1 burst contains:   bytes
 	//6220800 / 2048 = 3037.5
 	//For each SDRAM, need 3037 and a half bursts. 
 	//Need to transfer: 256(half burst) * 2 (bytes) * 2(SDRAM chips) = 1024 bytes
 	//****************************************************************************
 #ifdef SINGLE_PORT	
-	num = (3072 - (Bmp_Width * Bmp_Hight * 3 % 3072)) / 2;
-	if (num == 1536) //刚好整数个burst
+	num = (2048 - (Bmp_Width * Bmp_Hight * 3 % 2048)) / 2;
+	if (num == 1024) //刚好整数个burst
 	{
 		num = 0;
 	}
@@ -221,9 +221,9 @@ ErrorStatus PIC_Load_BMP(uint8_t picNum)
 
 #ifdef SINGLE_PORT	
 	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
+		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 2 + 0.99);  //向上取整
+		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 + 0.99);	  //向上取整	
+		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 2048 / 4;
 	}
 #else
 	{
@@ -286,10 +286,10 @@ ErrorStatus PIC_Load_BMP_ET(uint8_t * picName)
 	uint16_t sdramlastBurstUse;
 
 #ifdef SINGLE_PORT	
-	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
+	{
+		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 2 + 0.99);  //向上取整
+		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 + 0.99);	  //向上取整	
+		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 2048 / 4;		
 	}
 #else
 	{
@@ -298,10 +298,6 @@ ErrorStatus PIC_Load_BMP_ET(uint8_t * picName)
 		sdramlastBurstUse	= (FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3) % 3072 / 6;
 	} 
 #endif
-	if (sdramlastBurstUse == 0) //刚好整数个burst
-	{
-		sdramlastBurstUse = 512;
-	}
 	//para1: send enable
 	//para2: how many pictures to be sent		 
 	//para3: how mayn SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
@@ -318,44 +314,6 @@ ErrorStatus PIC_Load_BMP_ET(uint8_t * picName)
 	}
 	Pic_Load = SUCCESS;
 	Pic_Load_Finish = SET;
-	return SUCCESS;
-}
-
-ErrorStatus PIC_Load_BMP_DPT(uint8_t * picName)
-{
-	uint8_t picSize;
-	uint16_t sdramBurstNum;
-	uint16_t sdramlastBurstUse;
-
-#ifdef SINGLE_PORT	
-	{	
-		sdramBurstNum = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整	
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * FPGA_porchPara.VACT * 3) % 3072 / 6;
-	}
-#else
-	{
-		sdramBurstNum = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 3 + 0.99);  //向上取整
-		picSize = ((FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3.0) / 1024 / 1024 / 3 + 0.99);	  //向上取整
-		sdramlastBurstUse	= (FPGA_porchPara.HACT * 2 * FPGA_porchPara.VACT * 3) % 3072 / 6;
-	} 
-#endif
-	if (sdramlastBurstUse == 0) //刚好整数个burst
-	{
-		sdramlastBurstUse = 512;
-	}
-	//para1: send enable
-	//para2: how many pictures to be sent		 
-	//para3: how mayn SDRAM bursts need to store 1 picture: (HSUM * VSUM * 24) / (512 * 16)	/ SDRAM_NUM
-	//para4: SDRAM size reserved for 1 picture: (HSUM * VSUM * 3) / 1024 / 1024 / SDRAM_NUM	 (uint: MB)
-	//para5:  how many address to use in last SDRAM burst for 1 picture : (2048 - HSUM * VSUM * 3 % 2048) / 4 (4 for single port)
-	FPGA_PIC_WR_CFG(1, 1, sdramBurstNum, picSize, sdramlastBurstUse);
-	if (Lcd_Load_bmp(FPGA_porchPara.HACT, FPGA_porchPara.VACT, picName) == ERROR)
-	{
-//		FPGA_Info_Set((uint8_t *)"LOAD PIC FAIL.");
-//		FPGA_Info_Visible(INFO_STR);
-		return ERROR;
-	}
 	return SUCCESS;
 }
 

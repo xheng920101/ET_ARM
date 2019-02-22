@@ -11,9 +11,7 @@ extern char OTP_FLAG;
 void Test_OTP(void);
 ErrorStatus OTP(void);
 uint8_t AutoVcom(void);
-uint8_t AutoVcom1(void);
 ErrorStatus Gamma_Check(void);
-ErrorStatus Gamma_Check1(void);
 ErrorStatus Contrast_Check(void);
 ErrorStatus Chroma_Check(void);
 

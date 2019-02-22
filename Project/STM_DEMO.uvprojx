@@ -650,19 +650,14 @@
           <GroupName>INI_OTP</GroupName>
           <Files>
             <File>
-              <FileName>Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FileName>
+              <FileName>Common_OTP code_OTM1911A_V5.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_InitialCode_6.5inch_COF_NT36682A_CMOS_V4P0_20180704.c</FilePath>
+              <FilePath>..\INI_OTP\Common_OTP code_OTM1911A_V5.c</FilePath>
             </File>
             <File>
-              <FileName>Common_OTPCode_NT36672A_V3.c</FileName>
+              <FileName>For 18-9 NOMS Initial code_OMT1911A_RGBBGR_V1.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\INI_OTP\Common_OTPCode_NT36672A_V3.c</FilePath>
-            </File>
-            <File>
-              <FileName>NT36672A_FW_Update_V1P0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\INI_OTP\NT36672A_FW_Update_V1P0.c</FilePath>
+              <FilePath>..\INI_OTP\For 18-9 NOMS Initial code_OMT1911A_RGBBGR_V1.c</FilePath>
             </File>
           </Files>
         </Group>

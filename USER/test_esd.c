@@ -45,15 +45,6 @@ void ESD_Visual_Check(void)
 		break; 
 		case (12): //dot check 
 		FPGA_DisPattern(24, 127,0,0); 
-//		break; 
-//		case (13): //dot check 
-//		FPGA_DisPattern(24, 255,0,0); 
-//		break; 
-//		case (14): //pixel check 
-//		FPGA_DisPattern(23, 127,0,0); 
-//		break;
-//		case (15): //pixel check 
-//		FPGA_DisPattern(23, 255,0,0); 
 		FPGA_Info_Visible(INFO_NONE); 
 		break; 
 		default: 

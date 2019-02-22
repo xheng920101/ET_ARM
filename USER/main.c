@@ -32,7 +32,6 @@ int main(void)
 
 	/* Initial */		
 	FPGA_Initial();
-		
 	if (!auto_line)
 	{
 		LCM_Init();
@@ -47,7 +46,7 @@ int main(void)
 		}
 		
 		/* picture loading for DPT AOI*/
-		if (PIC_Load_BMP_DPT((uint8_t *)"DPT.bmp") == SUCCESS)
+		if (PIC_Load_BMP_ET((uint8_t *)"DPT.bmp") == SUCCESS)
 		{
 			DIS_NUM_OLD = DIS_NUM; //DPT AOI not to enter test mode switch
 		}			
@@ -64,7 +63,7 @@ int main(void)
 		}			
 		Pic_Load_Finish = RESET; //remain the flag for TM ET picture loading		
 		
-		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET && FPGA_NG == RESET && OSC_TRIM_NG == RESET)
+		if (current_NG == RESET && SDCard_NG == RESET && TE_NG == RESET && PWM_NG == RESET &&  ID_NG == RESET && FW_NG == RESET)
 		{	
 			/* picture loading for TM manual line */ 
 			if (PIC_NUM != 0)
@@ -89,9 +88,7 @@ int main(void)
 			if (SDCard_NG == SET) FPGA_Info_Set((uint8_t *)"SDCARD ERROR");
 			else if (TE_NG == SET) FPGA_Info_Set((uint8_t *)"TE NG");	
 			else if (PWM_NG == SET) FPGA_Info_Set((uint8_t *)"PWM NG");	
-			else if (ID_NG == SET)	FPGA_DisPattern(86, 0, 0, 0);
-			else if (FPGA_NG == SET) FPGA_Info_Set((uint8_t *)"FPGA ERROR");
-			else if (OSC_TRIM_NG == SET) FPGA_Info_Set((uint8_t *)"OSC TRIM OFF");				
+			else if (ID_NG == SET)	FPGA_DisPattern(86, 0, 0, 0);			
 		}
 	} //end of 	if (!auto_line)
 	else
@@ -108,8 +105,8 @@ int main(void)
 	SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;
 	printf("CURRENT SPEC -> normal: IOVCC_MAX = %.2f; VSP_MAX = %.2f; VSN_MAX = %.2f; LEDA_MAX = %.2f;\r\n", SPEC_MAX_IOVCC, SPEC_MAX_VSP, SPEC_MAX_VSN ,SPEC_LEDA_MAX);
 	printf("CURRENT SPEC -> normal: IOVCC_MIN = %.2f; VSP_MIN = %.2f; VSN_MIN = %.2f; LEDA_MIN = %.2f; \r\n", SPEC_MIN_IOVCC, SPEC_MIN_VSP, SPEC_MIN_VSN, SPEC_LEDA_MIN);			
-	printf("CURRENT SPEC -> dim: LEDA_MAX = %.2f;\r\n", SPEC_MAX_LEDA_DIM);
-	printf("CURRENT SPEC -> dim: LEDA_MIN = %.2f;\r\n", SPEC_MIN_LEDA_DIM);
+	printf("CURRENT SPEC -> dim: LEDA_MAX = %.2f;\r\n", SPEC_MIN_LEDA_DIM);
+	printf("CURRENT SPEC -> dim: LEDA_MIN = %.2f;\r\n", SPEC_MAX_LEDA_DIM);
 #endif
 	
 	/* Main loop */
@@ -117,19 +114,11 @@ int main(void)
 	printf("\r\nMain loop...\r\n");
 	printf("\r\n===== System on time elapsed: %.3f(second)\r\n", TIMESTAMP);	
   printf("\r\n*#*#SYSTEM OK#*#*\r\n");
-//	
-//	while (KEY_GetState() != KEY_UP);
-//	Delay_ms(1000);		
-
 	while (1)
 	{	
 		Test_Mode_Switch();
 		Connect_Check();
 		USART_EventProcess();
 		task_list();
-		
-//		(DIS_NUM >= (TOTAL_DIS_NUM - 1)) ? (DIS_NUM = 0) : DIS_NUM++;
-//		printf("TOTAL_DIS_NUM = %d, DIS_NUM = %d\r\n", TOTAL_DIS_NUM, DIS_NUM); 
-//		Delay_ms(1000);		
 	} 
 }

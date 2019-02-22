@@ -52,8 +52,6 @@
 #define 	ADDR_INIT_END       0x40
 #define 	ADDR_TE_DETECT      0x41
 #define 	ADDR_PIC_MASK       0x42
-#define 	ADDR_INFO_Y_1       0x43
-#define 	ADDR_INFO_Y_2       0x44
 
 #define 	ADDR_PAT_R       	0x50
 #define 	ADDR_PAT_G       	0x51
@@ -71,11 +69,6 @@
 #define 	ADDR_PAT_BG_R       0x5D
 #define 	ADDR_PAT_BG_G       0x5E
 #define 	ADDR_PAT_BG_B       0x5F
-#define 	ADDR_PAT_RECT_XY		0x45
-#define 	ADDR_PAT_RECT_X			0x46
-#define 	ADDR_PAT_RECT_Y			0x47
-#define 	ADDR_PAT_RECT_S_X		0x48
-#define 	ADDR_PAT_RECT_S_Y		0x49
 
 #define 	ADDR_OTP_TIMES     	0x60
 #define 	ADDR_INFO_SHOW_EN  	0x61	
@@ -167,7 +160,6 @@ void FPGA_Porch_Set(FPGAPORCH_TypeDef FPGA_porchPara);
 void FPGA_Display_Set(void);
 void FPGA_Info_Set(uint8_t * info);
 void FPGA_Project_Set(uint8_t * info);
-void FPGA_Project_Check(void);
 void FPGA_Version_Set(uint8_t * info);
 void FPGA_Info_Visible(uint8_t visible);
 void FPGA_DisPattern(uint8_t ptnNum, uint8_t rdata, uint8_t gdata, uint8_t bdata);

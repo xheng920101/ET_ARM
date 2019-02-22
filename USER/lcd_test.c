@@ -7,8 +7,6 @@ FlagStatus TE_NG = RESET;
 FlagStatus PWM_NG = RESET;
 FlagStatus ID_NG = RESET;
 FlagStatus FW_NG = RESET;
-FlagStatus FPGA_NG = RESET;
-FlagStatus OSC_TRIM_NG = RESET;
 
 uint16_t delay_cnt;
 uint16_t PWM_detect_cnt;
@@ -131,9 +129,6 @@ void TEST_Config_CTP(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;       
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	
 
-	GPIO_InitStructure.GPIO_Pin = TEST15_PIN; //CTP2
-	GPIO_Init(TEST15_GPIO_PORT, &GPIO_InitStructure);
-	
 	GPIO_InitStructure.GPIO_Pin = TEST18_PIN; //CTP1
 	GPIO_Init(TEST18_GPIO_PORT, &GPIO_InitStructure);
 	
@@ -256,8 +251,6 @@ void CTP_Start(void)
 //	
 //	if (Reg_0A == 0X9C)
 //	{
-//		GPIO_SetBits(CTP_START_GPIO_PORT, CTP_START_PIN);
-//		Delay_ms(850); 
 		GPIO_ResetBits(CTP_START_GPIO_PORT, CTP_START_PIN); 
 		Delay_ms(850); //low active for focal CTP start
 		GPIO_SetBits(CTP_START_GPIO_PORT, CTP_START_PIN); //positive edge for syna/novatek/himax CTP start
@@ -630,7 +623,7 @@ void AOI_Current_Check_Normal()
 		{
 			printf("\r\n*#*#CURRENT_NG:VSN!#*#*\r\n");
 		}
-		else if ((TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP) && (I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX))
+		else if (TEST_MODE != TEST_MODE_ET1 && I_LEDA < SPEC_LEDA_MIN || I_LEDA > SPEC_LEDA_MAX)
 		{
 			printf("\r\n*#*#CURRENT_NG:LEDA!#*#*\r\n");
 		}
@@ -1270,7 +1263,7 @@ void Test_Mode_Switch(void)
 		FPGA_DisPattern(84, 0, 0, 0);	
 		return;
 	}
-	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET || FPGA_NG == SET || OSC_TRIM_NG == SET)	
+	else if (current_NG == SET || SDCard_NG == SET || TE_NG == SET || PWM_NG == SET || ID_NG == SET || FW_NG == SET)	
 	{		
 		return;
 	}
@@ -1317,7 +1310,7 @@ void Test_Mode_Switch(void)
 		
 		if (!auto_line)
 		{
-			if (Flag_Test_Current && TEST_MODE != TEST_MODE_ET3 && TEST_MODE != TEST_MODE_CTP)
+			if (Flag_Test_Current && TEST_MODE != TEST_MODE_ET3)
 			{
 				Current_Check();	
 			}
@@ -1325,7 +1318,7 @@ void Test_Mode_Switch(void)
 		Flag_Test_Current = SET;
 		
 		//for G6 ET OIC
-		if (DIS_NUM == 2 || DIS_NUM == 3)
+		if (DIS_NUM == 2)
 		{
 			Project_Info_Upload();
 			if (OTP_TIMES == 0)	printf("*#*#3:OTP NO#*#*\r\n"); 

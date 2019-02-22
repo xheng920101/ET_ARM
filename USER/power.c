@@ -96,8 +96,8 @@ void POWER_I2C_Config(void)
 	Delay_ms(1);
 	
 	I2C_ADDR = 0xA6;
-	data[0] = 0x80;//VSP
-	data[1] = 0x80;//VSN
+	data[0] = 0x1E;//VSP
+	data[1] = 0x17;//VSN
 	I2C_Sequential_Write(0x00, data, 2);
 	///////////////////FOR eDP power board///////////////////
 	
@@ -206,7 +206,7 @@ void LCMPower_OFF(void)
 }
 
 /*********************************************************************************
-* Function: LCMPower_ON1
+* Function: LCMPower_ON
 * Description: power on timing, high active
 * Input: none
 * Output: none

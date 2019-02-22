@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "string.h"
 
-#define ARMVERSION "V2P5"
+#define ARMVERSION "V2P3"
 
 uint16_t hsum;
 uint16_t vsum;
@@ -304,6 +304,25 @@ void FPGA_Porch_Set(FPGAPORCH_TypeDef FPGA_porchPara)
 */
 void FPGA_Display_Set(void)
 {
+	FPGA_SPI3Write(ADDR_PAT_R1);
+	FPGA_SPI3Write(DOT_R1);
+	FPGA_SPI3Write(ADDR_PAT_G1);
+	FPGA_SPI3Write(DOT_G1);
+	FPGA_SPI3Write(ADDR_PAT_B1);
+	FPGA_SPI3Write(DOT_B1);	
+	FPGA_SPI3Write(ADDR_PAT_R2);
+	FPGA_SPI3Write(DOT_R2);
+	FPGA_SPI3Write(ADDR_PAT_G2);
+	FPGA_SPI3Write(DOT_G2);
+	FPGA_SPI3Write(ADDR_PAT_B2);
+	FPGA_SPI3Write(DOT_B2);
+	FPGA_SPI3Write(ADDR_PAT_R3);
+	FPGA_SPI3Write(DOT_R3);     
+	FPGA_SPI3Write(ADDR_PAT_G3);
+	FPGA_SPI3Write(DOT_G3);     
+	FPGA_SPI3Write(ADDR_PAT_B3);
+	FPGA_SPI3Write(DOT_B3);		 	
+	
 	FPGA_SPI3Write(ADDR_PIC_MASK);
 	FPGA_SPI3Write(0);
 	
@@ -313,27 +332,11 @@ void FPGA_Display_Set(void)
 	FPGA_SPI3Write(0);
 }
 #else
-	{
-		FPGA_SPI3Write(ADDR_TE_DETECT);
-		FPGA_SPI3Write(0);
-	}
+{
+	FPGA_SPI3Write(ADDR_TE_DETECT);
+	FPGA_SPI3Write(0);
+}
 #endif
-	
-	FPGA_SPI3Write(ADDR_INFO_Y_1);
-	FPGA_SPI3Write((INFO_Y_AXIS & 0x0F00) >> 8);		
-	FPGA_SPI3Write(ADDR_INFO_Y_2);
-	FPGA_SPI3Write(INFO_Y_AXIS & 0x00FF);
-	
-	FPGA_SPI3Write(ADDR_PAT_RECT_XY);
-	FPGA_SPI3Write(((RECT_START_X & 0x0F00) >> 4) + ((RECT_START_Y & 0x0F00) >> 8));
-	FPGA_SPI3Write(ADDR_PAT_RECT_X);
-	FPGA_SPI3Write(RECT_START_X & 0x00FF);
-	FPGA_SPI3Write(ADDR_PAT_RECT_Y);
-	FPGA_SPI3Write(RECT_START_Y & 0x00FF);
-	FPGA_SPI3Write(ADDR_PAT_RECT_S_X);
-	FPGA_SPI3Write(RECT_SIZE_X);
-	FPGA_SPI3Write(ADDR_PAT_RECT_S_Y);
-	FPGA_SPI3Write(RECT_SIZE_Y);
 }
 
 /*********************************************************************************
@@ -391,37 +394,6 @@ void FPGA_Display_Set(void)
 		i++;
 	}
  }
- 
- /*********************************************************************************
-* Function: FPGA_Project_Check
-* Description: check if FPGA project number is match the ARM
-* Input: none
-* Output: none
-* Return: none
-* Call: external
-*/
-void FPGA_Project_Check(void)
-{
-	uint8_t i = 0;
-	uint8_t buf[18];
-	
-	while (i < 17)
-	{
-		FPGA_SPI3Write(ADDR_PROJECT_CHAR_0 + i);
-		FPGA_SPI3Write(0x00);
-		buf[i] = FPGA_SPI3Read(); 
-		if (buf[i] != PROJECT_NO[i]) FPGA_NG = SET; 
-		i++;
-	}
-	buf[i] = '\0'; //string end
-	
-	printf("ARM PROJECT_NO is %s\r\n", PROJECT_NO);
-	printf("FPGA PROJECT_NO is %s\r\n", buf);
-	if (FPGA_NG == SET)
-	{
-		printf("PROJECT_NO is not match!\r\n");
-	}
-}
  
  /*********************************************************************************
 * Function: FPGA_Version_Set
@@ -519,14 +491,14 @@ void Project_Info_Upload(void)
 #ifndef SDCARD_MODE
 	printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
 #else
-//	if (!auto_line) 
+	if (!auto_line) 
 	{
 		printf("\r\n*#*#1:%s_ET_ARM%s_%s_%s#*#*\r\n", PROJECT_NO, ARMVERSION, VERSION_SDmode, VERSION_DISPLAY);
 	}
-//	else
-//	{
-//		printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
-//	}
+	else
+	{
+		printf("\r\n*#*#1:%s_%s_ARM%s_%s#*#*\r\n", PROJECT_NO, temp1, ARMVERSION, temp2);
+	}
 #endif
 }
 
@@ -554,6 +526,8 @@ void FPGA_Info_Visible(uint8_t visible)
 	if ((visible & INFO_ARM_VERSION) == INFO_ARM_VERSION)
 	{
 		FPGA_Info_Set((uint8_t *)temp);
+		FPGA_SPI3Write(ADDR_INFO_SHOW_EN);
+		FPGA_SPI3Write(INFO_VERSION);
 	}
 	else
 	{
@@ -561,9 +535,9 @@ void FPGA_Info_Visible(uint8_t visible)
 		{
 			Version_Set();
 		}
+		FPGA_SPI3Write(ADDR_INFO_SHOW_EN);
+		FPGA_SPI3Write(visible);
 	}
-	FPGA_SPI3Write(ADDR_INFO_SHOW_EN);
-	FPGA_SPI3Write(visible);
 
 	if ((visible & INFO_OTPTIMES) == INFO_OTPTIMES)
 	{
@@ -598,23 +572,17 @@ void FPGA_DisPattern(uint8_t ptnNum, uint8_t rdata, uint8_t gdata, uint8_t bdata
 		SPEC_MAX_VSP =	SPEC_MAX_FLICKER_VSP;
 		SPEC_MAX_VSN	=	SPEC_MAX_FLICKER_VSN;	
 	}
-	else if (ptnNum == 23)
+	if (ptnNum == 23)
 	{
 		SPEC_MAX_IOVCC =	SPEC_MAX_CHECK_PIXEL_IOVCC;
 		SPEC_MAX_VSP =	SPEC_MAX_CHECK_PIXEL_VSP;
 		SPEC_MAX_VSN	= SPEC_MAX_CHECK_PIXEL_VSN;	
 	}
-	else if (ptnNum == 24)
+	if (ptnNum == 24)
 	{
 		SPEC_MAX_IOVCC =	SPEC_MAX_CHECK_DOT_IOVCC;
 		SPEC_MAX_VSP =	SPEC_MAX_CHECK_DOT_VSP;
 		SPEC_MAX_VSN	=	SPEC_MAX_CHECK_DOT_VSN;	
-	}
-	else
-	{
-		SPEC_MAX_IOVCC =	SPEC_MAX_RED_IOVCC;
-		SPEC_MAX_VSP =	SPEC_MAX_RED_VSP;
-		SPEC_MAX_VSN	=	SPEC_MAX_RED_VSN;
 	}
 	
 	if (ptnNum == 128) 
@@ -635,86 +603,7 @@ void FPGA_DisPattern(uint8_t ptnNum, uint8_t rdata, uint8_t gdata, uint8_t bdata
 		FPGA_SPI3Write(ADDR_PAT_BG_B);
 		FPGA_SPI3Write(HW_CROSS_BG_B);	 
 	}
-	if (ptnNum == 82) //bright dot
-	{
-		FPGA_Info_Visible(INFO_STR);
-		if (rdata == 0) //CH1
-		{
-			FPGA_Info_Set((uint8_t *)"CH1");
-			FPGA_SPI3Write(ADDR_PAT_R1);
-			FPGA_SPI3Write(100);
-			FPGA_SPI3Write(ADDR_PAT_G1);
-			FPGA_SPI3Write(70);
-			FPGA_SPI3Write(ADDR_PAT_B1);
-			FPGA_SPI3Write(170);	
-			FPGA_SPI3Write(ADDR_PAT_R2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_G2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_B2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_R3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_G3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_B3);
-			FPGA_SPI3Write(0);	
-			rdata = 70;
-			gdata = 70;
-			bdata = 70;
-		}
-		else if (rdata == 1) //CX1
-		{
-			FPGA_Info_Set((uint8_t *)"CX1");
-			FPGA_SPI3Write(ADDR_PAT_R1);
-			FPGA_SPI3Write(145);
-			FPGA_SPI3Write(ADDR_PAT_G1);
-			FPGA_SPI3Write(80);
-			FPGA_SPI3Write(ADDR_PAT_B1);
-			FPGA_SPI3Write(238);	
-			FPGA_SPI3Write(ADDR_PAT_R2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_G2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_B2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_R3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_G3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_B3);
-			FPGA_SPI3Write(0);	
-			rdata = 0;
-			gdata = 0;
-			bdata = 0;
-		}
-		else if (rdata == 2) //CM1
-		{
-			FPGA_Info_Set((uint8_t *)"CM1");
-			FPGA_SPI3Write(ADDR_PAT_R1);
-			FPGA_SPI3Write(135);
-			FPGA_SPI3Write(ADDR_PAT_G1);
-			FPGA_SPI3Write(83);
-			FPGA_SPI3Write(ADDR_PAT_B1);
-			FPGA_SPI3Write(157);	
-			FPGA_SPI3Write(ADDR_PAT_R2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_G2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_B2);
-			FPGA_SPI3Write(0);
-			FPGA_SPI3Write(ADDR_PAT_R3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_G3);
-			FPGA_SPI3Write(0);     
-			FPGA_SPI3Write(ADDR_PAT_B3);
-			FPGA_SPI3Write(0);	
-			rdata = 0;
-			gdata = 0;
-			bdata = 0;
-		} 
-	}
-
+	
 	FPGA_SPI3Write(ADDR_DIS_MODE);
 	FPGA_SPI3Write(0);
 	FPGA_SPI3Write(ADDR_DIS_SN);
@@ -828,10 +717,8 @@ void FPGA_DisPicture(uint8_t picNum)
 */
  void FPGA_PIC_WR_CFG(uint8_t wr_en, uint8_t wr_num, uint16_t bst_num, uint8_t size_rsv, uint16_t sdramlastBurstUse)
  {
-#ifndef SDCARD_MODE
 	 FPGA_SPI3Write(ADDR_PIC_WR_NUM);
 	 FPGA_SPI3Write(wr_num);
-#endif
 
 	 FPGA_SPI3Write(ADDR_PIC_BST_NUM_1);
 	 FPGA_SPI3Write((bst_num & 0xFF00) >> 8);
@@ -892,10 +779,8 @@ void FPGA_DisPicture(uint8_t picNum)
 */
  void FPGA_Initial()
  {
-#ifndef SDCARD_MODE
 		char buf[] = PROJECT_NO;
 		char *tmp;
-#endif
 
 		/* FPGA initial */
 		printf("\r\nFPGA_Reset...\r\n");
@@ -905,7 +790,6 @@ void FPGA_DisPicture(uint8_t picNum)
 		printf("\r\nFPGA_Info_Set...\r\n");
 		FPGA_Info_Set((uint8_t *)"");	
 		printf("\r\nFPGA_Project_Set...\r\n");
-//	  FPGA_Project_Check();
 #ifdef SDCARD_MODE
 	  FPGA_Project_Set((uint8_t *)PRO_DISPLAY);
 #else

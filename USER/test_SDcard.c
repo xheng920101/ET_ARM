@@ -5,8 +5,6 @@ char 	PRO_DISPLAY[20];
 char	Patten_Buf[1024] = {0};
 unsigned  char  LPatNum = 0;
 FlagStatus SD_MODE_ERROR = RESET;
-FlagStatus SD_MODE_AG = RESET;
-double resist=0;
 
 ErrorStatus get_RGBGray(uint8_t DisNum,	const char *InFile,	uint8_t *PatNum, uint8_t *Rgray, uint8_t *Ggray, uint8_t *Bgray, int *DeTime, uint16_t *SetPwm)
 {
@@ -36,22 +34,16 @@ ErrorStatus get_RGBGray(uint8_t DisNum,	const char *InFile,	uint8_t *PatNum, uin
 		  SPEC_LEDA_MIN = SPEC_MIN_LEDA_DIM;
 		  SPEC_LEDA_MAX	= SPEC_MAX_LEDA_DIM;
 
-			*SetPwm = 0x00C6;	//1mA for 12bit
-//		  *SetPwm = 0x000D;	//1mA for 8bit
-			LEDA_DIM();
+//			*SetPwm = 0x00C6;	//1mA for 12bit
+		  *SetPwm = 0x000D;	//1mA for 8bit
 		}
 		else
 		{
 			 SPEC_LEDA_MIN = SPEC_MIN_LEDA_NORMAL;
 	     SPEC_LEDA_MAX	= SPEC_MAX_LEDA_NORMAL;	
 			*SetPwm = 0xFFF;
-			LCD_PWM(0xFFF);
 		}
 		
-		if (*FiPa == 'B') 
-    {
-       ScanBackward();
-		}		
 		return SUCCESS;
 	}
 	else
@@ -144,11 +136,7 @@ void TEST_MODE_Init(void)
 				if (strcmp(txt_name, MyInfo.fname) == 0)
 				{
 					
-					if (strcmp(temp_Mod, "ET1") == 0)	
-					{						
-						SD_MODE_AG = SET;	
-						TEST_MODE = TEST_MODE_ET1;
-					}
+					if (strcmp(temp_Mod, "ET1") == 0)	TEST_MODE = TEST_MODE_ET1;
 					else if (strcmp(temp_Mod, "ET2") == 0)	TEST_MODE = TEST_MODE_ET2;
 					else if (strcmp(temp_Mod, "ET3") == 0)	TEST_MODE = TEST_MODE_ET3;
 					else if (strcmp(temp_Mod, "OQC2") == 0)	TEST_MODE = TEST_MODE_ET2;	
@@ -201,11 +189,8 @@ void Display_Pattern(void)
 			if (Rgray == Ggray && Ggray == Bgray && Rgray ==0)
 			{
 				FPGA_DisPattern(0, 0, 0, 0);
-//				LCD_SleepIn();
-//				LCD_LPMode();
 				LCD_SleepIn();
-	      LCD_VideoMode_OFF();
-		    MIPI_SleepMode_ON();
+				LCD_LPMode();
 				Delay_ms(DelayTime);
 				Flag_Test_Current = RESET;
 			}
@@ -225,22 +210,6 @@ void Display_Pattern(void)
 				PIC_Load_BMP_ET((uint8_t *)"0.bmp");
 				FPGA_Info_Visible(INFO_NONE);
 			}
-			FPGA_Info_Visible(INFO_NONE);
-			FPGA_DisPicture(1);
-			Delay_ms(DelayTime);
-		}
-		else if (PatNum == 254 && Rgray == 0x12)
-		{
-			if (Pic_Load_Finish == RESET)	
-			{
-				FPGA_Info_Set((uint8_t *)"LOAD PIC");
-				FPGA_DisPattern(0, 0, 0, 0);
-				FPGA_Info_Visible(INFO_STR);
-				PIC_Load_BMP_ET((uint8_t *)"1.bmp");
-				FPGA_Info_Visible(INFO_NONE);
-			}
-			ScanForward();
-			FPGA_Info_Visible(INFO_NONE);
 			FPGA_DisPicture(0);
 			Delay_ms(DelayTime);
 		}
@@ -253,13 +222,9 @@ void Display_Pattern(void)
 		{
 			if (LPatNum == 255) 
 			{
-//				LCD_SleepOut();
-//				LCD_HSMode();
-//				LCD_VideoMode_ON();
-				MIPI_SleepMode_OFF();		
-			  LCD_SleepOut();
-			  LCD_HSMode();
-			  LCD_VideoMode_ON();
+				LCD_SleepOut();
+				LCD_HSMode();
+				LCD_VideoMode_ON();
 			}
 			if (DIS_NUM == 0)	
 			{
@@ -268,68 +233,22 @@ void Display_Pattern(void)
 			}
 			else if(PatNum == 0 && Rgray == 127 && Ggray == 127 && Bgray == 127)
 			{
-//				ScanBackward();
+				ScanBackward();
 				FPGA_Info_Visible(INFO_RGBVAL);	
 			}
-//			else if(PatNum == 0 && Rgray == 64 && Ggray == 64 && Bgray == 64)
-//			{
-//        FPGA_Info_Visible(INFO_VERSION | INFO_PROJECT_NO);			
-//			}
 			else
 			{
 				ScanForward();
 				FPGA_Info_Visible(INFO_NONE);
 			}	
-			////////////Ag resistor measurement/////////////
-#ifdef AG_TEST			
-      if(SD_MODE_AG == SET	)
-			{
-				if(DIS_NUM == 1) // 
-			  {
-			  	Delay_ms(100);
-			  	resist = GetResValue();				
-			    printf("Detect the AG resistor is %f !",resist);
-		  	  if( resist >10000 || resist < 0.5)//modify base on test spec.
-			    {
-			  	 FPGA_DisPattern(114, 0, 0, 0);     //display NG
-			  	 while(1)
-			  	 {
-			  	 	 LED_ON(RED);
-			  		 Delay_ms(200);
-				  	 LED_OFF(RED);
-				  	 Delay_ms(200);
-				   }
-			    }
-	    	}
-		  	if(DIS_NUM > 1 && DIS_NUM < TOTAL_DIS_NUM)
-		  	{
-			  	while(GetResValue() < 10000)//modify base on test spec.
-			    {
-			  	  FPGA_DisPattern(139, 0, 0, 0);     //¿ª¸Ç
-			  	  FPGA_Info_Set((uint8_t *)"OPEN_AG");
-			    }
-				  FPGA_Info_Visible(INFO_NONE);
-			  }
-			 }
-#endif			
 			FPGA_DisPattern(PatNum, Rgray, Ggray, Bgray);
-//			LCD_PWM(BL_PWM);
-			FPGA_SPI3Write(ADDR_PIC_WR_NUM);
-      FPGA_SPI3Write(SD_MODE_PIC);
+			LCD_PWM(BL_PWM);
 			if (PatNum == 0 && Rgray == 255 && Ggray == 255 && Bgray == 255 && BL_PWM == 0xFFF)
 			{
-//				if (Pic_Load_Finish == SET || PIC_Load_BMP_ET((uint8_t *)"0.bmp") == ERROR)
-				if (PIC_Load_BMP_ET((uint8_t *)"0.bmp") == ERROR)
+				if (Pic_Load_Finish == SET || PIC_Load_BMP_ET((uint8_t *)"0.bmp") == ERROR)
 				{
 					Delay_ms(DelayTime); 
-				}
-			}			
-			else if (PatNum == 0 && Rgray == 0 && Ggray == 0 && Bgray == 0 )
-			{
-//				if (Pic_Load_Finish == SET || PIC_Load_BMP_ET((uint8_t *)"0.bmp") == ERROR)
-				if (PIC_Load_BMP_ET((uint8_t *)"1.bmp") == ERROR)
-				{
-					Delay_ms(DelayTime); 
+//					Delay_ms(300); 
 				}
 			}
 			else

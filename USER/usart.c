@@ -19,28 +19,26 @@ USART_TypeDef* PC_COM = USART1;
 USART_TypeDef* MSE_COM = UART4;
 uint16_t USART_RData[CODE_MAX_LEN];
 uint16_t USART_RDataCnt = 0;
-
+char usart_buf[32];
+uint8_t rxcnt= 0x00;
+uint8_t discnt = 0x00;
 float debug, debug1;
 
 uint8_t flag_blink;
 uint8_t r1, g1, b1, r2, g2, b2;
 uint16_t interval;
+uint8_t auto_shht;//auto shanghai temperature test
 
 uint8_t ID1;
 uint8_t ID2;
 uint8_t ID3;
 
-uint8_t DATE_YY;
-uint8_t DATE_MM;
-uint8_t DATE_DD;
-uint8_t DATE_HR;
-uint8_t DATE_MIM;
-uint8_t DATE_SEC;
-
 FlagStatus USART_EvenStatus = SET;
 FlagStatus USART_CMD_FLAG = RESET;
 FlagStatus auto_line = RESET;
 FlagStatus GAMMAEXPERT = RESET;
+
+
 
 /*********************************************************************************
 * Function: USART1_Config
@@ -76,9 +74,9 @@ void USART1_Config(void)
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	/* USART1 mode config */
-	USART_InitStructure.USART_BaudRate = 115200;
+	USART_InitStructure.USART_BaudRate = 9600;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_StopBits = USART_StopBits_2;
 	USART_InitStructure.USART_Parity = USART_Parity_No;
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
@@ -169,6 +167,22 @@ void PC_Data_Reciever(void)
   if(USART_GetFlagStatus(PC_COM, USART_IT_RXNE) == SET) 
   {          
     rdataTemp = USART_ReceiveData(PC_COM); 	   //read data
+		//add shanghai auto T test machine handle
+		usart_buf[rxcnt] = rdataTemp;
+		if(usart_buf[0]=='P'||usart_buf[0]=='L')
+		{
+			rxcnt++;
+			if(rxcnt>=4)
+//			if(usart_buf[rxcnt]=='\n')
+			auto_shht =0x55;
+		}
+		else
+		{
+//			rxcnt++;
+//			if(usart_buf[rxcnt]=='\n')
+			rxcnt = 0x00;
+		}
+		//add shanghai auto T test machine handle
 		if (USART_CMD_FLAG == RESET)
 		{
 			if (USART_EvenStatus == SET)
@@ -266,37 +280,6 @@ void UART4_RXD(void)
 }
 
 /*********************************************************************************
-* Function: Print_Gamma_Code
-* Description: upload gamma code to GammaPro tool
-* Input: -initCode, pointer to the initial code
-* Output: none
-* Return: none
-* Call: internal
-*/
-void Print_Gamma_Code(uint16_t * initCode)
-{
-	uint8_t cmd;
-	uint16_t data;
-	uint8_t initEnd = 0;
-	uint16_t * p = 	initCode;
-	
-	while (initEnd == 0)
-	{
-		data = (*p) ;
-		cmd = (*p++) >> 8;
-		switch (cmd)
-		{
-			case (0x01): printf("0x%x ", data); break;	
-			case (0x02): printf("0x%x ", data); break;
-			case (0x03): Delay_ms(data); break;
-			case (0x0F): initEnd = 1; break;
-			default: initEnd = 1; 
-			break;
-		}			
-	}
-}
-
-/*********************************************************************************
 * Function: USART_EventProcess
 * Description: usart event processing
 * Input: none
@@ -308,6 +291,17 @@ void USART_EventProcess(void)
 {
 	uint16_t i;
 	uint8_t rdBuf[64];
+	//add shanghai auto T test machine handle
+	if(auto_shht==0x55)
+	{
+		rxcnt = 0x00;
+		auto_shht = 0x00;
+		discnt = (usart_buf[1]-48)*100+(usart_buf[2]-48)*10+usart_buf[3]-48;	
+		shh_pattern_ctr();
+		usart_buf[0] = 0x00;
+		printf("shagnhai auto test display pattern is %d\r\n",discnt);
+	}
+	//add shanghai auto T test machine handle
 
 	if (flag_blink == 0x01)
 	{	
@@ -323,9 +317,11 @@ void USART_EventProcess(void)
 		{
 			case (0xAA01):
 				IC_Init(&USART_RData[1]);
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA02):
+//				FPGA_DisPattern(0x41, USART_RData[2], 0x00, 0x00);break;
+//				FPGA_DisPattern(0x8C, 0x00, 0x00, USART_RData[4]);break;
+//				FPGA_DisPattern(0x8D, USART_RData[2], USART_RData[3], USART_RData[4]);break;
 				if (USART_RData[1] == 107)
 				{
 					switch (USART_RData[3])
@@ -388,7 +384,7 @@ void USART_EventProcess(void)
 			//////////////////////////////////////start: for gammaexpert //////////////////////////////////////////////////
 			case (0xAA03):
 				Delay_ms(20);
-				printf("**##%s$%s$%s$%s$\r\n", Info_IC_Vendor, PROJECT_NO, Info_IC_Type, VERSION_OTP);                            
+				printf("*#*#%s$%s$%s$%s$\r\n", Info_IC_Vendor, PROJECT_NO, Info_IC_Type, VERSION_OTP);                            
 				printf("%.2f$%.2f$%.2f$", (SPEC_GAMMA - SPEC_GAMMA_RANGE), SPEC_GAMMA, (SPEC_GAMMA + SPEC_GAMMA_RANGE));
 				printf("%.3f$%.3f$%.3f$", (SPEC_x - SPEC_xy_RANGE), SPEC_x, (SPEC_x + SPEC_xy_RANGE));
 				printf("%.3f$%.3f$%.3f$", (SPEC_y - SPEC_xy_RANGE), SPEC_y, (SPEC_y + SPEC_xy_RANGE));
@@ -403,21 +399,17 @@ void USART_EventProcess(void)
 				printf("%.3f$%.3f$%.3f$", Info_TarGx, Info_TarGy, Info_RangeG);
 				printf("%.3f$%.3f$%.3f$", Info_TarBx, Info_TarBy, Info_RangeB);
 				printf("%s$\r\n", Info_Check_gamma);
-				printf("$\r\n");			
+				printf("%s$\r\n", Info_Fliker_Code);
+				printf("%s$\r\n", Info_Gamma_Register);
 			  printf("%.3f$%.3f$", Info_SHX1, Info_SHY1);
 				printf("%.3f$%.3f$", Info_SHX2, Info_SHY2);
 				printf("%.3f$%.3f$", Info_SHX3, Info_SHY3);
-			  printf("%.3f$%.3f$", Info_SHX4, Info_SHY4);
-				printf("%.2f$", Info_Vlimit);
-				printf("%d$", ID_OTP_FLAG);
-				printf("%s$", GammaPro_VERSION);
-				printf("%.2f##**\r\n", SPEC_Lv_MAX);
+			  printf("%.3f$%.3f", Info_SHX4, Info_SHY4);
+				printf("%.2f#*#*\r\n", Info_Vlimit);
 				Delay_ms(20);
-				printf("*#*#ACK#*#*\r\n");	
 				break;
 			case (0xAA04):
 				LED_ON(BLUE);
-				printf("*#*#ACK#*#*\r\n");	
 				if (OTPSequence()== SUCCESS)
 				{
 					printf("*#*#OTP OK#*#*\r\n"); 
@@ -459,7 +451,6 @@ void USART_EventProcess(void)
 					LED_OFF(BLUE);                                                
 					LED_OFF(GREEN); 				
 				}
-				printf("*#*#ACK#*#*\r\n");
 				KEY_SLEEPIN();
 				break;
 			case (0xAA06):
@@ -477,7 +468,6 @@ void USART_EventProcess(void)
 				IC_Init(ET1_InitCode);
 				Delay_ms(50);
 				LCD_PWM(0x0FFF);		
-				printf("*#*#ACK#*#*\r\n");
 				break;	
 			case (0xAA07):
 				printf("\r\nDriver IC_Reset...\r\n");
@@ -494,70 +484,16 @@ void USART_EventProcess(void)
 				IC_Init(ET2_InitCode);
 				Delay_ms(50);
 				LCD_PWM(0x0FFF);					
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA09): 	
-				chroma_x_before = (((USART_RData[16] & 0x00FF) << 8) + (USART_RData[17] & 0x00FF)) / 10000.0;
-				chroma_y_before = (((USART_RData[18] & 0x00FF) << 8) + (USART_RData[19] & 0x00FF)) / 10000.0;
-				chroma_Lv_before = (((USART_RData[20] & 0x00FF) << 8) + (USART_RData[21] & 0x00FF)) / 10.0;
-			  printf("*#*#ACK#*#*\r\n");
+				ID1 = USART_RData[1];
+				ID2 = USART_RData[2];
+				ID3 = USART_RData[3];
+				vcom_best = USART_RData[4];
+				printf("ACK\r\n");
 				break;
-			case (0xAA11):         
-        chroma_x = (((USART_RData[1] & 0x00FF) << 8) + (USART_RData[2] & 0x00FF)) / 10000.0;
-				chroma_y = (((USART_RData[3] & 0x00FF) << 8) + (USART_RData[4] & 0x00FF)) / 10000.0;
-				chroma_Lv = (((USART_RData[5] & 0x00FF) << 8) + (USART_RData[6] & 0x00FF)) / 10.0;
-				vcom_best = ((USART_RData[7] & 0x00FF) << 8) + (USART_RData[8] & 0x00FF);
-				flicker_best = USART_RData[9];
-				DATE_YY = USART_RData[10];
-				DATE_MM = USART_RData[11];
-				DATE_DD = USART_RData[12];
-				DATE_HR = USART_RData[13];
-				DATE_MIM = USART_RData[14];
-				DATE_SEC = USART_RData[15];
-				chroma_x_before = (((USART_RData[16] & 0x00FF) << 8) + (USART_RData[17] & 0x00FF)) / 10000.0;
-				chroma_y_before = (((USART_RData[18] & 0x00FF) << 8) + (USART_RData[19] & 0x00FF)) / 10000.0;
-				chroma_Lv_before = (((USART_RData[20] & 0x00FF) << 8) + (USART_RData[21] & 0x00FF)) / 10.0;
-			  printf("chroma_x_before = %.3f; chroma_y_before = %.3f; chroma_Lv_before = %.3f;\r\n", chroma_x_before, chroma_y_before, chroma_Lv_before);
-				printf("chroma_x = %.3f; chroma_y = %.3f; chroma_Lv = %.3f;\r\n", chroma_x, chroma_y, chroma_Lv);
-				printf("*#*#ACK#*#*\r\n");
-			 break;
-			case (0xAA12):
-				printf("*#*#ACK#*#*\r\n");
-				break;	
-			case (0xAA13):
-				printf("*#*#ACK#*#*\r\n");
-				if (USART_RData[2] == 0x0001) LED_ON(RED);
-				else if(USART_RData[2] == 0x0000) LED_OFF(RED);
-				if (USART_RData[3] == 0x0001) LED_ON(GREEN);
-				else if(USART_RData[3] == 0x0000) LED_OFF(GREEN);
-				if (USART_RData[4] == 0x0001) LED_ON(BLUE);
-				else if(USART_RData[4] == 0x0000) LED_OFF(BLUE);	
-				if (USART_RData[1] == 0x0001) KEY_SLEEPIN();
-				break;
-			case (0xAA14):
-				LCD_SleepIn();
-				printf("*#*#ACK#*#*\r\n");
-				break;			
-			case (0xAA15):
-				LCD_SleepOut();
-				printf("*#*#ACK#*#*\r\n");
-				break;		
-			case (0xAA17):
-				printf("*#*#%s#*#*\r\n", GammaPro_VERSION);
-				printf("*#*#ACK#*#*\r\n");
-				break;
-			case (0xAA19):
-				LCD_LitSquence();
-				FPGA_INIT_END_INFO(1);
-        		FPGA_DisPattern(0, 0, 0, 0); 
-				Delay_ms(100);
-				#ifdef CMD_MODE
-				FPGA_DisPattern(0, 1, 1, 1);
-				#endif
-				printf("*#*#ACK#*#*\r\n");
-				break;		
 			case (0xAABB): 	// for AUTOGAMMA macth
-				printf("*#*#ACK#*#*\r\n");
+				printf("ACK\r\n");
 				break;
 			//////////////////////////////////////end: for gammaexpert //////////////////////////////////////////////////					
 			case (0xAA08):
@@ -573,16 +509,7 @@ void USART_EventProcess(void)
 				break;
 			case (0xAA21):
 				OTP_TIMES = OTPTimes_Read();
-				if (OTP_TIMES < 3)
-				{
-					printf("*#*#OTP times is %d#*#*\r\n", OTP_TIMES);
-				}
-				else
-				{
-					printf("*#*#OTP times is over MAX#*#*\r\n");			
-				}	
 				FPGA_Info_Visible(USART_RData[1]);
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA22):
 				for (i = 0; i < 14; i++)
@@ -592,6 +519,7 @@ void USART_EventProcess(void)
 				FPGA_Info_Set(rdBuf);
 				break;
 			case (0xAA40):
+//				OTPSequence(); break;
 				LED_ON(BLUE);
 				OTP_TIMES = OTPTimes_Read();
 				if (OTP_TIMES >= OTP_TIMES_MAX)
@@ -626,11 +554,11 @@ void USART_EventProcess(void)
 				break;
 			case (0xAA41):
 				debug1 = TIMESTAMP;
-				if (AutoVcom1() != 0)
+				if (AutoVcom() != 0)
 				{
 					printf("AutoVcom fail! Please check if both sensor and panel are ready.\r\n");
 				}
-				printf("\r\n===== #AA41# AutoVcom1() time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
+				printf("\r\n===== #AA41# AutoVcom() time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
 				break;
 			case (0xAA42):
 				LCD_SleepIn();
@@ -652,15 +580,12 @@ void USART_EventProcess(void)
 			case (0xAA81):
 				VCOM_Set(USART_RData[1]);
 				Delay_ms(5);
-				printf("VCOM=0x%x\r\n",USART_RData[1]);
 				printf("\r\n*#*#VCOM:OK#*#*\r\n");
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA82):	// READ DRIVER IC REGISTER
 				SSD_B7 |= SSD_CFGR_REN;	 // READ MODE 
 				printf("\r\nSSD_B7 = 0x%04x\r\n", SSD_B7);
 				ReadDriverReg(MAIN_PORT, USART_RData[1], USART_RData[2], rdBuf);
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA83): 	// WRITE SSD2828 REGISTER
 				WriteCMD2SSD((PORT0 | PORT1), USART_RData[1]);
@@ -668,11 +593,9 @@ void USART_EventProcess(void)
 				WriteDATA2SSD((PORT0 | PORT1), USART_RData[3]);
 				SSD_B7 = ReadSSDReg(MAIN_PORT, SSD_CFGR);
 				printf("SSD_B7 = 0x%04X\r\n", SSD_B7);
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA84): 	// READ SSD2828 REGISTER
 				printf("The parameter of SSD2828 register 0x%02X is 0x%04X\r\n", USART_RData[1], ReadSSDReg(MAIN_PORT, USART_RData[1]));
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA90):
 				if (USART_RData[1] == 0x0001)	POWER_IOVCC_Reset();
@@ -704,7 +627,6 @@ void USART_EventProcess(void)
 			case (0xAA97):
 				DriverIC_Reset();
 //				GPIO_ResetBits(LCD_nRST_GPIO_PORT, LCD_nRST_PIN);
-				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAAE0)://Blink 
 				flag_blink = USART_RData[1];
@@ -726,7 +648,6 @@ void USART_EventProcess(void)
 			  PWM_NG = RESET;
 				ID_NG = RESET;
 				FW_NG = RESET;
-			  OSC_TRIM_NG = RESET;
 				LED_ON(GREEN);
 				LED_OFF(RED);
 				LED_OFF(BLUE);
@@ -734,21 +655,13 @@ void USART_EventProcess(void)
 				LCM_Init();
 				/*OTP status check */ 
 				FPGA_Info_Visible(INFO_NONE);
-				if ((OTP_TIMES == 0) && (TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1))
+				if ((OTP_TIMES == 0)&&(TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1))
 				{
 					FPGA_DisPattern(84, 0, 0, 0);
 				}
 				else
 				{
 					FPGA_DisPattern(0, 255, 255, 255); 
-				}
-				if (FW_NG == SET || OSC_TRIM_NG == SET || PWM_NG == SET || TE_NG == SET)
-				{
-					printf("\r\n*#*#OTHER NG#*#*\r\n");	
-				}
-				else
-				{
-					printf("\r\n*#*#OTHER OK#*#*\r\n");
 				}
 				printf("\r\n*#*#POWER:ON#*#*\r\n");			
 				printf("\r\n===== #AAA0# power on time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
@@ -760,7 +673,7 @@ void USART_EventProcess(void)
 			case (0xAAA1):	//power off
 				debug1 = TIMESTAMP;
 				LED_ON(RED);
-				if (TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP)
+				if (TEST_MODE != TEST_MODE_ET1)
 				{
 					LEDA_DIM();
 					FPGA_DisPattern(0, 255, 255, 255);	//low current white  							
@@ -879,7 +792,6 @@ void USART_EventProcess(void)
 					DIS_NUM_OLD = DIS_NUM; //ensure not to run into switch (TEST_MODE) 
 				}
 				printf("\r\n*#*#POWER_SUSTAIN_DISABLE!#*#*\r\n");
-				printf("*#*#ACK#*#*\r\n");
 				break;				
 			//////////////////////////////////////end: for auto line check//////////////////////////////////////////////////
 			default:
@@ -1017,5 +929,123 @@ void USART_printf(USART_TypeDef* USARTx, uint8_t *Data, ...)
 			USART_SendData(USARTx, *Data++);
 		}
 		while (USART_GetFlagStatus(USARTx, USART_FLAG_TC) == RESET);
+	}
+}
+
+void shh_pattern_ctr(void)
+{
+	if(usart_buf[0]=='L')	
+	{
+		FPGA_Info_Visible(INFO_RGBVAL);	
+		FPGA_DisPattern(0, discnt, discnt, discnt);
+	}
+	else if(usart_buf[0]=='P')
+	switch(discnt)
+	{
+		case 0: 
+				break;
+		case 1:	
+				break;		
+		case 2:FPGA_DisPattern(0, 0, 0, 0);
+				break;
+		case 3:FPGA_DisPattern(0, 255, 255, 255);
+				break;				
+		case 4:FPGA_DisPattern(0, 0, 0, 0);
+				break;
+		case 5:FPGA_DisPattern(0, 255, 0, 0);
+				break;		
+		case 6:FPGA_DisPattern(0, 0, 255, 0);
+				break;
+		case 7:FPGA_DisPattern(0, 0, 0, 255);
+				break;						
+		case 8:FPGA_DisPattern(0, 127, 127, 127);
+				break;		
+		case 9:FPGA_DisPattern(1, 127, 127, 127);
+				break;
+		case 10:FPGA_DisPattern(7, 127, 127, 127);
+				break;								
+				break;		
+		case 11:FPGA_DisPattern(22, 127, 127, 127);
+				break;
+		case 12:
+				break;				
+		case 13:
+				break;
+		case 14:
+				break;		
+		case 15:
+				break;
+		case 16:
+				break;						
+		case 17:FPGA_DisPattern(20, 0, 0, 0);
+				break;		
+		case 18:FPGA_DisPattern(0, 127, 127, 127);
+				break;
+		case 19:FPGA_DisPattern(17, 0, 0, 0);
+				break;	
+		case 20:FPGA_DisPattern(15, 0, 0, 0);
+				break;		
+		case 21:FPGA_DisPattern(16, 0, 0, 0);
+				break;
+		case 22:FPGA_DisPattern(13, 0, 0, 0);
+				break;				
+		case 23:FPGA_DisPattern(72, 0, 0, 0);
+				break;
+		case 24:FPGA_DisPicture(0);
+				break;		
+		case 25:FPGA_DisPicture(3);
+				break;
+		case 26:FPGA_DisPicture(1);
+				break;						
+		case 27:FPGA_DisPicture(2);
+				break;		
+//		case 28:
+//				break;
+//		case 29:
+//				break;	
+//		case 30:
+//				break;		
+//		case 31:
+//				break;
+//		case 32:
+//				break;				
+//		case 33:
+//				break;
+//		case 34:
+//				break;		
+//		case 35:
+//				break;
+//		case 36:
+//				break;						
+//		case 37:
+//				break;		
+//		case 38:
+//				break;
+//		case 39:
+//				break;	
+//		case 40:
+//				break;		
+//		case 41:
+//				break;
+//		case 42:
+//				break;				
+//		case 43:
+//				break;
+//		case 44:
+//				break;		
+//		case 45:
+//				break;
+//		case 46:
+//				break;						
+//		case 47:
+//				break;		
+//		case 48:
+//				break;
+//		case 49:
+//				break;	
+
+		
+		default:
+				break;
 	}
 }
