@@ -944,8 +944,8 @@ void shh_pattern_ctr(void)
 	{
 		case 0: 
 				break;
-		case 1:	
-				break;		
+		case 1://alignment
+				break;
 		case 2:FPGA_DisPattern(0, 0, 0, 0);
 				break;
 		case 3:FPGA_DisPattern(0, 255, 255, 255);
@@ -964,25 +964,25 @@ void shh_pattern_ctr(void)
 				break;
 		case 10:FPGA_DisPattern(7, 127, 127, 127);
 				break;								
-				break;		
 		case 11:FPGA_DisPattern(22, 127, 127, 127);
 				break;
-		case 12:
-				break;				
-		case 13:
+		case 12://Response Time
 				break;
-		case 14:
-				break;		
-		case 15:
+		case 13://Gamma
 				break;
-		case 16:
-				break;						
+		case 14://Red Gamma
+				break;
+		case 15://Green Gamma
+				break;
+		case 16://Blue Gamma
+				break;
 		case 17:FPGA_DisPattern(20, 0, 0, 0);
-				break;		
+				break;
 		case 18:FPGA_DisPattern(0, 127, 127, 127);
 				break;
-		case 19:FPGA_DisPattern(17, 0, 0, 0);
-				break;	
+		case 19://Gamma
+				//FPGA_DisPattern(17, 0, 0, 0);
+				break;
 		case 20:FPGA_DisPattern(15, 0, 0, 0);
 				break;		
 		case 21:FPGA_DisPattern(16, 0, 0, 0);
