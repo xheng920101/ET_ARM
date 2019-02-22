@@ -3,7 +3,6 @@
 
 #include "board_conf.h"
 
-#ifdef DSC_MODE
 #define		KEY_UP 		0x06	// KEY1
 #define		KEY_DOWN	0x05	// KEY2
 #define		KEY_SLEEP 0x03	// KEY3
@@ -11,16 +10,6 @@
 #define		KEY_AUTO	0x04	// KEY1 & KEY2
 #define 	KEY_TEST 	0x0F
 #define 	CTP_IDLE	0x07
-#else
-#define		KEY_UP 		0x0E	// KEY1	
-#define		KEY_DOWN	0x0D	// KEY2
-#define		KEY_SLEEP 0x0B	// KEY3	
-#define		KEY_TEST 	0x07	// KEY4	
-#define		KEY_AUTO	0x0C  // KEY1 & KEY2
-#define 	KEY_IDLE 	0x0F
-#define 	CTP_IDLE	0x07
-#endif
-
 
 extern uint8_t TOTAL_DIS_NUM;
 extern uint8_t DIS_NUM;

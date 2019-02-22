@@ -304,34 +304,32 @@ void Print_Gamma_Code(uint16_t * initCode)
 * Return: none
 * Call: external
 */
-void USART_EventProcess(void){
+void USART_EventProcess(void)
+{
 	uint16_t i;
 	uint8_t rdBuf[64];
 
-	if (flag_blink == 0x01){
-#ifdef DSC_MODE//用两张图来回切代替
-		FPGA_DisPicture(r1);
-		Delay_ms(interval);
-		FPGA_DisPicture(r2);
-		Delay_ms(interval);
-#else
+	if (flag_blink == 0x01)
+	{	
 		FPGA_DisPattern(0, r1, g1, b1); 
 		Delay_ms(interval);
 		FPGA_DisPattern(0, r2, g2, b2);
 		Delay_ms(interval);
-#endif
 	}
 	
-	if (USART_CMD_FLAG == SET){
-		switch (USART_RData[0]){
+	if (USART_CMD_FLAG == SET)	
+	{
+		switch (USART_RData[0])
+		{
 			case (0xAA01):
 				IC_Init(&USART_RData[1]);
 				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA02):
-				#ifndef DSC_MODE
-				if (USART_RData[1] == 107){
-					switch (USART_RData[3]){
+				if (USART_RData[1] == 107)
+				{
+					switch (USART_RData[3])
+					{
 						case (0x0000):	i = vsum / 2 - SAM_CRST_OFFSET;	FPGA_DisPattern(107, USART_RData[2], i >> 8, i);	break;
 						case (0x0001):	i = vsum / 2 - SAM_CRST_OFFSET;	FPGA_DisPattern(107, USART_RData[2], (i >> 8) + 0x80, i);	break;
 						case (0x0002):	i = vsum / 2 + SAM_CRST_OFFSET;	FPGA_DisPattern(107, USART_RData[2], i >> 8, i);	break;
@@ -343,8 +341,10 @@ void USART_EventProcess(void){
 						default:	break;
 					}
 				}
-				else if (USART_RData[1] == 108){
-					switch (USART_RData[3]){
+				else if (USART_RData[1] == 108)
+				{
+					switch (USART_RData[3])
+					{
 						case (0x0000):	i = hsum / 2 - SAM_CRST_OFFSET;	FPGA_DisPattern(108, USART_RData[2], i >> 8, i);	break;
 						case (0x0001):	i = hsum / 2 - SAM_CRST_OFFSET;	FPGA_DisPattern(108, USART_RData[2], (i >> 8) + 0x80, i);	break;							
 						case (0x0002):	i = hsum / 2 + SAM_CRST_OFFSET;	FPGA_DisPattern(108, USART_RData[2], i >> 8, i);	break;
@@ -356,13 +356,16 @@ void USART_EventProcess(void){
 						default:	break;
 					}
 				}
-				else if (auto_line == SET){
+				else if (auto_line == SET)
+				{
 					if (USART_RData[1] == 0x0000 && \
 						((USART_RData[2] == 0x007f && USART_RData[3] == 0x007f && USART_RData[4] == 0x007f) \
-						|| (USART_RData[2] == 0x0040 && USART_RData[3] == 0x0040 && USART_RData[4] == 0x0040))){
+						|| (USART_RData[2] == 0x0040 && USART_RData[3] == 0x0040 && USART_RData[4] == 0x0040)))
+					{
 						ScanBackward();
 					}
-					else{
+					else
+					{
 						ScanForward();
 					}
 				}
@@ -372,12 +375,10 @@ void USART_EventProcess(void){
 				if (auto_line == SET && USART_RData[1] == 0x0000 && \
 					((USART_RData[2] == 0x00FF && USART_RData[3] == 0x00FF && USART_RData[4] == 0x00FF) \
 				|| (USART_RData[2] == 0x007F && USART_RData[3] == 0x007F && USART_RData[4] == 0x007F) \
-				|| (USART_RData[2] == 0x00FF && USART_RData[3] == 0x0000 && USART_RData[4] == 0x0000))){
+				|| (USART_RData[2] == 0x00FF && USART_RData[3] == 0x0000 && USART_RData[4] == 0x0000)))
+				{
 					AOI_Current_Check_Normal();		
-				}
-				#else
-				printf("FPGA_DisPattern is disabled in DSC_MODE!/r/n");
-				#endif
+				}					
 				break;
 			case (0xAA10):
 				FPGA_DisPicture(USART_RData[1]);
@@ -419,13 +420,15 @@ void USART_EventProcess(void){
 			case (0xAA04):
 				LED_ON(BLUE);
 				printf("*#*#ACK#*#*\r\n");	
-				if (OTPSequence()== SUCCESS){
+				if (OTPSequence()== SUCCESS)
+				{
 					printf("*#*#OTP OK#*#*\r\n"); 
 					LED_ON(GREEN);
 					LED_OFF(RED); 
 					LED_OFF(BLUE); 
 				}
-				else{
+				else
+				{
 					printf("*#*#OTP NG#*#*\r\n");
 					LED_ON(RED);
 					LED_OFF(BLUE);
@@ -434,30 +437,26 @@ void USART_EventProcess(void){
 				KEY_SLEEPIN();
 				break;
 			case (0xAA05):              
-				if (OTP_TIMES >= OTP_TIMES_MAX){
-					if (OTP_TIMES == 3){
-						#ifndef DSC_MODE
+				if (OTP_TIMES >= OTP_TIMES_MAX)
+				{
+					if (OTP_TIMES == 3)
+					{
 						FPGA_DisPattern(85, 0, 0, 0);
-						#else
-						FPGA_DisPicture(9);
-						#endif
 						LED_ON(RED);
 						LED_OFF(BLUE);                                                
 						LED_OFF(GREEN);					
 					}
-					else{
+					else
+					{
 						LED_ON(GREEN);
 						LED_OFF(BLUE);                                                
 						LED_OFF(RED);														
 					}						
 				}
-				else{
+				else
+				{
 					printf("Check NG\r\n");
-					#ifndef DSC_MODE
 					FPGA_DisPattern(85, 0, 0, 0);
-					#else
-					FPGA_DisPicture(9);
-					#endif
 					LED_ON(RED);
 					LED_OFF(BLUE);                                                
 					LED_OFF(GREEN); 				
@@ -525,7 +524,7 @@ void USART_EventProcess(void){
 			  printf("chroma_x_before = %.3f; chroma_y_before = %.3f; chroma_Lv_before = %.3f;\r\n", chroma_x_before, chroma_y_before, chroma_Lv_before);
 				printf("chroma_x = %.3f; chroma_y = %.3f; chroma_Lv = %.3f;\r\n", chroma_x, chroma_y, chroma_Lv);
 				printf("*#*#ACK#*#*\r\n");
-				break;
+			 break;
 			case (0xAA12):
 				printf("*#*#ACK#*#*\r\n");
 				break;	
@@ -554,18 +553,10 @@ void USART_EventProcess(void){
 			case (0xAA19):
 				LCD_LitSquence();
 				FPGA_INIT_END_INFO(1);
-				#ifndef DSC_MODE
-				FPGA_DisPattern(0, 0, 0, 0);
-				#else
-				FPGA_DisPicture(0);
-				#endif
+        		FPGA_DisPattern(0, 0, 0, 0); 
 				Delay_ms(100);
 				#ifdef CMD_MODE
-				#ifndef DSC_MODE
 				FPGA_DisPattern(0, 1, 1, 1);
-				#else
-				FPGA_DisPicture(0);
-				#endif
 				#endif
 				printf("*#*#ACK#*#*\r\n");
 				break;		
@@ -586,45 +577,40 @@ void USART_EventProcess(void){
 				break;
 			case (0xAA21):
 				OTP_TIMES = OTPTimes_Read();
-				if (OTP_TIMES < 3){
+				if (OTP_TIMES < 3)
+				{
 					printf("*#*#OTP times is %d#*#*\r\n", OTP_TIMES);
 				}
-				else{
+				else
+				{
 					printf("*#*#OTP times is over MAX#*#*\r\n");			
-				}
-				#ifndef DSC_MODE
+				}	
 				FPGA_Info_Visible(USART_RData[1]);
-				#endif
 				printf("*#*#ACK#*#*\r\n");
 				break;
 			case (0xAA22):
-				#ifndef DSC_MODE
-				for (i = 0; i < 14; i++){
+				for (i = 0; i < 14; i++)
+				{
 					rdBuf[i] = USART_RData[i + 1];
 				}
 				FPGA_Info_Set(rdBuf);
-				#else
-				printf("FPGA_DisPattern is disabled in DSC_MODE!/r/n");
-				#endif
 				break;
 			case (0xAA40):
 				LED_ON(BLUE);
 				OTP_TIMES = OTPTimes_Read();
-				if (OTP_TIMES >= OTP_TIMES_MAX){
+				if (OTP_TIMES >= OTP_TIMES_MAX)
+				{
 					printf("OTP times is over %d!\r\n", OTP_TIMES_MAX);
 					printf("OTP NG\r\n"); // for sony10.1 autogamma
 					Delay_ms(5);
 					printf("\r\n*#*#OTP:NG#*#*\r\n"); // for gammaExpert and autoLine OTP
-					#ifndef DSC_MODE
 					FPGA_Info_Visible(INFO_NONE);	
 					FPGA_DisPattern(85, 0, 0, 0);
-					#else
-					FPGA_DisPicture(0);
-					#endif
 					LED_ON(RED);
 					LED_OFF(BLUE);
 				}
-				else if (OTPSequence() == SUCCESS){
+				else if (OTPSequence() == SUCCESS)
+				{
 					Delay_ms(5);
 					printf("\r\n*#*#OTP:OK#*#*\r\n");
 					FPGA_Info_Visible(INFO_OTPTIMES);
@@ -632,7 +618,8 @@ void USART_EventProcess(void){
 					LED_ON(GREEN);
 					LED_OFF(BLUE);
 				}
-				else{
+				else
+				{
 					Delay_ms(5);
 					printf("\r\n*#*#OTP:NG#*#*\r\n");
 					FPGA_Info_Visible(INFO_NONE);	
@@ -643,7 +630,8 @@ void USART_EventProcess(void){
 				break;
 			case (0xAA41):
 				debug1 = TIMESTAMP;
-				if (AutoVcom1() != 0){
+				if (AutoVcom1() != 0)
+				{
 					printf("AutoVcom fail! Please check if both sensor and panel are ready.\r\n");
 				}
 				printf("\r\n===== #AA41# AutoVcom1() time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
@@ -750,16 +738,20 @@ void USART_EventProcess(void){
 				LCM_Init();
 				/*OTP status check */ 
 				FPGA_Info_Visible(INFO_NONE);
-				if ((OTP_TIMES == 0) && (TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP)){
+				if ((OTP_TIMES == 0) && (TEST_MODE != TEST_MODE_OTP && TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP))
+				{
 					FPGA_DisPattern(84, 0, 0, 0);
 				}
-				else{
+				else
+				{
 					FPGA_DisPattern(0, 255, 255, 255); 
 				}
-				if (FW_NG == SET || OSC_TRIM_NG == SET || PWM_NG == SET || TE_NG == SET){
+				if (FW_NG == SET || OSC_TRIM_NG == SET || PWM_NG == SET || TE_NG == SET)
+				{
 					printf("\r\n*#*#OTHER NG#*#*\r\n");	
 				}
-				else{
+				else
+				{
 					printf("\r\n*#*#OTHER OK#*#*\r\n");
 				}
 				printf("\r\n*#*#POWER:ON#*#*\r\n");			
@@ -769,20 +761,22 @@ void USART_EventProcess(void){
 				LED_OFF(GREEN);		
 //				printf("DIS_NUM = %d, DIS_NUM_OLD = %d\r\n", DIS_NUM, DIS_NUM_OLD);			
 				break;
-				
 			case (0xAAA1):	//power off
 				debug1 = TIMESTAMP;
 				LED_ON(RED);
 #ifdef CURRENT_METER
-				if (TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP){
+				if (TEST_MODE != TEST_MODE_ET1 && TEST_MODE != TEST_MODE_CTP)
+				{
 					LEDA_DIM();
 					FPGA_DisPattern(0, 255, 255, 255);	//low current white  							
 					Delay_ms(100);	//should wait until BLU stable
 					Meas_Current_Normal();		
-					if (I_LEDA < SPEC_MIN_LEDA_DIM || I_LEDA > SPEC_MAX_LEDA_DIM){//low current white spec.
+					if (I_LEDA < SPEC_MIN_LEDA_DIM || I_LEDA > SPEC_MAX_LEDA_DIM)//low current white spec.
+					{
 						printf("\r\n*#*#CURRENT_NG:LEDA DIM!#*#*\r\n");
 					}
-					else{//current ok
+					else//current ok
+					{
 						printf("\r\n*#*#CURRENT_OK#*#*\r\n");		
 					}
 					Current_Upload();
@@ -810,7 +804,6 @@ void USART_EventProcess(void){
 				printf("\r\n*#*#POWER:OFF#*#*\r\n");
 				printf("\r\n===== #AAA1# power off time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);	
 				break;
-				
 			case (0xAAA2):	//program version	,switch autoline work mode!	
 				Project_Info_Upload();
 				break;
@@ -818,26 +811,32 @@ void USART_EventProcess(void){
 				debug1 = TIMESTAMP;
 				LED_ON(BLUE);
 				OTP_FLAG = OTP_FLAG_AUTO;//use auto line otp option 
-				if (MSE_State == ERROR){
+				if (MSE_State == ERROR)
+				{
 					FPGA_Info_Visible(INFO_STR);
 					FPGA_Info_Set((uint8_t *)"MSE ERROR");
 					FPGA_DisPattern(114, 0, 0, 0);
 					printf("MSE error! Please check the MSE connection!\r\n");
 					break;
 				}	
+				
 				FPGA_DisPattern(0, 255, 255, 255);
 				Delay_ms(1000); //20151216:200-->1000	
 				Meas_Yxy();
-				if (Lv < 100){
+				if (Lv < 100)
+				{
 					printf("\r\n*#*#LIT:NG#*#*\r\n");
 					break;
 				}
-				if (OTP() == ERROR){
+				
+				if (OTP() == ERROR)
+				{
 					FPGA_Info_Visible(INFO_NONE);	
 					FPGA_DisPattern(85, 0, 0, 0);
 					LED_OFF(BLUE);
 				}
-				else{
+				else
+				{
 					FPGA_Info_Visible(INFO_OTPTIMES);
 					FPGA_DisPattern(22, 128, 128, 128);	
 					LED_OFF(BLUE);
@@ -852,31 +851,36 @@ void USART_EventProcess(void){
 			  printf("\r\n===== #AAA4# current check time elapsed: %.3f(second)\r\n", TIMESTAMP - debug1);
 				break;
 			case (0xAAA5):	//LEDA_DIM
-				if (USART_RData[1] & 0x0001){
+				if (USART_RData[1] & 0x0001)
+				{
 					FPGA_DisPattern(0, 255, 255, 255);
 					LEDA_DIM();
 					Delay_ms(100);	//should wait until BLU stable
 					printf("*#*#ACK#*#*\r\n");
 					AOI_Current_Check_Normal();
 				}
-				else{
+				else
+				{
 					FPGA_DisPattern(0, 255, 255, 255);
 					LEDA_NORM();
 				}				
 				break;
 			case (0xAAE1)://work mode config 
 				printf("\r\n====project configuration option is :0X%X\r\n", USART_RData[1]);		
-				if (USART_RData[1] & 0x0001){
+				if (USART_RData[1] & 0x0001)
+				{
 					printf("\r\n*#*#AUTOLINE_ENABLE#*#*\r\n");
 					auto_line = SET;
 					FPGA_Info_Visible(INFO_NONE);
 					FPGA_DisPattern(0, 255, 255, 255);
 				}
-				else{
+				else 
+				{
 					printf("\r\n*#*#AUTOLINE_DISABLE#*#*\r\n");
 					auto_line = RESET;//not switch when use
 				}
-				if(USART_RData[1] & 0x0002){
+				if(USART_RData[1] & 0x0002)
+				{
 					printf("\r\n*#*#GAMMAEXPERT_ENABLE#*#*\r\n");
 					GAMMAEXPERT = SET;
 					DIS_NUM_OLD = 0x55;//ensure to run into func Test_OTP()
