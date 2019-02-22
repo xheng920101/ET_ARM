@@ -129,7 +129,6 @@ void KeyProc(void)
 			if(LCM_POWER_STATE==RESET){
 				LCM_Init();
 				LCM_POWER_STATE=SET;
-				printf("FUCK IT!\r\n");
 			}
 			else{
 			}
@@ -184,7 +183,6 @@ void KeyProc(void)
 				LCMPower_OFF();
 				DIS_NUM=0;
 				LCM_POWER_STATE=RESET;
-				printf("YOU ARE FUCKED!\r\n");
 			}
 			else{
 			}

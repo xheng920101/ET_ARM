@@ -146,8 +146,18 @@ int main(void)
 	} //end of 	if (!auto_line)
 	else
 	{
+#ifndef DSC_MODE
 		PIC_Load_BMP(1); 
 		DIS_NUM_OLD = DIS_NUM; //Auto AOI not to enter test mode switch
+#else
+		LCM_POWER_STATE=SET;
+		LED_ON(GREEN);
+		printf("\r\nPicture loading...\r\n");			
+		PIC_Load_BMP(PIC_NUM);
+		printf("\r\n===== Load %d picture time elapsed: %.3f(second)\r\n", PIC_NUM, TIMESTAMP - debug);
+		LED_OFF(GREEN);
+		DIS_NUM_OLD = DIS_NUM; //Auto AOI not to enter test mode switch
+#endif
 	}
 	
 #ifdef CURRENT_METER	

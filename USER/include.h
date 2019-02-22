@@ -13,7 +13,7 @@
 //#define TE_DETECT
 //#define CHROMA								// HTC SONY 10.1 chroma control, if you don't need it, please comment the define
 //#define	HOT_PLUG							//FPC connection check, if you don't need it, please comment the define
-#define	CURRENT_METER					//current measure, if you don't need it, please comment the define
+//#define	CURRENT_METER					//current measure, if you don't need it, please comment the define
 //#define	CURRENT_STANDBY				//for deepstandby current measure, if you comment the define, it will measure sleep-in current
 //#define	AG_TEST							  //FPC connection check, if you don't need it, please comment the define
 #define DSC_MODE
