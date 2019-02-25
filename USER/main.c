@@ -12,7 +12,7 @@
 //	TEST_MODE_DEMO
 //	TEST_MODE_CTP
 //	TEST_MODE_DEBUG
-uint8_t TEST_MODE = TEST_MODE_DEBUG;
+uint8_t TEST_MODE = TEST_MODE_ET2;
 
 /*********************************************************************************
 * Function: main
